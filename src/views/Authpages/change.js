@@ -20,11 +20,7 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 
 const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Enter a valid email')
-    .required('Email is required'),
-  password: yup
+    password: yup
     .string()
     .min(8, ({min}) => 'password must be atleast 8 characters')
     .required('password is required')
@@ -32,20 +28,31 @@ const loginSchema = yup.object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
       'Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character',
     ),
+    password1:yup.string().when("password", {
+        is: val => (val && val.length > 0 ? true : false),
+        then: yup.string().oneOf(
+          [yup.ref("password")],
+          "passwords doesn't match"
+        )
+      })
+    
+    
+   
 });
 
-export default function Login({navigation}) {
-  const [checked, setChecked] = React.useState(false);
-  const [securetext, setsecuretext] = useState(false);
-  async function handleLogin(values){
+export default function Change({navigation}) {
+
+      const [securetext, setsecuretext] = useState(false);
+ 
+  async function handleChange(values){
         
-         console.log("success");
+         console.log(values.password);
   }
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      initialValues={{password: '',password1:''}}
       validateOnMount={true}
-      onSubmit={values => handleLogin(values)}
+      onSubmit={values => handleChange(values)}
       validationSchema={loginSchema}>
       {({
         handleChange,
@@ -71,11 +78,11 @@ export default function Login({navigation}) {
                 }}>
                 <Text
                   style={{
-                    fontSize: 30,
+                    fontSize: 25,
                     color: 'black',
-                    marginTop: '10%',
+                    marginTop: '20%',
                   }}>
-                  Login
+                  Enter New Password
                 </Text>
               </View>
 
@@ -88,30 +95,6 @@ export default function Login({navigation}) {
                   }}>
                   <TextInput
                     style={styles.input}
-                    label="Email"
-                    mode="outlined"
-                    activeOutlineColor="#469FD1"
-                    autoCapitalize="none"
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    left={
-                      <TextInput.Icon
-                        style={{
-                          paddingTop: 10,
-                        }}
-                        name="email"
-                        color="#676666"
-                      />
-                    }
-                    //   value={text}
-                    //   onChangeText={text => setText(text)}
-                  />
-                  {errors.email && touched.email && (
-                    <Text style={styles.errors}>{errors.email}</Text>
-                  )}
-                  <TextInput
-                    style={styles.input1}
                     label="Password"
                     mode="outlined"
                     secureTextEntry={!securetext}
@@ -130,9 +113,7 @@ export default function Login({navigation}) {
                     }
                     right={
                       <TextInput.Icon
-                        style={{
-                          paddingTop: 10,
-                        }}
+                        
                         icon={securetext ? 'eye' : 'eye-off'}
                         onPress={() => {
                           setsecuretext(!securetext);
@@ -145,66 +126,44 @@ export default function Login({navigation}) {
                   {errors.password && touched.password && (
                     <Text style={styles.errors}>{errors.password}</Text>
                   )}
-                  <View style={{flexDirection: 'row', marginVertical: 20}}>
-                    <Checkbox
-                      color="#469FD1"
-                      status={checked ? 'checked' : 'unchecked'}
-                      onPress={() => {
-                        setChecked(!checked);
-                      }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '85%',
-                      }}>
-                      <Text
-                        onPress={() => {
-                          setChecked(!checked);
+                  <TextInput
+                    style={styles.input}
+                    label="Password"
+                    mode="outlined"
+                    secureTextEntry={!securetext}
+                    activeOutlineColor="#469FD1"
+                    onChangeText={handleChange('password1')}
+                    onBlur={handleBlur('password1')}
+                    value={values.password1}
+                    left={
+                      <TextInput.Icon
+                        style={{
+                          paddingTop: 10,
                         }}
-                        style={{color: '#6B5E5E', marginTop: 8}}>
-                        Remember password
-                      </Text>
-                      <Text onPress={()=>{navigation.push("Forgot password")}}
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
-                        Forget password
-                      </Text>
-                    </View>
-                  </View>
-                  <View>
-                  <Text
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}
+                        name="lock"
+                        color="#676666"
+                      />
+                    }
+                    right={
+                      <TextInput.Icon
+                        
+                        icon={securetext ? 'eye' : 'eye-off'}
                         onPress={() => {
-                          navigation.push("Register")
-                        }}>
-                        Create account
-                      </Text>
-                  </View>
+                          setsecuretext(!securetext);
+                        }}
+                      />
+                    }
+                    //   value={text}
+                    //   onChangeText={text => setText(text)}
+                  />
+                   {errors.password1 && touched.password1 && (
+                    <Text style={styles.errors}>{errors.password1}</Text>
+                  )}
+                  
+                  
+                  
                 </View>
               </View>
-
-              <Button
-                onPress={() => {
-                  console.log('clicked');
-                  handleSubmit()
-                }}
-                style={{
-                  justifyContent: 'center',
-                  marginHorizontal: 40,
-                  marginTop: 20,
-                  padding: 10,
-                }}
-                color={'#469FD1'}
-                mode="contained">
-                <Text
-                  style={{
-                    color: '#fff',
-                    fontWeight: '700',
-                  }}>
-                  Login
-                </Text>
-              </Button>
 
               <View
                 style={{
@@ -227,14 +186,7 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 90,
-    color: '#469FD1',
-    height: 45,
-  },
-  input1: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 30,
+    marginTop: 40,
     color: '#469FD1',
     height: 45,
   },

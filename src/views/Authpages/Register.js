@@ -12,7 +12,7 @@ import {
   Touchable,
 } from 'react-native';
 import {Checkbox, TextInput, Button} from 'react-native-paper';
-import Img2 from '../../assets/bottomimage.png';
+import Img3 from '../../assets/registerimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppStatusBar from '../../componenets/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -34,18 +34,20 @@ const loginSchema = yup.object().shape({
     ),
 });
 
-export default function Login({navigation}) {
+export default function Register({navigation}) {
   const [checked, setChecked] = React.useState(false);
   const [securetext, setsecuretext] = useState(false);
-  async function handleLogin(values){
-        
-         console.log("success");
-  }
+
+  async function handleSignUp(values) {
+    
+      console.log("values");
+     
+}
   return (
     <Formik
       initialValues={{email: '', password: ''}}
       validateOnMount={true}
-      onSubmit={values => handleLogin(values)}
+      onSubmit={values => handleSignUp(values)}
       validationSchema={loginSchema}>
       {({
         handleChange,
@@ -65,6 +67,11 @@ export default function Login({navigation}) {
           <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
           <KeyboardAvoidingView>
             <ScrollView>
+              <View style={{alignItems: 'center',margin:10}}>
+                <ImageBackground
+                  source={Img3}
+                  style={styles.img}></ImageBackground>
+              </View>
               <View
                 style={{
                   alignItems: 'center',
@@ -75,7 +82,7 @@ export default function Login({navigation}) {
                     color: 'black',
                     marginTop: '10%',
                   }}>
-                  Login
+                  Welcome
                 </Text>
               </View>
 
@@ -166,54 +173,36 @@ export default function Login({navigation}) {
                         style={{color: '#6B5E5E', marginTop: 8}}>
                         Remember password
                       </Text>
-                      <Text onPress={()=>{navigation.push("Forgot password")}}
+                      <Text
                         style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
                         Forget password
                       </Text>
                     </View>
                   </View>
-                  <View>
-                  <Text
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}
-                        onPress={() => {
-                          navigation.push("Register")
-                        }}>
-                        Create account
-                      </Text>
-                  </View>
                 </View>
               </View>
-
-              <Button
-                onPress={() => {
-                  console.log('clicked');
-                  handleSubmit()
-                }}
-                style={{
-                  justifyContent: 'center',
-                  marginHorizontal: 40,
-                  marginTop: 20,
-                  padding: 10,
-                }}
-                color={'#469FD1'}
-                mode="contained">
-                <Text
+              <View style={{marginBottom: 30}}>
+                <Button
+                  onPress={() => {
+                    console.log('clicked');
+                    handleSubmit()
+                  }}
                   style={{
-                    color: '#fff',
-                    fontWeight: '700',
-                  }}>
-                  Login
-                </Text>
-              </Button>
-
-              <View
-                style={{
-                  width: '100%',
-                  height: '90%',
-                }}>
-                <ImageBackground source={Img2} style={styles.img}>
-                  <View style={styles.container}></View>
-                </ImageBackground>
+                    justifyContent: 'center',
+                    marginHorizontal: 40,
+                    marginTop: 20,
+                    padding: 10,
+                  }}
+                  color={'#469FD1'}
+                  mode="outlined">
+                  <Text
+                    style={{
+                      color: '#469FD1',
+                      fontWeight: '700',
+                    }}>
+                    Register
+                  </Text>
+                </Button>
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
@@ -227,7 +216,7 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 90,
+    marginTop: 50,
     color: '#469FD1',
     height: 45,
   },
@@ -239,7 +228,7 @@ const styles = StyleSheet.create({
     height: 45,
   },
   img: {
-    height: Dimensions.get('window').height / 2.5,
+    height: Dimensions.get('window').height / 3.5,
     width: Dimensions.get('window').width,
   },
   scroll: {},
