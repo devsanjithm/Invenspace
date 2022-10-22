@@ -14,32 +14,22 @@ import {
 import {Checkbox, TextInput, Button} from 'react-native-paper';
 import Img2 from '../../assets/bottomimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../componenets/Appstatusbar';
+import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
-
 export default function Verification({navigation}) {
- 
-  async function handleOTP(values){
-        
-         console.log(values.OTP);
+  async function handleOTP(values) {
+    console.log(values.OTP);
+    navigation.navigate('Change password');
   }
   return (
     <Formik
       initialValues={{OTP: ''}}
       validateOnMount={true}
-      onSubmit={values => handleOTP(values)}
-      >
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        touched,
-        errors,
-      }) => (
+      onSubmit={values => handleOTP(values)}>
+      {({handleChange, handleBlur, handleSubmit, values, touched, errors}) => (
         <SafeAreaView
           style={{
             flex: 1,
@@ -59,7 +49,7 @@ export default function Verification({navigation}) {
                     color: 'black',
                     marginTop: '30%',
                   }}>
-                  Enter Email address
+                  Enter Verification code
                 </Text>
               </View>
 
@@ -69,6 +59,7 @@ export default function Verification({navigation}) {
                     flex: 1,
                     paddingHorizontal: 20,
                     justifyContent: 'center',
+                    // marginHorizontal: 10,
                   }}>
                   <TextInput
                     style={styles.input}
@@ -77,38 +68,40 @@ export default function Verification({navigation}) {
                     activeOutlineColor="#469FD1"
                     onChangeText={handleChange('OTP')}
                     onBlur={handleBlur('OTP')}
-                    
                     value={values.OTP}
-                  
-                    //   value={text} 
 
+                    //   value={text}
                   />
-                  
+
                   <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '85%',
-                      }}>
-                      <Text
-                        onPress={() => {
-                          setChecked(!checked);
-                        }}
-                        style={{color: '#6B5E5E', marginTop: 8}}>
-                        Didn't receive any code
-                      </Text>
-                      <Text onPress={()=>{navigation.push("Forgot password")}}
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
-                        Resend OTP
-                      </Text>
-                    </View>
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '85%',
+                      marginHorizontal: 20,
+                    }}>
+                    <Text
+                      onPress={() => {
+                        setChecked(!checked);
+                      }}
+                      style={{color: '#6B5E5E', marginTop: 8}}>
+                      Didn't receive any code
+                    </Text>
+                    <Text
+                      onPress={() => {
+                        navigation.push('Forgot password');
+                      }}
+                      style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
+                      Resend OTP
+                    </Text>
+                  </View>
                 </View>
               </View>
 
               <Button
                 onPress={() => {
-                  console.log('clicked');
-                  handleSubmit()
+                  // console.log('clicked');
+                  handleSubmit();
                 }}
                 style={{
                   justifyContent: 'center',

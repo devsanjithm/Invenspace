@@ -14,7 +14,7 @@ import {
 import {Checkbox, TextInput, Button} from 'react-native-paper';
 import Img3 from '../../assets/registerimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../componenets/Appstatusbar';
+import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -39,10 +39,8 @@ export default function Register({navigation}) {
   const [securetext, setsecuretext] = useState(false);
 
   async function handleSignUp(values) {
-    
-      console.log("values");
-     
-}
+    console.log('values');
+  }
   return (
     <Formik
       initialValues={{email: '', password: ''}}
@@ -62,15 +60,15 @@ export default function Register({navigation}) {
           style={{
             flex: 1,
             backgroundColor: '#fff',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
           }}>
           <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
           <KeyboardAvoidingView>
             <ScrollView>
-              <View style={{alignItems: 'center',margin:10}}>
-                <ImageBackground
+              <View style={{alignItems: 'center', margin: 10}}>
+                {/* <ImageBackground
                   source={Img3}
-                  style={styles.img}></ImageBackground>
+                  style={styles.img}></ImageBackground> */}
               </View>
               <View
                 style={{
@@ -152,40 +150,13 @@ export default function Register({navigation}) {
                   {errors.password && touched.password && (
                     <Text style={styles.errors}>{errors.password}</Text>
                   )}
-                  <View style={{flexDirection: 'row', marginVertical: 20}}>
-                    <Checkbox
-                      color="#469FD1"
-                      status={checked ? 'checked' : 'unchecked'}
-                      onPress={() => {
-                        setChecked(!checked);
-                      }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '85%',
-                      }}>
-                      <Text
-                        onPress={() => {
-                          setChecked(!checked);
-                        }}
-                        style={{color: '#6B5E5E', marginTop: 8}}>
-                        Remember password
-                      </Text>
-                      <Text
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
-                        Forget password
-                      </Text>
-                    </View>
-                  </View>
                 </View>
               </View>
               <View style={{marginBottom: 30}}>
                 <Button
                   onPress={() => {
                     console.log('clicked');
-                    handleSubmit()
+                    handleSubmit();
                   }}
                   style={{
                     justifyContent: 'center',

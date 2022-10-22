@@ -14,13 +14,13 @@ import {
 import {Checkbox, TextInput, Button} from 'react-native-paper';
 import Img2 from '../../assets/bottomimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../componenets/Appstatusbar';
+import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
 const loginSchema = yup.object().shape({
-    password: yup
+  password: yup
     .string()
     .min(8, ({min}) => 'password must be atleast 8 characters')
     .required('password is required')
@@ -28,29 +28,21 @@ const loginSchema = yup.object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
       'Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character',
     ),
-    password1:yup.string().when("password", {
-        is: val => (val && val.length > 0 ? true : false),
-        then: yup.string().oneOf(
-          [yup.ref("password")],
-          "passwords doesn't match"
-        )
-      })
-    
-    
-   
+  password1: yup.string().when('password', {
+    is: val => (val && val.length > 0 ? true : false),
+    then: yup.string().oneOf([yup.ref('password')], "passwords doesn't match"),
+  }),
 });
 
 export default function Change({navigation}) {
+  const [securetext, setsecuretext] = useState(false);
 
-      const [securetext, setsecuretext] = useState(false);
- 
-  async function handleChange(values){
-        
-         console.log(values.password);
+  async function handleChange(values) {
+    console.log(values.password);
   }
   return (
     <Formik
-      initialValues={{password: '',password1:''}}
+      initialValues={{password: '', password1: ''}}
       validateOnMount={true}
       onSubmit={values => handleChange(values)}
       validationSchema={loginSchema}>
@@ -113,7 +105,6 @@ export default function Change({navigation}) {
                     }
                     right={
                       <TextInput.Icon
-                        
                         icon={securetext ? 'eye' : 'eye-off'}
                         onPress={() => {
                           setsecuretext(!securetext);
@@ -146,7 +137,6 @@ export default function Change({navigation}) {
                     }
                     right={
                       <TextInput.Icon
-                        
                         icon={securetext ? 'eye' : 'eye-off'}
                         onPress={() => {
                           setsecuretext(!securetext);
@@ -156,12 +146,9 @@ export default function Change({navigation}) {
                     //   value={text}
                     //   onChangeText={text => setText(text)}
                   />
-                   {errors.password1 && touched.password1 && (
+                  {errors.password1 && touched.password1 && (
                     <Text style={styles.errors}>{errors.password1}</Text>
                   )}
-                  
-                  
-                  
                 </View>
               </View>
 
