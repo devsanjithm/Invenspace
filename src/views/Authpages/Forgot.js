@@ -14,7 +14,7 @@ import {
 import {Checkbox, TextInput, Button} from 'react-native-paper';
 import Img2 from '../../assets/bottomimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../componenets/Appstatusbar';
+import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -27,10 +27,9 @@ const loginSchema = yup.object().shape({
 });
 
 export default function Forgot({navigation}) {
- 
-  async function handlePass(values){
-        
-         console.log(values.email);
+  async function handlePass(values) {
+    navigation.navigate('Verification');
+    console.log(values.email);
   }
   return (
     <Formik
@@ -96,20 +95,19 @@ export default function Forgot({navigation}) {
                       />
                     }
                     //   value={text}
-
                   />
                   {errors.email && touched.email && (
                     <Text style={styles.errors}>{errors.email}</Text>
                   )}
-                  
-                  <View style={{alignItems:'center',marginTop:40}}>
-                  <Text
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}
-                        onPress={() => {
-                          navigation.push("Login")
-                        }}>
-                        Back to Signin
-                      </Text>
+
+                  <View style={{alignItems: 'center', marginTop: 40}}>
+                    <Text
+                      style={{color: '#469FD1', marginTop: 8, fontSize: 16}}
+                      onPress={() => {
+                        navigation.push('Login');
+                      }}>
+                      Back to Signin
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -117,7 +115,7 @@ export default function Forgot({navigation}) {
               <Button
                 onPress={() => {
                   console.log('clicked');
-                  handleSubmit()
+                  handleSubmit();
                 }}
                 style={{
                   justifyContent: 'center',

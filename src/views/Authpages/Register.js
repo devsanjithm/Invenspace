@@ -14,7 +14,7 @@ import {
 import {Checkbox, TextInput, Button} from 'react-native-paper';
 import Img3 from '../../assets/registerimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../componenets/Appstatusbar';
+import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -38,14 +38,42 @@ export default function Register({navigation}) {
   const [checked, setChecked] = React.useState(false);
   const [securetext, setsecuretext] = useState(false);
 
-  async function handleSignUp(values) {
-    
-      console.log("values");
-     
+  function handleSignUp(values) {
+    console.log("clicked")
+        fetch ("http://localhost:3001/user/registration", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({
+              email: values.email,
+              password:values.password,
+              username:values.Username,
+              
+           }),
+           })
+         .then((response) => response.json())
+         .then((result) => {
+             if(result.status === "true"){
+             console.log("Registeration Successfull");
+             console.log(result);
+             
+            } 
+            else {
+                alert("Please check your login information.");
+            }
+           });
+
 }
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      initialValues={{email: '', password: '',Username:''}}
       validateOnMount={true}
       onSubmit={values => handleSignUp(values)}
       validationSchema={loginSchema}>
@@ -62,15 +90,15 @@ export default function Register({navigation}) {
           style={{
             flex: 1,
             backgroundColor: '#fff',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
           }}>
           <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
           <KeyboardAvoidingView>
             <ScrollView>
-              <View style={{alignItems: 'center',margin:10}}>
-                <ImageBackground
+              <View style={{alignItems: 'center', margin: 10}}>
+                {/* <ImageBackground
                   source={Img3}
-                  style={styles.img}></ImageBackground>
+                  style={styles.img}></ImageBackground> */}
               </View>
               <View
                 style={{
@@ -152,40 +180,35 @@ export default function Register({navigation}) {
                   {errors.password && touched.password && (
                     <Text style={styles.errors}>{errors.password}</Text>
                   )}
-                  <View style={{flexDirection: 'row', marginVertical: 20}}>
-                    <Checkbox
-                      color="#469FD1"
-                      status={checked ? 'checked' : 'unchecked'}
-                      onPress={() => {
-                        setChecked(!checked);
-                      }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '85%',
-                      }}>
-                      <Text
-                        onPress={() => {
-                          setChecked(!checked);
+                  <TextInput
+                    style={styles.input1}
+                    label="Username"
+                    mode="outlined"
+                    secureTextEntry={!securetext}
+                    activeOutlineColor="#469FD1"
+                    onChangeText={handleChange('Username')}
+                    onBlur={handleBlur('Username')}
+                    value={values.Username}
+                    left={
+                      <TextInput.Icon
+                        style={{
+                          paddingTop: 10,
                         }}
-                        style={{color: '#6B5E5E', marginTop: 8}}>
-                        Remember password
-                      </Text>
-                      <Text
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
-                        Forget password
-                      </Text>
-                    </View>
-                  </View>
+                        name="text-account"
+                        color="#676666"
+                      />
+                    }
+                   
+                    //   value={text}
+                    //   onChangeText={text => setText(text)}
+                  />
                 </View>
               </View>
-              <View style={{marginBottom: 30}}>
+              <View style={{marginBottom: 10,marginTop:30}}>
                 <Button
                   onPress={() => {
                     console.log('clicked');
-                    handleSubmit()
+                    handleSubmit();
                   }}
                   style={{
                     justifyContent: 'center',

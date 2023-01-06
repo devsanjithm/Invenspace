@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+
 import {
   ScrollView,
   StyleSheet,
@@ -14,7 +15,7 @@ import {
 import {Checkbox, TextInput, Button} from 'react-native-paper';
 import Img2 from '../../assets/bottomimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../componenets/Appstatusbar';
+import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -37,9 +38,8 @@ const loginSchema = yup.object().shape({
 export default function Login({navigation}) {
   const [checked, setChecked] = React.useState(false);
   const [securetext, setsecuretext] = useState(false);
-  async function handleLogin(values){
-        
-         console.log("success");
+  async function handleLogin(values) {
+    console.log('success');
   }
   return (
     <Formik
@@ -166,20 +166,14 @@ export default function Login({navigation}) {
                         style={{color: '#6B5E5E', marginTop: 8}}>
                         Remember password
                       </Text>
-                      <Text onPress={()=>{navigation.push("Forgot password")}}
+                      <Text
+                        onPress={() => {
+                          navigation.push('Forgot password');
+                        }}
                         style={{color: '#469FD1', marginTop: 8, fontSize: 16}}>
                         Forget password
                       </Text>
                     </View>
-                  </View>
-                  <View>
-                  <Text
-                        style={{color: '#469FD1', marginTop: 8, fontSize: 16}}
-                        onPress={() => {
-                          navigation.push("Register")
-                        }}>
-                        Create account
-                      </Text>
                   </View>
                 </View>
               </View>
@@ -187,7 +181,7 @@ export default function Login({navigation}) {
               <Button
                 onPress={() => {
                   console.log('clicked');
-                  handleSubmit()
+                  handleSubmit();
                 }}
                 style={{
                   justifyContent: 'center',
@@ -205,7 +199,28 @@ export default function Login({navigation}) {
                   Login
                 </Text>
               </Button>
-
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginVertical: 10,
+                }}>
+                <Text
+                  style={{
+                    marginTop: 8,
+                    textAlign: 'center',
+                  }}>
+                  Don't have an account ?{' '}
+                  <Text
+                    style={{color: '#469FD1', marginTop: 8, fontSize: 16}}
+                    onPress={() => {
+                      navigation.push('Register');
+                    }}>
+                    Create account
+                  </Text>
+                </Text>
+              </View>
               <View
                 style={{
                   width: '100%',
