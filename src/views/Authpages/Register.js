@@ -38,12 +38,42 @@ export default function Register({navigation}) {
   const [checked, setChecked] = React.useState(false);
   const [securetext, setsecuretext] = useState(false);
 
-  async function handleSignUp(values) {
-    console.log('values');
-  }
+  function handleSignUp(values) {
+    console.log("clicked")
+        fetch ("http://localhost:3001/user/registration", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({
+              email: values.email,
+              password:values.password,
+              username:values.Username,
+              
+           }),
+           })
+         .then((response) => response.json())
+         .then((result) => {
+             if(result.status === "true"){
+             console.log("Registeration Successfull");
+             console.log(result);
+             
+            } 
+            else {
+                alert("Please check your login information.");
+            }
+           });
+
+}
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      initialValues={{email: '', password: '',Username:''}}
       validateOnMount={true}
       onSubmit={values => handleSignUp(values)}
       validationSchema={loginSchema}>
@@ -150,9 +180,31 @@ export default function Register({navigation}) {
                   {errors.password && touched.password && (
                     <Text style={styles.errors}>{errors.password}</Text>
                   )}
+                  <TextInput
+                    style={styles.input1}
+                    label="Username"
+                    mode="outlined"
+                    secureTextEntry={!securetext}
+                    activeOutlineColor="#469FD1"
+                    onChangeText={handleChange('Username')}
+                    onBlur={handleBlur('Username')}
+                    value={values.Username}
+                    left={
+                      <TextInput.Icon
+                        style={{
+                          paddingTop: 10,
+                        }}
+                        name="text-account"
+                        color="#676666"
+                      />
+                    }
+                   
+                    //   value={text}
+                    //   onChangeText={text => setText(text)}
+                  />
                 </View>
               </View>
-              <View style={{marginBottom: 30}}>
+              <View style={{marginBottom: 10,marginTop:30}}>
                 <Button
                   onPress={() => {
                     console.log('clicked');

@@ -6,7 +6,7 @@ export function AppHeaders(props) {
   return (
     <>
       <SafeAreaView style={{backgroundColor: '#fff'}}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row',backgroundColor:props.color}}>
           <TouchableOpacity
             style={styles.headerLeftIcon}
             onPress={() => {

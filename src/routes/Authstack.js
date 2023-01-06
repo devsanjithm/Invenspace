@@ -6,6 +6,7 @@ import Forgot from '../views/Authpages/Forgot';
 import Change from '../views/Authpages/change';
 import Verification from '../views/Authpages/Verification';
 import {AppHeaders} from '../components/AppHeaders';
+
 export default function Authstack() {
   const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,7 @@ export default function Authstack() {
           header: props => <AppHeaders title={'Change password'} {...props} />,
         }}
       />
+      
     </Stack.Navigator>
   );
 }
