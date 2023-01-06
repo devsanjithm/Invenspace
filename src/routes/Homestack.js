@@ -1,30 +1,28 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AppHeaders} from '../components/AppHeaders';
-import Dashboard from '../views/Authpages/Dashboard';
-import Product from '../views/Authpages/Product';
-import AddProducts from '../views/Authpages/AddProducts';
-import Stock from '../views/Authpages/Stock';
-import AddStock from '../views/Authpages/AddStock';
-import Customer from '../views/Authpages/Customer';
-import AddCustomer from '../views/Authpages/AddCustomer';
-import Purchase from '../views/Authpages/Purchase';
-import AddPurchase from '../views/Authpages/AddPurchase';
-import Sale from '../views/Authpages/Sale';
-import AddSale from '../views/Authpages/AddSale';
-import Supplier from '../views/Authpages/Supplier';
-import AddSupplier from '../views/Authpages/AddSupplier';
+import Dashboard from '../views/Dashboard';
+import Product from '../views/Products/Product';
+import AddProducts from '../views/Products/AddProducts';
+import Stock from '../views/Stocks/Stock';
+import AddStock from '../views/Stocks/AddStock';
+import Customer from '../views/Customers/Customer';
+import AddCustomer from '../views/Customers/AddCustomer';
+import Purchase from '../views/Purchases/Purchase';
+import AddPurchase from '../views/Purchases/AddPurchase';
+import Sale from '../views/Sales/Sale';
+import AddSale from '../views/Sales/AddSale';
+import Supplier from '../views/Suppilers/Supplier';
+import AddSupplier from '../views/Suppilers/AddSupplier';
 
-export default function Homestack(){
+export default function Homestack() {
+  const Stack = createNativeStackNavigator();
 
-    const Stack = createNativeStackNavigator();
-
-    return (
-        <Stack.Navigator
-        initialRouteName="Product"
+  return (
+    <Stack.Navigator
+      initialRouteName="Product"
       screenOptions={{animation: 'slide_from_right'}}>
-            
-            <Stack.Screen
+      <Stack.Screen
         name="Dashboard"
         component={Dashboard}
         options={{
@@ -187,7 +185,6 @@ export default function Homestack(){
           ),
         }}
       />
-            
-        </Stack.Navigator>
-    )
+    </Stack.Navigator>
+  );
 }

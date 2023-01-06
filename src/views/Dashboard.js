@@ -14,13 +14,7 @@ import {
   KeyboardAvoidingView,
   Touchable,
 } from 'react-native';
-import {Checkbox, TextInput, Button} from 'react-native-paper';
-import Img2 from '../../assets/bottomimage.png';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import AppStatusBar from '../../components/Appstatusbar';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Formik} from 'formik';
-import * as yup from 'yup';
+import AppStatusBar from '../components/Appstatusbar';
 
 
 

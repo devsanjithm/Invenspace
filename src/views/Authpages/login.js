@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-
+import React, {useState,useEffect} from 'react';
 
 import {
   ScrollView,
@@ -13,12 +12,18 @@ import {
   Touchable,
 } from 'react-native';
 import {Checkbox, TextInput, Button} from 'react-native-paper';
+import {useDispatch,useSelector} from 'react-redux';
 import Img2 from '../../assets/bottomimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {setLocalStorageItem} from '../../service/localstorage';
+import {appRouteKey} from '../../utils/constant';
+import { getAuthDetails } from './authActions';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import Loader from '../../components/Loader';
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -36,12 +41,34 @@ const loginSchema = yup.object().shape({
 });
 
 export default function Login({navigation}) {
+  const dispatch = useDispatch();
   const [checked, setChecked] = React.useState(false);
   const [securetext, setsecuretext] = useState(false);
+  const {data, loading, error} = useSelector(state => state.auth);
+
   async function handleLogin(values) {
-    console.log('success');
+    // setLocalStorageItem(appRouteKey,"true")
+    console.log('success', values);
+    const payload = {
+      email : values?.email,
+      password:values?.password
+    }
+    dispatch(getAuthDetails(payload))
   }
+
+  useEffect(() => {
+    if (error !== null) {
+      Toast.show({
+        text1: 'ERROR',
+        text2: error?.message,
+        type: 'error',
+      });
+    }
+  }, [error]);
+
   return (
+    <>
+    {loading?<Loader/>:null}
     <Formik
       initialValues={{email: '', password: ''}}
       validateOnMount={true}
@@ -235,6 +262,7 @@ export default function Login({navigation}) {
         </SafeAreaView>
       )}
     </Formik>
+    </>
   );
 }
 const styles = StyleSheet.create({
