@@ -1,9 +1,9 @@
+import { authTokenKey } from '../../utils/constant';
 import {getLocalStorageItem} from '../localstorage';
 
 export const requestInterceptor = async config => {
   try {
-    let STORAGE_KEY = 'AUTH_TOKEN';
-    let token = await getLocalStorageItem(STORAGE_KEY);
+    let token = await getLocalStorageItem(authTokenKey);
     if (token) {
       config.headers.common.Authorization = token;
     }

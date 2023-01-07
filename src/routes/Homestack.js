@@ -14,13 +14,13 @@ import Sale from '../views/Sales/Sale';
 import AddSale from '../views/Sales/AddSale';
 import Supplier from '../views/Suppilers/Supplier';
 import AddSupplier from '../views/Suppilers/AddSupplier';
-
+import SideNavPage from '../views/sideNavbarPage';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();
 
   return (
     <Stack.Navigator
-      initialRouteName="Product"
+      initialRouteName="Dashboard"
       screenOptions={{animation: 'slide_from_right'}}>
       <Stack.Screen
         name="Dashboard"
@@ -37,6 +37,7 @@ export default function Homestack() {
             <AppHeaders
               title={'Inventory Dashboard'}
               color={'#87CEEB'}
+              main={true}
               {...props}
             />
           ),
@@ -63,6 +64,7 @@ export default function Homestack() {
             <AppHeaders
               title={'Inventory Dashboard'}
               color={'#87CEEB'}
+              main={true}
               {...props}
             />
           ),
@@ -89,6 +91,7 @@ export default function Homestack() {
             <AppHeaders
               title={'Inventory Dashboard'}
               color={'#87CEEB'}
+              main={true}
               {...props}
             />
           ),
@@ -115,6 +118,7 @@ export default function Homestack() {
             <AppHeaders
               title={'Inventory Dashboard'}
               color={'#87CEEB'}
+              main={true}
               {...props}
             />
           ),
@@ -141,6 +145,7 @@ export default function Homestack() {
             <AppHeaders
               title={'Inventory Dashboard'}
               color={'#87CEEB'}
+              main={true}
               {...props}
             />
           ),
@@ -167,6 +172,7 @@ export default function Homestack() {
             <AppHeaders
               title={'Inventory Dashboard'}
               color={'#87CEEB'}
+              main={true}
               {...props}
             />
           ),
@@ -183,6 +189,14 @@ export default function Homestack() {
               {...props}
             />
           ),
+        }}
+      />
+      <Stack.Screen
+        name="SideBarPage"
+        component={SideNavPage}
+        options={{
+          animation:'slide_from_left',
+          headerShown:false
         }}
       />
     </Stack.Navigator>

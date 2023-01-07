@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useCallback} from 'react';
 // import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   ScrollView,
@@ -10,12 +10,23 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Touchable,
+  BackHandler
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Button} from 'react-native-paper';
 import AppStatusBar from '../../components/Appstatusbar';
 
 export default function Stock({navigation}) {
+  const backAction = useCallback(() => {
+    navigation.navigate('Dashboard')
+    return true;
+  }, []);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [backAction]);
   return (
     <SafeAreaView
     style={{

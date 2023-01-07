@@ -8,15 +8,26 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Touchable,
+  BackHandler
 } from 'react-native';
 import {Button} from 'react-native-paper';
 
 import AppStatusBar from '../../components/Appstatusbar';
-import React from 'react';
+import React,{useEffect,useCallback} from 'react';
 import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
 
-export default function AddStock() {
+export default function AddStock({navigation}) {
+  const backAction = useCallback(() => {
+    navigation.goBack()
+    return true;
+  }, []);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [backAction]);
   function handleStock(values) {
     console.log(values);
   }
