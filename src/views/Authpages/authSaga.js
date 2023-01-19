@@ -18,11 +18,29 @@ function* getAuthDetails(payload) {
     yield put(setAuthDetailsFailure(error));
   }
 }
+function* postAuthDetails(payload) {
+  try {
+    yield put(setAuthDetailsLoading());
+    console.log('===== @DH payload register saga =====', payload);
+    const data = yield call(LoginAPIs.register, payload.data);
+    console.log('===== @DH register saga =====', data);
+    yield put(setAuthDetailsSuccess(data));
+  } catch (error) {
+    console.log('saga register error', error);
+    yield put(setAuthDetailsFailure(error));
+  }
+}
 
 function* watchOnGetAuthDetails() {
   yield takeLatest('getAuthDetails', getAuthDetails);
 }
 
-export default function* authSaga() {
-  yield all([fork(watchOnGetAuthDetails)]);
+function* watchOnPostAuthDetails() {
+  yield takeLatest('postAuthDetails', postAuthDetails);
 }
+
+
+export default function* authSaga() {
+  yield all([fork(watchOnGetAuthDetails),fork(watchOnPostAuthDetails)]);
+}
+

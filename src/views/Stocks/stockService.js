@@ -1,19 +1,18 @@
 import apiInstance from '../../service/axios/index';
 
-const LoginAPIs = {
-  login: async payload => {
+const StockAPIs = {
+  getStock: async payload => {
     try {
-      const res = await apiInstance.post('/user/login', payload);
+      const res = await apiInstance.get(`stocks/getAll?user_id=${payload}`);
       return res;
     } catch (error) {
       console.log('=======', error);
       throw error;
     }
   },
-
-  register: async payload => {
+  setStock: async payload => {
     try {
-      const res = await apiInstance.post('/user/registration', payload);
+      const res = await apiInstance.post('/stocks/add', payload);
       return res;
     } catch (error) {
       console.log('=======', error);
@@ -21,4 +20,4 @@ const LoginAPIs = {
     }
   },
 };
-export default LoginAPIs;
+export default StockAPIs;

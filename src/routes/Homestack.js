@@ -12,8 +12,8 @@ import Purchase from '../views/Purchases/Purchase';
 import AddPurchase from '../views/Purchases/AddPurchase';
 import Sale from '../views/Sales/Sale';
 import AddSale from '../views/Sales/AddSale';
-import Supplier from '../views/Suppilers/Supplier';
-import AddSupplier from '../views/Suppilers/AddSupplier';
+import Supplier from '../views/Suppliers/Supplier';
+import AddSupplier from '../views/Suppliers/AddSupplier';
 import SideNavPage from '../views/sideNavbarPage';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();

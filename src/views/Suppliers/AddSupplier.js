@@ -11,16 +11,17 @@ import {
   BackHandler,
 } from 'react-native';
 import {Button} from 'react-native-paper';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import AppStatusBar from '../../components/Appstatusbar';
 import React, {useEffect, useCallback} from 'react';
 import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
-import { useDispatch,useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
-import { postProductDetails } from './productAction';
+import {postSupplierDetails} from './supplierAction';
 import _ from 'lodash';
-export default function AddProducts({navigation}) {
+
+export default function AddSupplier({navigation}) {
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -31,26 +32,24 @@ export default function AddProducts({navigation}) {
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', backAction);
   }, [backAction]);
-
-
   const dispatch = useDispatch();
-  const {postMessage, loading, error} = useSelector(state => state.product);
+  const {postMessage, loading, error} = useSelector(state => state.supplier);
 
-  function handleProduct(values) {
+  function handleSupplier(values) {
     const payload = {
-      pro_id: values.pro_id,
-      pro_num: values.Productcode,
-      pro_desc: values.Description,
-      pro_type: values.ProductName,
-      pro_items: values.pro_items,
+      sup_id: values.sup_id,
+      sup_name: values.sup_name,
+      sup_username: values.sup_username,
+      sup_email: values.sup_email,
+      sup_mobile: values.sup_mobile,
       user_id: '633c1f3002be7d48b4017c29',
     };
-    dispatch(postProductDetails(payload))
+    dispatch(postSupplierDetails(payload));
   }
 
   useEffect(() => {
     if (!_.isEmpty(postMessage)) {
-      console.log('data in product', postMessage);
+      console.log('data in Supplier', postMessage);
       Toast.show({
         text1: 'SUCCESS',
         text2: postMessage?.message,
@@ -70,20 +69,17 @@ export default function AddProducts({navigation}) {
   }, [error]);
 
   return (
-    <>
-    {loading?<Loader/>:null}
     <Formik
       initialValues={{
-        pro_id: '',
-        ProductName: '',
-        Productcode: '',
-        pro_items: '',
-        Specification: '',
-        Price: '',
-        Description: '',
+        sup_id: '',
+        sup_name: '',
+        sup_mobile: '',
+        sup_username: '',
+        sup_email: '',
+        // items: '',
       }}
       validateOnMount={true}
-      onSubmit={values => handleProduct(values)}
+      onSubmit={values => handleSupplier(values)}
       //   validationSchema={loginSchema}
     >
       {({
@@ -105,65 +101,49 @@ export default function AddProducts({navigation}) {
           <KeyboardAvoidingView>
             <ScrollView>
               <View>
-                <Text style={styles.top}>Add Product</Text>
+                <Text style={styles.top}>Add Customer</Text>
               </View>
               <View style={styles.container}>
                 <TextInput
                   mode="outlined"
-                  label={'Product ID'}
+                  label={'Supplier ID'}
                   autoCapitalize="none"
-                  onChangeText={handleChange('pro_id')}
-                  onBlur={handleBlur('pro_id')}
-                  value={values.pro_id}
+                  onChangeText={handleChange('sup_id')}
+                  onBlur={handleBlur('sup_id')}
+                  value={values.sup_id}
                   style={styles.inputf}></TextInput>
                 <TextInput
                   mode="outlined"
-                  label={'Product Name'}
+                  label={'Supplier Name'}
                   autoCapitalize="none"
-                  onChangeText={handleChange('ProductName')}
-                  onBlur={handleBlur('ProductName')}
-                  value={values.ProductName}
+                  onChangeText={handleChange('sup_name')}
+                  onBlur={handleBlur('sup_name')}
+                  value={values.sup_name}
                   style={styles.inputf}></TextInput>
                 <TextInput
                   mode="outlined"
-                  label={'Product code'}
+                  label={'Mobile no'}
                   autoCapitalize="none"
-                  onChangeText={handleChange('Productcode')}
-                  onBlur={handleBlur('Productcode')}
-                  value={values.Productcode}
+                  onChangeText={handleChange('sup_mobile')}
+                  onBlur={handleBlur('sup_mobile')}
+                  value={values.sup_mobile}
                   style={styles.inputf}></TextInput>
                 <TextInput
                   mode="outlined"
-                  label={'pro_items'}
+                  label={'Username'}
                   autoCapitalize="none"
-                  onChangeText={handleChange('pro_items')}
-                  onBlur={handleBlur('pro_items')}
-                  value={values.pro_items}
+                  onChangeText={handleChange('sup_username')}
+                  onBlur={handleBlur('sup_username')}
+                  value={values.sup_username}
                   style={styles.inputf}></TextInput>
                 <TextInput
                   mode="outlined"
-                  label={'Specification'}
+                  label={'Email id'}
                   autoCapitalize="none"
-                  onChangeText={handleChange('Specification')}
-                  onBlur={handleBlur('Specification')}
-                  value={values.Specification}
+                  onChangeText={handleChange('sup_email')}
+                  onBlur={handleBlur('sup_email')}
+                  value={values.sup_email}
                   style={styles.inputf}></TextInput>
-                <TextInput
-                  mode="outlined"
-                  label={'Price'}
-                  autoCapitalize="none"
-                  onChangeText={handleChange('Price')}
-                  onBlur={handleBlur('Price')}
-                  value={values.Price}
-                  style={styles.inputf}></TextInput>
-                <TextInput
-                  mode="outlined"
-                  label={'Product Description'}
-                  autoCapitalize="none"
-                  onChangeText={handleChange('Description')}
-                  onBlur={handleBlur('Description')}
-                  value={values.Description}
-                  style={{width: '90%', margin: 10}}></TextInput>
               </View>
               <View style={styles.button}>
                 <Button
@@ -180,7 +160,6 @@ export default function AddProducts({navigation}) {
         </SafeAreaView>
       )}
     </Formik>
-    </>
   );
 }
 const styles = StyleSheet.create({
@@ -196,8 +175,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   inputf: {
-    width: '46%',
+    width: '90%',
     margin: 5,
+    marginLeft: 15,
   },
   button: {
     flex: 1,

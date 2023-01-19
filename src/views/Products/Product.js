@@ -22,6 +22,7 @@ import Loader from '../../components/Loader';
 import {getProductDetails} from './productAction';
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import globalStyles from '../../components/Styles';
 
 export default function Product({navigation}) {
   const dispatch = useDispatch();
@@ -142,8 +143,8 @@ export default function Product({navigation}) {
                     padding: 10,
                   }}
                   key={index}>
-                  <Text>{ele?._id}</Text>
-                  <Text>{ele?.pro_desc}</Text>
+                  <Text style={globalStyles}>{ele?._id}</Text>
+                  <Text style={globalStyles}>{ele?. pro_type}</Text>
                 </View>
               ))
             )}
