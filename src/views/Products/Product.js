@@ -107,7 +107,6 @@ export default function Product({navigation}) {
         style={{
           flex: 1,
           backgroundColor: '#fff',
-          // justifyContent: 'flex-end',
         }}>
         <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
         <ScrollView
