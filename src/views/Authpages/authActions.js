@@ -5,5 +5,15 @@ export const getAuthDetails = payload => {
   return {
     type: actionTypes.getAuthDetails,
     data: payload,
+
   };
 };
+
+export const postAuthDetails = payload => {
+  console.log('===== @DH post auth details action =====', payload);
+  return {
+    type: actionTypes.postAuthDetails,
+    data: payload,
+  };
+};
+

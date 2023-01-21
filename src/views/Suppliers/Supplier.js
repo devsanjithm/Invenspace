@@ -19,19 +19,19 @@ import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
-import {getSaleDetails} from './saleAction'
+import {getSupplierDetails} from './supplierAction'
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import globalStyles from '../../components/Styles';
-export default function Sale({navigation}) {
+
+export default function Supplier({navigation}) {
 
   const dispatch = useDispatch();
-  const {data, loading, error} = useSelector(state => state.sale);
+  const {data, loading, error} = useSelector(state => state.supplier);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
-  const [saleData, setSaleData] = useState([]);
+  const [supplierData, setSupplierData] = useState([]);
   const {userData, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
-
   const backAction = useCallback(() => {
     navigation.navigate('Dashboard')
     return true;
@@ -47,11 +47,11 @@ export default function Sale({navigation}) {
     let userId = userDatafromRedux?.result?._id;
     console.log('usedata form redux ', userDatafromRedux);
     if (_.isString(userId)) {
-      dispatch(getSaleDetails(userId));
+      dispatch(getSupplierDetails(userId));
     } else {
       console.log('userdara ', userData);
       userId = userData?.result?._id;
-      dispatch(getSaleDetails(userId));
+      dispatch(getSupplierDetails(userId));
     }
     setRefreshing(false);
   }
@@ -72,7 +72,7 @@ export default function Sale({navigation}) {
   useEffect(() => {
     if (!_.isEmpty(data)) {
       console.log('data in product', data);
-      setSaleData(data?.data);
+      setSupplierData(data?.data);
     }
   }, [data]);
 
@@ -102,7 +102,7 @@ export default function Sale({navigation}) {
   }
     return (
       <>
-        {loading ? <Loader /> : null}
+       {loading ? <Loader /> : null}
         <SafeAreaView
           style={{
             flex: 1,
@@ -111,26 +111,26 @@ export default function Sale({navigation}) {
           }}>
           <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
             <ScrollView
-             refreshControl={
+            refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
             }>
               <View style={styles.top}>
                 <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold'}}>
-                  Sales
+                  Suppliers
                 </Text>
                 <View>
-                  <Button mode="contained" color="blue" onPress={()=>{navigation.push('AddSale');}}>
-                    Add Sale
+                  <Button mode="contained" color="blue" onPress={()=>{navigation.push('AddSupplier');}}>
+                    Add Suppliers
                   </Button>
                 </View>
               </View>
               <View>
-            {_.isEmpty(saleData) ? (
+            {_.isEmpty(supplierData) ? (
               <View>
                 <Text>NO Data</Text>
               </View>
             ) : (
-              saleData?.map((ele, index) => (
+              supplierData?.map((ele, index) => (
                 <View
                   style={{
                     borderWidth: 1,
@@ -138,7 +138,7 @@ export default function Sale({navigation}) {
                   }}
                   key={index}>
                   <Text style={globalStyles}>{ele?._id}</Text>
-                  <Text style={globalStyles}>{ele?.sales_bill}</Text>
+                  <Text style={globalStyles}>{ele?.sup_mobile}</Text>
                 </View>
               ))
             )}

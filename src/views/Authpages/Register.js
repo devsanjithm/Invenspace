@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 
 import {
   ScrollView,
@@ -12,12 +12,20 @@ import {
   Touchable,
 } from 'react-native';
 import {Checkbox, TextInput, Button} from 'react-native-paper';
-import Img3 from '../../assets/registerimage.png';
+import {useDispatch, useSelector} from 'react-redux';
+import Img2 from '../../assets/bottomimage.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppStatusBar from '../../components/Appstatusbar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {setLocalStorageItem} from '../../service/localstorage';
+import {appRouteKey, authTokenKey, userDataKey} from '../../utils/constant';
+import {postAuthDetails} from './authActions';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import Loader from '../../components/Loader';
+import {UserContext} from '../../service/context/context';
+import _ from 'lodash';
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -35,45 +43,58 @@ const loginSchema = yup.object().shape({
 });
 
 export default function Register({navigation}) {
+  const dispatch = useDispatch();
   const [checked, setChecked] = React.useState(false);
   const [securetext, setsecuretext] = useState(false);
+  const {data, loading, error} = useSelector(state => state.auth);
+  const {setRoute, isInternet} = useContext(UserContext);
 
   function handleSignUp(values) {
-    console.log("clicked")
-        fetch ("http://localhost:3001/user/registration", {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify({
-              email: values.email,
-              password:values.password,
-              username:values.Username,
-              
-           }),
-           })
-         .then((response) => response.json())
-         .then((result) => {
-             if(result.status === "true"){
-             console.log("Registeration Successfull");
-             console.log(result);
-             
-            } 
-            else {
-                alert("Please check your login information.");
-            }
-           });
+    console.log('success', values);
+    const payload = {
+      email: values.email,
+      password: values.password,
+      username: values.Username,
+    };
+    if (isInternet) {
+      dispatch(postAuthDetails(payload));
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'No Internet',
+        text2: 'Try after Sometime',
+        visibilityTime: 5000,
+      });
+    }
+  }
 
-}
+  // useEffect(() => {
+  //   if (!_.isEmpty(data)) {
+  //     // console.log("data in login",data);
+  //     // setLocalStorageItem(authTokenKey, data?.token);
+  //     // setLocalStorageItem(appRouteKey, 'true');
+  //     // setLocalStorageItem(userDataKey, JSON.stringify(data));
+  //     // setRoute(true);
+  //     navigation.push('Login');
+  //   }
+  // }, [data]);
+
+  useEffect(() => {
+    if (error !== null) {
+      Toast.show({
+        text1: 'ERROR',
+        text2: error?.message,
+        type: 'error',
+      });
+      console.log(error.message)
+    }
+  }, [error]);
+
   return (
+    <>
+      {loading?<Loader/>:null}
     <Formik
-      initialValues={{email: '', password: '',Username:''}}
+      initialValues={{email: '', password: '', Username: ''}}
       validateOnMount={true}
       onSubmit={values => handleSignUp(values)}
       validationSchema={loginSchema}>
@@ -198,13 +219,13 @@ export default function Register({navigation}) {
                         color="#676666"
                       />
                     }
-                   
+
                     //   value={text}
                     //   onChangeText={text => setText(text)}
                   />
                 </View>
               </View>
-              <View style={{marginBottom: 10,marginTop:30}}>
+              <View style={{marginBottom: 10, marginTop: 30}}>
                 <Button
                   onPress={() => {
                     console.log('clicked');
@@ -232,6 +253,7 @@ export default function Register({navigation}) {
         </SafeAreaView>
       )}
     </Formik>
+    </>
   );
 }
 const styles = StyleSheet.create({
