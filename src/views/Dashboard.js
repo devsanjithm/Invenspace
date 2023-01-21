@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Avatar, Card, Title, Paragraph, Button} from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {UserContext} from '../service/context/context';
 import {
   ScrollView,
@@ -16,108 +16,419 @@ import {
   Pressable,
 } from 'react-native';
 import AppStatusBar from '../components/Appstatusbar';
-import { useDispatch } from 'react-redux';
-import { getAuthDetails } from './Authpages/authActions';
-import { setAuthDetailsSuccess } from './Authpages/authSlice';
-import { clearAll } from '../service/localstorage';
-import { useNavigation } from '@react-navigation/native';
-
+import {useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import Card, {InnerCard} from '../components/card';
+import {globalStyles} from '../utils/styles';
+import {LineChart} from 'react-native-chart-kit';
+const screenWidth = Dimensions.get("window").width;
 export default function Dashboard() {
   const {setRoute} = useContext(UserContext);
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
-  async function handleLogout(){
-    dispatch(setAuthDetailsSuccess({}))
-    setRoute(false);
-    clearAll()
-  }
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  function handleSide(){
-    navigation.navigate('SideBarPage')
+  function handleSide() {
+    navigation.navigate('SideBarPage');
   }
+  const chartConfig = {
+    backgroundGradientFrom: "#e0e0e0",
+    backgroundGradientTo: "#e0e0e0",
+    color:(opacity = 1) => `rgba(0, 0, 0, ${opacity})` ,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
 
-  async function handleChange(values) {}
+  const data = {
+    labels: ['January', 'February', 'March', 'April'],
+    datasets: [
+      {
+        data: [20, 45, 28, 80,],
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        strokeWidth: 2, // optional
+      },
+    ],
+    legend: ['Profit'], // optional
+  };
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: '#D3D3D3',
+        backgroundColor: '#e0e0e0',
+        padding: 5,
         // justifyContent: 'flex-end',
       }}>
-      <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-      <KeyboardAvoidingView>
+      <AppStatusBar backgroundColor={'#e0e0e0'} barStyle="dark-content" />
+      <KeyboardAvoidingView style={{paddingHorizontal: 10}}>
         <ScrollView>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'flex-start',
+              marginHorizontal: 5,
+              marginBottom: 10,
             }}>
+            <Pressable onPress={handleSide}>
+              <Entypo
+                style={{paddingTop: 4}}
+                name="menu"
+                color={'black'}
+                size={30}
+              />
+            </Pressable>
             <Text
               style={{
-                fontSize: 30,
+                fontSize: 28,
                 color: 'black',
-                marginTop: '5%',
-                // marginLeft:'10%',
+                paddingHorizontal: 20,
               }}>
-                <Pressable
-                onPress={handleSide}
-                >
-              <Entypo name="menu" color={'black'} size={30} />
-                </Pressable>
               Dashboard
             </Text>
             <Fontisto
               style={{
-                marginTop: '5%',
-                marginLeft: '38%',
+                position: 'absolute',
+                right: 10,
+                bottom: 3,
               }}
               name="bell"
               color={'black'}
-              size={30}
+              size={25}
             />
           </View>
-          <Card style={styles.card}>
-            <Card.Content>
-              <Title>Sales overview</Title>
-              <Card style={styles.card1}>
-                <Card.Content>
-                  <Title>Card title</Title>
-                  <Paragraph>Card cont</Paragraph>
-                </Card.Content>
-              </Card>
-              <Card style={styles.card1}>
-                <Card.Content>
-                  <Title>Card title</Title>
-                  <Paragraph>Card content</Paragraph>
-                </Card.Content>
-              </Card>
-            </Card.Content>
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{color: '#000', fontSize: 20}}>Sales Overview</Text>
+              <Entypo name="dots-three-vertical" size={20} color="#000" />
+            </View>
+            <View>
+              <InnerCard>
+                <View style={styles.card}>
+                  <View>
+                    <View style={styles.iconWrapper}>
+                      <Entypo name="price-tag" size={25} color="#fff" />
+                    </View>
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      9.8k
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      {fontSize: 23, paddingTop: 10, color: '#fff'},
+                    ]}>
+                    Sales
+                  </Text>
+                </View>
+                <View style={styles.card1}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      2345
+                    </Text>
+                  </View>
+                  <Text
+                    style={[globalStyles.text, {fontSize: 23, color: '#fff'}]}>
+                    Revenue
+                  </Text>
+                </View>
+              </InnerCard>
+              <InnerCard>
+                <View style={styles.card1}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      7654
+                    </Text>
+                  </View>
+                  <Text
+                    style={[globalStyles.text, {fontSize: 23, color: '#fff'}]}>
+                    Cost
+                  </Text>
+                </View>
+                <View style={styles.card}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      1.2k
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      {fontSize: 23, paddingTop: 10, color: '#fff'},
+                    ]}>
+                    Sales
+                  </Text>
+                </View>
+              </InnerCard>
+            </View>
+          </Card>
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{color: '#000', fontSize: 20}}>
+                Purchase Overview
+              </Text>
+              <Entypo name="dots-three-vertical" size={20} color="#000" />
+            </View>
+            <View>
+              <InnerCard>
+                <View style={styles.card}>
+                  <View>
+                    <View style={styles.iconWrapper}>
+                      <Entypo name="price-tag" size={25} color="#fff" />
+                    </View>
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      9.8k
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      {fontSize: 20, paddingTop: 10, color: '#fff'},
+                    ]}>
+                    Total Purchase
+                  </Text>
+                </View>
+                <View style={styles.card1}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      2345
+                    </Text>
+                  </View>
+                  <Text
+                    style={[globalStyles.text, {fontSize: 20, color: '#fff'}]}>
+                    Canceled Orders
+                  </Text>
+                </View>
+              </InnerCard>
+              <InnerCard>
+                <View style={styles.card1}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      7654
+                    </Text>
+                  </View>
+                  <Text
+                    style={[globalStyles.text, {fontSize: 23, color: '#fff'}]}>
+                    Cost
+                  </Text>
+                </View>
+                <View style={styles.card}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      1.2k
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      {fontSize: 23, paddingTop: 10, color: '#fff'},
+                    ]}>
+                    Returns
+                  </Text>
+                </View>
+              </InnerCard>
+            </View>
+          </Card>
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{color: '#000', fontSize: 20}}>No of Users</Text>
+              <Entypo name="dots-three-vertical" size={20} color="#000" />
+            </View>
+            <View>
+              <InnerCard>
+                <View style={styles.card}>
+                  <View>
+                    <View style={styles.iconWrapper}>
+                      <Entypo name="price-tag" size={25} color="#fff" />
+                    </View>
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      9.8k
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      {fontSize: 20, paddingTop: 10, color: '#fff'},
+                    ]}>
+                    Total Customers
+                  </Text>
+                </View>
+                <View style={styles.card1}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      2345
+                    </Text>
+                  </View>
+                  <Text
+                    style={[globalStyles.text, {fontSize: 20, color: '#fff'}]}>
+                    Total Suppliers
+                  </Text>
+                </View>
+              </InnerCard>
+            </View>
+          </Card>
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{color: '#000', fontSize: 20}}>
+                Inventory Summary
+              </Text>
+              <Entypo name="dots-three-vertical" size={20} color="#000" />
+            </View>
+            <View>
+              <InnerCard>
+                <View style={styles.card}>
+                  <View>
+                    <View style={styles.iconWrapper}>
+                      <Entypo name="price-tag" size={25} color="#fff" />
+                    </View>
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      9.8k
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      {fontSize: 20, paddingTop: 10, color: '#fff'},
+                    ]}>
+                    Items in Hand
+                  </Text>
+                </View>
+                <View style={styles.card1}>
+                  <View>
+                    <Ionicons name="pie-chart" size={25} color="#fff" />
+                    <Text style={[globalStyles.text, {color: '#fff'}]}>
+                      2345
+                    </Text>
+                  </View>
+                  <Text
+                    style={[globalStyles.text, {fontSize: 20, color: '#fff'}]}>
+                    Will be received
+                  </Text>
+                </View>
+              </InnerCard>
+            </View>
+          </Card>
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{color: '#000', fontSize: 20}}>Product Details</Text>
+              <Entypo name="dots-three-vertical" size={20} color="#000" />
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 20,
+                }}>
+                <Text style={[globalStyles.text, {padding: 10}]}>
+                  Low Stock Items
+                </Text>
+                <Text style={[globalStyles.text, {padding: 10}]}>04</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 20,
+                }}>
+                <Text style={[globalStyles.text, {padding: 10}]}>
+                  Items Group
+                </Text>
+                <Text style={[globalStyles.text, {padding: 10}]}>52</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 20,
+                }}>
+                <Text style={[globalStyles.text, {padding: 10}]}>
+                  No of Items
+                </Text>
+                <Text style={[globalStyles.text, {padding: 10}]}>104</Text>
+              </View>
+            </View>
+          </Card>
+          <Card>
+          <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{color: '#000', fontSize: 20}}>
+                Weekly Report
+              </Text>
+              <Entypo name="dots-three-vertical" size={20} color="#000" />
+            </View>
+            <View style={{padding:10}}>
+            <LineChart
+              data={data}
+              width={screenWidth/1.2}
+              height={220}
+              chartConfig={chartConfig}
+              />
+              </View>
           </Card>
         </ScrollView>
-        <Button
-        onPress={handleLogout}
-        >Logout</Button>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   card: {
-    marginTop: 10,
-    marginHorizontal: 10,
+    backgroundColor: '#469FD1',
+    padding: 15,
     borderRadius: 10,
-    borderEndWidth: 5,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    width: Dimensions.get('window').width / 3,
+    height: Dimensions.get('window').height / 6,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
   },
   card1: {
-    marginTop: 10,
-    marginHorizontal: 10,
+    backgroundColor: '#0386D0',
+    padding: 15,
     borderRadius: 10,
-    borderEndWidth: 5,
-    backgroundColor: '#87CEEB',
-    width: '40%',
+    width: Dimensions.get('window').width / 3,
+    height: Dimensions.get('window').height / 6,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   input: {
     marginLeft: 10,
@@ -137,4 +448,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingLeft: 10,
   },
+  iconWrapper: {},
 });

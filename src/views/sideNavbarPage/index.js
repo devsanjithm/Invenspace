@@ -1,11 +1,18 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, Text, ScrollView, Pressable} from 'react-native';
+import React, {useContext} from 'react';
+import {View, Text, ScrollView, Pressable, Image, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch} from 'react-redux';
+import {UserContext} from '../../service/context/context';
+import {clearAll} from '../../service/localstorage';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import AppStatusBar from '../../components/Appstatusbar';
+
 export default function SideNavPage() {
   const navigation = useNavigation();
-
+  const {setRoute} = useContext(UserContext);
+  const dispatch = useDispatch();
   function handleback() {
     navigation.goBack();
   }
@@ -36,10 +43,28 @@ export default function SideNavPage() {
       link: 'Purchase',
     },
     {
-      name:'Suppliers',
-      link:'Supplier'
-    }
+      name: 'Suppliers',
+      link: 'Supplier',
+    },
   ];
+  
+
+  async function handleLogout() {
+    Alert.alert('Logout', 'Are you sure you want to Logout?', [
+      // The "Yes" button
+      {
+        text: 'Yes',
+        onPress: () => {
+          dispatch(setAuthDetailsSuccess({}));
+          setRoute(false);
+          clearAll();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  }
 
   function handleNavigate(link) {
     navigation.navigate(link);
@@ -51,6 +76,7 @@ export default function SideNavPage() {
         flex: 1,
         backgroundColor: '#fff',
       }}>
+        <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
       <View
         style={{
           padding: 10,
@@ -61,7 +87,7 @@ export default function SideNavPage() {
           <Ionicons name="arrow-back" color={'#000'} size={30} />
         </Pressable>
         <View style={{paddingLeft: 20, paddingBottom: 10}}>
-          <Text style={{fontSize: 30, color: '#000'}}>InvenSpace</Text>
+          <Text style={{fontSize: 30, color: '#000'}}>Invenspace</Text>
         </View>
       </View>
 
@@ -81,6 +107,23 @@ export default function SideNavPage() {
             </Pressable>
           </View>
         ))}
+        <View>
+          <Pressable onPress={handleLogout}>
+            <View
+              style={{
+                padding: 10,
+                paddingHorizontal: 20,
+                margin: 20,
+                flexDirection: 'row',
+              }}>
+              <AntDesign name="logout" size={30} color="#000" />
+              <Text
+                style={{fontSize: 25, color: '#000', paddingHorizontal: 20}}>
+                Logout
+              </Text>
+            </View>
+          </Pressable>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

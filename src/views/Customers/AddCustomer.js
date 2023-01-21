@@ -18,13 +18,20 @@ import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
-import {postCustomerDetails} from './customerAction';
+import {getCustomerDetails, postCustomerDetails} from './customerAction';
 import _ from 'lodash';
+import { setPostCustomerDetailsSucess } from './customerSlice';
+
+
 export default function AddCustomer({navigation}) {
+
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
   const backAction = useCallback(() => {
     navigation.goBack();
+    dispatch(setPostCustomerDetailsSucess({}))
     return true;
   }, []);
+  const user_id = userDatafromRedux?.result?._id;
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', backAction);
@@ -42,9 +49,12 @@ export default function AddCustomer({navigation}) {
       cust_username: values.cust_username,
       cust_email: values.cust_email,
       cust_mobile: values.cust_mobile,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id: user_id,
     };
-    dispatch(postCustomerDetails(payload));
+    if(_.isString(user_id) && !_.isEmpty(user_id)){
+      dispatch(postCustomerDetails(payload));
+      dispatch(getCustomerDetails(user_id));
+    }
   }
 
   useEffect(() => {
@@ -55,6 +65,7 @@ export default function AddCustomer({navigation}) {
         text2: postMessage?.message,
         type: 'success',
       });
+      // dispatch()
     }
   }, [postMessage]);
 
