@@ -18,6 +18,34 @@ import SideNavPage from '../views/sideNavbarPage';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();
 
+  function ProductStack(){
+    const productStack = createNativeStackNavigator();
+    return(
+      <productStack.Navigator>
+        <productStack.Screen
+         name="Product1"
+         component={Product}
+         options={{
+           headerShown:false
+         }}
+        />
+        <productStack.Screen
+         name="AddProducts"
+         component={AddProducts}
+         options={{
+           header: props => (
+             <AppHeaders
+               title={'Inventory Dashboard'}
+               color={'#87CEEB'}
+               {...props}
+             />
+           ),
+         }}
+        />
+      </productStack.Navigator>
+    )
+  }
+
   return (
     <Stack.Navigator
       initialRouteName="Dashboard"
@@ -31,19 +59,22 @@ export default function Homestack() {
       />
       <Stack.Screen
         name="Product"
-        component={Product}
+        component={ProductStack}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              main={true}
-              {...props}
-            />
-          ),
+          headerShown:false
         }}
+        // options={{
+        //   header: props => (
+        //     <AppHeaders
+        //       title={'Products'}
+        //       color={'#87CEEB'}
+        //       main={true}
+        //       {...props}
+        //     />
+        //   ),
+        // }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="AddProducts"
         component={AddProducts}
         options={{
@@ -55,7 +86,7 @@ export default function Homestack() {
             />
           ),
         }}
-      />
+      /> */}
       <Stack.Screen
         name="Stock"
         component={Stock}

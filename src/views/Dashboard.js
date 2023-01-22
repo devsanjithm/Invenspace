@@ -43,7 +43,7 @@ export default function Dashboard() {
     labels: ['January', 'February', 'March', 'April'],
     datasets: [
       {
-        data: [20, 45, 28, 80,],
+        data: [20, 45, 28, 60,],
         color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
         strokeWidth: 2, // optional
       },
