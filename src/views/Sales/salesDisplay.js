@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import {globalStyles} from '../../utils/styles';
 
-export function CustomerDisplay({route}) {
+export function SalesDisplay({route}) {
   // console.log(route.params.data.pro_desc)
   const {data} = route.params;
 //   console.log(data.pro_desc);
@@ -39,7 +39,7 @@ export function CustomerDisplay({route}) {
             color: 'black',
             marginBottom: 20,
           }}>
-          Customer Details
+          Sales Details
         </Text>
         <Card>
           <View
@@ -48,9 +48,9 @@ export function CustomerDisplay({route}) {
               alignItems:'center'
             }}>
             <Text style={{fontSize: 20, fontWeight: 'bold', color: 'black'}}>
-              Customer name
+              Sale ID
             </Text>
-            <Text style={globalStyles.text}>{data.cust_name}</Text>
+            <Text style={globalStyles.text}>{data.sales_id}</Text>
             <Text
               style={{
                 fontSize: 20,
@@ -58,9 +58,9 @@ export function CustomerDisplay({route}) {
                 color: 'black',
                 marginTop: 15,
               }}>
-              Customer Email
+              Sales Type
             </Text>
-            <Text style={globalStyles.text}>{data.cust_email}</Text>
+            <Text style={globalStyles.text}>{data.sales_type}</Text>
             <Text
               style={{
                 fontSize: 20,
@@ -68,9 +68,9 @@ export function CustomerDisplay({route}) {
                 color: 'black',
                 marginTop: 15,
               }}>
-              Customer mobile
+              Sales Amount
             </Text>
-            <Text style={globalStyles.text}>{data.cust_mobile}</Text>
+            <Text style={globalStyles.text}>{data.sales_amount}</Text>
             <Text
               style={{
                 fontSize: 20,
@@ -78,10 +78,20 @@ export function CustomerDisplay({route}) {
                 color: 'black',
                 marginTop: 15,
               }}>
-              Customer id
+              Sale Total
             </Text>
-            <Text style={globalStyles.text}>{data.cust_id}</Text>
-            {/* <Text
+            <Text style={globalStyles.text}>{data.sales_total}</Text>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: 'black',
+                marginTop: 15,
+              }}>
+              Sale Bill
+            </Text>
+            <Text style={globalStyles.text}>{data.sales_bill}</Text>
+            <Text
               style={{
                 fontSize: 20,
                 fontWeight: 'bold',
@@ -90,7 +100,7 @@ export function CustomerDisplay({route}) {
               }}>
               Description
             </Text>
-            <Text style={globalStyles.text}>{data.pro_desc}</Text> */}
+            <Text style={globalStyles.text}>{data.sales_desc}</Text>
           </View>
         </Card>
       </View>

@@ -84,8 +84,7 @@ export default function Customer({navigation}) {
     console.log(data);
     setSearchInput(text);
     const newData = data?.data.filter(item => {
-      console.log(item.cust_mobile,"-------------------------------------------------------------")
-      const itemData = `${item?.cust_name?.toLowerCase()}${item?.cust_mobile?.toLowerCase()}${item?.cust_email?.toLowerCase()}`;
+      const itemData = `${item?.cust_name?.toLowerCase()}${item?.cust_mobile}${item?.cust_email?.toLowerCase()}`;
       
       const textData = text.toLowerCase();
       return itemData.indexOf(textData) > -1;

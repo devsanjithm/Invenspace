@@ -18,6 +18,9 @@ import SideNavPage from '../views/sideNavbarPage';
 import { Display } from '../views/Products/productDisplay';
 import { StockDisplay } from '../views/Stocks/stockDisplay';
 import { CustomerDisplay } from '../views/Customers/customerDisplay';
+import { PurchaseDisplay } from '../views/Purchases/purchaseDisplay';
+import { SalesDisplay } from '../views/Sales/salesDisplay';
+import { SupplierDisplay } from '../views/Suppliers/supplierDisplay';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();
 
@@ -168,6 +171,19 @@ export default function Homestack() {
             ),
           }}
         />
+         <saleStack.Screen
+          name="saleDisplay"
+          component={SalesDisplay}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
       </saleStack.Navigator>
     );
   }
@@ -196,6 +212,19 @@ export default function Homestack() {
             ),
           }}
         />
+        <purchaseStack.Screen
+          name="purchaseDisplay"
+          component={PurchaseDisplay}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
       </purchaseStack.Navigator>
     );
   }
@@ -214,6 +243,19 @@ export default function Homestack() {
         <supplierStack.Screen
           name="AddSupplier"
           component={AddSupplier}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+        <supplierStack.Screen
+          name="supplierDisplay"
+          component={SupplierDisplay}
           options={{
             header: props => (
               <AppHeaders
