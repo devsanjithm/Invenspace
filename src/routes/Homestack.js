@@ -17,6 +17,7 @@ import AddSupplier from '../views/Suppliers/AddSupplier';
 import SideNavPage from '../views/sideNavbarPage';
 import { Display } from '../views/Products/productDisplay';
 import { StockDisplay } from '../views/Stocks/stockDisplay';
+import { CustomerDisplay } from '../views/Customers/customerDisplay';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();
 
@@ -116,6 +117,19 @@ export default function Homestack() {
         <customerStack.Screen
           name="AddCustomer"
           component={AddCustomer}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+         <customerStack.Screen
+          name="customerDisplay"
+          component={CustomerDisplay}
           options={{
             header: props => (
               <AppHeaders
