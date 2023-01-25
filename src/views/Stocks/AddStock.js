@@ -131,14 +131,7 @@ export default function AddStock({navigation}) {
                     onBlur={handleBlur('stocks_num')}
                     value={values.stocks_num}
                     style={styles.inputf}></TextInput>
-                  <TextInput
-                    mode="outlined"
-                    label={'Description'}
-                    autoCapitalize="none"
-                    onChangeText={handleChange('stocks_desc')}
-                    onBlur={handleBlur('stocks_desc')}
-                    value={values.stocks_desc}
-                    style={styles.inputf}></TextInput>
+                 
                   <TextInput
                     mode="outlined"
                     label={'type'}
@@ -154,6 +147,14 @@ export default function AddStock({navigation}) {
                     onChangeText={handleChange('stocks_items')}
                     onBlur={handleBlur('stocks_items')}
                     value={values.stocks_items}
+                    style={styles.inputf}></TextInput>
+                     <TextInput
+                    mode="outlined"
+                    label={'Description'}
+                    autoCapitalize="none"
+                    onChangeText={handleChange('stocks_desc')}
+                    onBlur={handleBlur('stocks_desc')}
+                    value={values.stocks_desc}
                     style={styles.inputf}></TextInput>
                 </View>
                 <View style={styles.button}>

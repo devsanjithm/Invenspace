@@ -15,35 +15,203 @@ import AddSale from '../views/Sales/AddSale';
 import Supplier from '../views/Suppliers/Supplier';
 import AddSupplier from '../views/Suppliers/AddSupplier';
 import SideNavPage from '../views/sideNavbarPage';
+import { Display } from '../views/Products/productDisplay';
+import { StockDisplay } from '../views/Stocks/stockDisplay';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();
 
-  function ProductStack(){
+  function ProductStack() {
     const productStack = createNativeStackNavigator();
-    return(
+    return (
       <productStack.Navigator>
         <productStack.Screen
-         name="Product1"
-         component={Product}
-         options={{
-           headerShown:false
-         }}
+          name="Product1"
+          component={Product}
+          options={{
+            headerShown: false,
+          }}
         />
         <productStack.Screen
-         name="AddProducts"
-         component={AddProducts}
-         options={{
-           header: props => (
-             <AppHeaders
-               title={'Inventory Dashboard'}
-               color={'#87CEEB'}
-               {...props}
-             />
-           ),
-         }}
+          name="AddProducts"
+          component={AddProducts}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+         <productStack.Screen
+          name="productDisplay"
+          component={Display}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
         />
       </productStack.Navigator>
-    )
+    );
+  }
+
+  function StockStack() {
+    const stockStack = createNativeStackNavigator();
+    return (
+      <stockStack.Navigator>
+        <stockStack.Screen
+          name="Stock1"
+          component={Stock}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <stockStack.Screen
+          name="AddStock"
+          component={AddStock}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+        <stockStack.Screen
+          name="stockDisplay"
+          component={StockDisplay}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+      </stockStack.Navigator>
+    );
+  }
+
+  function CustomerStack() {
+    const customerStack = createNativeStackNavigator();
+    return (
+      <customerStack.Navigator>
+        <customerStack.Screen
+          name="Customer1"
+          component={Customer}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <customerStack.Screen
+          name="AddCustomer"
+          component={AddCustomer}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+      </customerStack.Navigator>
+    );
+  }
+
+  function SaleStack() {
+    const saleStack = createNativeStackNavigator();
+    return (
+      <saleStack.Navigator>
+        <saleStack.Screen
+          name="Sale1"
+          component={Sale}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <saleStack.Screen
+          name="AddSale"
+          component={AddSale}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+      </saleStack.Navigator>
+    );
+  }
+
+  function PurchaseStack() {
+    const purchaseStack = createNativeStackNavigator();
+    return (
+      <purchaseStack.Navigator>
+        <purchaseStack.Screen
+          name="Purchase1"
+          component={Purchase}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <purchaseStack.Screen
+          name="AddPurchase"
+          component={AddPurchase}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+      </purchaseStack.Navigator>
+    );
+  }
+
+  function SupplierStack() {
+    const supplierStack = createNativeStackNavigator();
+    return (
+      <supplierStack.Navigator>
+        <supplierStack.Screen
+          name="Supplier1"
+          component={Supplier}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <supplierStack.Screen
+          name="AddSupplier"
+          component={AddSupplier}
+          options={{
+            header: props => (
+              <AppHeaders
+                title={'Inventory Dashboard'}
+                color={'#87CEEB'}
+                {...props}
+              />
+            ),
+          }}
+        />
+      </supplierStack.Navigator>
+    );
   }
 
   return (
@@ -61,173 +229,56 @@ export default function Homestack() {
         name="Product"
         component={ProductStack}
         options={{
-          headerShown:false
+          headerShown: false,
         }}
-        // options={{
-        //   header: props => (
-        //     <AppHeaders
-        //       title={'Products'}
-        //       color={'#87CEEB'}
-        //       main={true}
-        //       {...props}
-        //     />
-        //   ),
-        // }}
       />
-      {/* <Stack.Screen
-        name="AddProducts"
-        component={AddProducts}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      /> */}
+
       <Stack.Screen
         name="Stock"
-        component={Stock}
+        component={StockStack}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              main={true}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="AddStock"
-        component={AddStock}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      />
+
       <Stack.Screen
         name="Customer"
-        component={Customer}
+        component={CustomerStack}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              main={true}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="AddCustomer"
-        component={AddCustomer}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      />
+
       <Stack.Screen
         name="Purchase"
-        component={Purchase}
+        component={PurchaseStack}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              main={true}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="AddPurchase"
-        component={AddPurchase}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      />
+
       <Stack.Screen
         name="Sale"
-        component={Sale}
+        component={SaleStack}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              main={true}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="AddSale"
-        component={AddSale}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      />
+
       <Stack.Screen
         name="Supplier"
-        component={Supplier}
+        component={SupplierStack}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              main={true}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="AddSupplier"
-        component={AddSupplier}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      />
+
       <Stack.Screen
         name="SideBarPage"
         component={SideNavPage}
         options={{
-          animation:'slide_from_left',
-          headerShown:false
+          animation: 'slide_from_left',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

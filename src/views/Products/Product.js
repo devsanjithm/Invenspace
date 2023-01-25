@@ -14,6 +14,7 @@ import {
   BackHandler,
   RefreshControl,
   TextInput,
+  Pressable,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
@@ -120,6 +121,7 @@ export default function Product({navigation}) {
     });
     setProductData(newData);
   }
+ 
 
   return (
     <>
@@ -134,7 +136,8 @@ export default function Product({navigation}) {
             <View style={{flexDirection: 'row'}}>
               <View style={{paddingHorizontal: 10}}>
                 <TextInput
-                  value={searchInput}
+                  value={searchInput} 
+                  placeholder={'Search'}
                   onChangeText={text => search(text)}
                   style={{
                     height: 35,
@@ -266,7 +269,12 @@ export default function Product({navigation}) {
                     </View>
                   </View>
                   <View>
+                    <Pressable
+                     onPress={() => navigation.navigate('productDisplay',{data:ele})}
+                    
+                    >
                     <AntDesign name='right' size={20} color="#000"/>
+                    </Pressable>
                   </View>
                 </View>
               ))
