@@ -13,7 +13,7 @@ import {
 import {Button} from 'react-native-paper';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import AppStatusBar from '../../components/Appstatusbar';
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback,useState} from 'react';
 import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
 import { useDispatch,useSelector } from 'react-redux';
@@ -21,6 +21,12 @@ import Loader from '../../components/Loader';
 import { postProductDetails } from './productAction';
 import _ from 'lodash';
 export default function AddProducts({navigation}) {
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
+  const user_id=userDatafromRedux?.result?._id;
+ 
+
+
+
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -43,9 +49,10 @@ export default function AddProducts({navigation}) {
       pro_desc: values.Description,
       pro_type: values.ProductName,
       pro_items: values.pro_items,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id: user_id,
     };
     dispatch(postProductDetails(payload))
+    dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {

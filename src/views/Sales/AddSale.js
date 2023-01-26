@@ -21,6 +21,8 @@ import Loader from '../../components/Loader';
 import {postSaleDetails} from './saleAction';
 import _ from 'lodash';
 export default function AddSale({navigation}) {
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
+  const user_id=userDatafromRedux?.result?._id;
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -44,9 +46,10 @@ export default function AddSale({navigation}) {
       sales_desc: values.Description,
       sales_type: values.sales_type,
       sales_total: values.sales_total,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id:user_id,
     };
     dispatch(postSaleDetails(payload));
+    dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {

@@ -22,6 +22,8 @@ import {postStockDetails} from './stockAction';
 import _ from 'lodash';
 
 export default function AddStock({navigation}) {
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
+  const user_id=userDatafromRedux?.result?._id;
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -43,9 +45,10 @@ export default function AddStock({navigation}) {
       stocks_desc: values.stocks_desc,
       stocks_type: values.stocks_desc,
       stocks_items: values.stocks_items,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id: user_id,
     };
     dispatch(postStockDetails(payload));
+    dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {

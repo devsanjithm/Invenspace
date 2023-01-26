@@ -31,7 +31,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function Product({navigation}) {
+export default function Purchase({navigation}) {
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.purchase);
   const {data: userDatafromRedux} = useSelector(state => state.auth);

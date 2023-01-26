@@ -22,6 +22,8 @@ import {postSupplierDetails} from './supplierAction';
 import _ from 'lodash';
 
 export default function AddSupplier({navigation}) {
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
+  const user_id=userDatafromRedux?.result?._id;
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -42,9 +44,10 @@ export default function AddSupplier({navigation}) {
       sup_username: values.sup_username,
       sup_email: values.sup_email,
       sup_mobile: values.sup_mobile,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id: user_id,
     };
     dispatch(postSupplierDetails(payload));
+    dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {
