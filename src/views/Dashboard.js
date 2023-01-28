@@ -163,7 +163,7 @@ export default function Dashboard() {
                       globalStyles.text,
                       {fontSize: 23, paddingTop: 10, color: '#fff'},
                     ]}>
-                    Sales
+                    Profit
                   </Text>
                 </View>
               </InnerCard>
