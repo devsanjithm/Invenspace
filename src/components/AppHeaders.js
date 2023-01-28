@@ -9,7 +9,7 @@ export function AppHeaders(props) {
 
   function handleBack(){
     if(props.main){
-      navigation.navigate('Dashboard')
+      navigation.goBack()
     }else{
       navigation.goBack()
     }

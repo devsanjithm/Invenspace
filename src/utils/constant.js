@@ -14,7 +14,7 @@ export const actionTypes = {
   postSaleDetails:'postSaleDetails',
   getSupplierDetails:'getSupplierDetails',
   postSupplierDetails:'postSupplierDetails',
-
+  updateProductDetails:'updateProductDetails'
 };
 export const authTokenKey = "AUTH_TOKEN";
 export const userDataKey = "userData"

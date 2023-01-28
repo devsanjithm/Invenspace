@@ -15,52 +15,28 @@ import AddSale from '../views/Sales/AddSale';
 import Supplier from '../views/Suppliers/Supplier';
 import AddSupplier from '../views/Suppliers/AddSupplier';
 import SideNavPage from '../views/sideNavbarPage';
-import { Display } from '../views/Products/productDisplay';
-import { StockDisplay } from '../views/Stocks/stockDisplay';
-import { CustomerDisplay } from '../views/Customers/customerDisplay';
-import { PurchaseDisplay } from '../views/Purchases/purchaseDisplay';
-import { SalesDisplay } from '../views/Sales/salesDisplay';
-import { SupplierDisplay } from '../views/Suppliers/supplierDisplay';
+import {Display} from '../views/Products/productDisplay';
+import {StockDisplay} from '../views/Stocks/stockDisplay';
+import {CustomerDisplay} from '../views/Customers/customerDisplay';
+import {PurchaseDisplay} from '../views/Purchases/purchaseDisplay';
+import {SalesDisplay} from '../views/Sales/salesDisplay';
+import {SupplierDisplay} from '../views/Suppliers/supplierDisplay';
 export default function Homestack() {
   const Stack = createNativeStackNavigator();
 
   function ProductStack() {
     const productStack = createNativeStackNavigator();
     return (
-      <productStack.Navigator>
-        <productStack.Screen
-          name="Product1"
-          component={Product}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <productStack.Screen
-          name="AddProducts"
-          component={AddProducts}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-         <productStack.Screen
-          name="productDisplay"
-          component={Display}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
+      <productStack.Navigator
+        initialRouteName="Product1"
+        screenOptions={{
+          animation: 'slide_from_right',
+          animationDuration: 250,
+          headerShown: false,
+        }}>
+        <productStack.Screen name="Product1" component={Product} />
+        <productStack.Screen name="AddProducts" component={AddProducts} />
+        <productStack.Screen name="productDisplay" component={Display} />
       </productStack.Navigator>
     );
   }
@@ -130,7 +106,7 @@ export default function Homestack() {
             ),
           }}
         />
-         <customerStack.Screen
+        <customerStack.Screen
           name="customerDisplay"
           component={CustomerDisplay}
           options={{
@@ -171,7 +147,7 @@ export default function Homestack() {
             ),
           }}
         />
-         <saleStack.Screen
+        <saleStack.Screen
           name="saleDisplay"
           component={SalesDisplay}
           options={{
@@ -273,62 +249,14 @@ export default function Homestack() {
   return (
     <Stack.Navigator
       initialRouteName="Dashboard"
-      screenOptions={{animation: 'slide_from_right'}}>
-      <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Product"
-        component={ProductStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="Stock"
-        component={StockStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="Customer"
-        component={CustomerStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="Purchase"
-        component={PurchaseStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="Sale"
-        component={SaleStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="Supplier"
-        component={SupplierStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-
+      screenOptions={{animation: 'slide_from_right', headerShown: false}}>
+      <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="Product" component={ProductStack} />
+      <Stack.Screen name="Stock" component={StockStack} />
+      <Stack.Screen name="Customer" component={CustomerStack} />
+      <Stack.Screen name="Purchase" component={PurchaseStack} />
+      <Stack.Screen name="Sale" component={SaleStack} />
+      <Stack.Screen name="Supplier" component={SupplierStack} />
       <Stack.Screen
         name="SideBarPage"
         component={SideNavPage}
