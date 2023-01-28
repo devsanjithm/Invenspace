@@ -25,6 +25,8 @@ import _ from 'lodash';
 
 
 export default function AddPurchase({navigation}) {
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
+  const user_id=userDatafromRedux?.result?._id;
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -48,9 +50,10 @@ export default function AddPurchase({navigation}) {
       purchase_desc: values.Description,
       purchase_type: values.purchase_type,
       purchase_total: values.purchase_total,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id:user_id,
     };
     dispatch(postPurchaseDetails(payload));
+    dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {

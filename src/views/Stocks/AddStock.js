@@ -22,6 +22,8 @@ import {postStockDetails} from './stockAction';
 import _ from 'lodash';
 
 export default function AddStock({navigation}) {
+  const {data: userDatafromRedux} = useSelector(state => state.auth);
+  const user_id=userDatafromRedux?.result?._id;
   const backAction = useCallback(() => {
     navigation.goBack();
     return true;
@@ -43,9 +45,10 @@ export default function AddStock({navigation}) {
       stocks_desc: values.stocks_desc,
       stocks_type: values.stocks_desc,
       stocks_items: values.stocks_items,
-      user_id: '633c1f3002be7d48b4017c29',
+      user_id: user_id,
     };
     dispatch(postStockDetails(payload));
+    dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {
@@ -131,14 +134,7 @@ export default function AddStock({navigation}) {
                     onBlur={handleBlur('stocks_num')}
                     value={values.stocks_num}
                     style={styles.inputf}></TextInput>
-                  <TextInput
-                    mode="outlined"
-                    label={'Description'}
-                    autoCapitalize="none"
-                    onChangeText={handleChange('stocks_desc')}
-                    onBlur={handleBlur('stocks_desc')}
-                    value={values.stocks_desc}
-                    style={styles.inputf}></TextInput>
+                 
                   <TextInput
                     mode="outlined"
                     label={'type'}
@@ -154,6 +150,14 @@ export default function AddStock({navigation}) {
                     onChangeText={handleChange('stocks_items')}
                     onBlur={handleBlur('stocks_items')}
                     value={values.stocks_items}
+                    style={styles.inputf}></TextInput>
+                     <TextInput
+                    mode="outlined"
+                    label={'Description'}
+                    autoCapitalize="none"
+                    onChangeText={handleChange('stocks_desc')}
+                    onBlur={handleBlur('stocks_desc')}
+                    value={values.stocks_desc}
                     style={styles.inputf}></TextInput>
                 </View>
                 <View style={styles.button}>
