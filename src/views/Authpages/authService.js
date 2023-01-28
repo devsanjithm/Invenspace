@@ -10,5 +10,15 @@ const LoginAPIs = {
       throw error;
     }
   },
+
+  register: async payload => {
+    try {
+      const res = await apiInstance.post('/user/registration', payload);
+      return res;
+    } catch (error) {
+      console.log('=======', error);
+      throw error;
+    }
+  },
 };
 export default LoginAPIs;

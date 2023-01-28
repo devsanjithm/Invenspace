@@ -9,7 +9,7 @@ export function AppHeaders(props) {
 
   function handleBack(){
     if(props.main){
-      navigation.navigate('Dashboard')
+      navigation.goBack()
     }else{
       navigation.goBack()
     }
@@ -25,6 +25,9 @@ export function AppHeaders(props) {
             <Ionicons name="chevron-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.headerText}>{props.title} </Text>
+          <View style={{padding:20}}>
+          {props.children}
+          </View>
         </View>
       </SafeAreaView>
     </>
@@ -34,7 +37,7 @@ export function AppHeaders(props) {
 const styles = StyleSheet.create({
   headerText: {
     color: '#000',
-    fontSize: 18,
+    fontSize: 20,
     flex: 1,
     fontWeight: 'bold',
     justifyContent: 'center',

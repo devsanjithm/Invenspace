@@ -13,15 +13,27 @@ import {
   Touchable,
   BackHandler,
   RefreshControl,
+  TextInput,
+  Pressable,
 } from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import {Button} from 'react-native-paper';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
 import {getProductDetails} from './productAction';
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import globalStyles from '../../components/Styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {AppHeaders} from '../../components/AppHeaders';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {
+  setProductDetailsFailure,
+  setProductDetailsSuccess,
+} from './productSlice';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function Product({navigation}) {
   const dispatch = useDispatch();
@@ -30,6 +42,8 @@ export default function Product({navigation}) {
   const [productData, setProductData] = useState([]);
   const {userData, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [handleSearchUIState, setSearchUIState] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
 
   const backAction = useCallback(() => {
     navigation.navigate('Dashboard');
@@ -66,6 +80,9 @@ export default function Product({navigation}) {
         visibilityTime: 5000,
       });
     }
+    return () => {
+      dispatch(setProductDetailsFailure({}));
+    };
   }, []);
 
   useEffect(() => {
@@ -76,7 +93,7 @@ export default function Product({navigation}) {
   }, [data]);
 
   useEffect(() => {
-    if (error !== null) {
+    if (!_.isEmpty(error)) {
       Toast.show({
         text1: 'ERROR',
         text2: error?.message,
@@ -100,6 +117,18 @@ export default function Product({navigation}) {
     }
   }
 
+  function search(text) {
+    setSearchInput(text);
+    const newData = data?.data.filter(item => {
+      const itemData = `${item?.pro_desc?.toLowerCase()}${item?.pro_items?.toLowerCase()}${item?.pro_type?.toLowerCase()}${
+        item?._id
+      }`;
+      const textData = text.toLowerCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    setProductData(newData);
+  }
+
   return (
     <>
       {loading ? <Loader /> : null}
@@ -107,44 +136,160 @@ export default function Product({navigation}) {
         style={{
           flex: 1,
           backgroundColor: '#fff',
-          // justifyContent: 'flex-end',
         }}>
+        <AppHeaders title={'Products'} color={'#fff'} main={true}>
+          {handleSearchUIState ? (
+            <View style={{flexDirection: 'row'}}>
+              <View style={{paddingHorizontal: 10}}>
+                <TextInput
+                  value={searchInput}
+                  placeholder={'Search'}
+                  onChangeText={text => search(text)}
+                  style={{
+                    height: 35,
+                    width: screenWidth / 2.5,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    padding: 5,
+                    paddingHorizontal: 10,
+                  }}
+                />
+              </View>
+              <MaterialIcons
+                onPress={() => {
+                  if (handleSearchUIState) {
+                    search('');
+                  }
+                  setSearchUIState(!handleSearchUIState);
+                }}
+                name="cancel"
+                size={30}
+                color="#000"
+              />
+            </View>
+          ) : (
+            <View style={{flexDirection: 'row'}}>
+              <View style={{paddingHorizontal: 10}}>
+                <Ionicons
+                  onPress={() => navigation.navigate('AddProducts')}
+                  name="ios-add-circle"
+                  size={30}
+                  color="#000"
+                />
+              </View>
+              <View style={{paddingHorizontal: 10}}>
+                <Ionicons
+                  onPress={() => setSearchUIState(!handleSearchUIState)}
+                  name="search"
+                  size={30}
+                  color="#000"
+                />
+              </View>
+            </View>
+          )}
+        </AppHeaders>
         <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
-          <View style={styles.top}>
-            <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold'}}>
-              Products
-            </Text>
-            <View>
-              <Button
-                mode="contained"
-                color="blue"
-                onPress={() => {
-                  navigation.push('AddProducts');
-                }}>
-                Add Product
-              </Button>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 20,
+              justifyContent: 'space-between',
+            }}>
+            <View style={styles.card}>
+              <Text
+                style={[
+                  globalStyles.text,
+                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
+                ]}>
+                Items in Hand
+              </Text>
+              <View>
+                {/* <View style={styles.iconWrapper}>
+                  <Entypo name="price-tag" size={35} color="#000" />
+                </View> */}
+                <Text
+                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
+                  9.8k
+                </Text>
+              </View>
+            </View>
+            <View style={styles.card1}>
+              <Text
+                style={[
+                  globalStyles.text,
+                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
+                ]}>
+                Will be received
+              </Text>
+              <View>
+                {/* <Ionicons name="pie-chart" size={35} color="#000" /> */}
+                <Text
+                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
+                  2345
+                </Text>
+              </View>
             </View>
           </View>
-          <View>
+          <View style={{paddingHorizontal: 20, paddingVertical: 10}}>
+            <Text style={[globalStyles.text, {fontSize: 25, color: '#000'}]}>
+              Products List
+            </Text>
+          </View>
+          <View style={{padding: 10}}>
             {_.isEmpty(productData) ? (
-              <View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <Text>NO Data</Text>
               </View>
             ) : (
               productData?.map((ele, index) => (
-                <View
-                  style={{
-                    borderWidth: 1,
-                    padding: 10,
-                  }}
-                  key={index}>
-                  <Text>{ele?._id}</Text>
-                  <Text>{ele?.pro_desc}</Text>
-                </View>
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('productDisplay', {data: ele})
+                  }>
+                  <View
+                    style={{
+                      padding: 15,
+                      flexDirection: 'row',
+                      margin: 10,
+                      justifyContent: 'space-between',
+                    }}>
+                    <View style={{flexDirection: 'row'}}>
+                      <View
+                        style={{
+                          backgroundColor: '#e4e4e4',
+                          borderRadius: 20,
+                          width: 40,
+                          height: 40,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <AntDesign name="paperclip" size={20} color="#000" />
+                      </View>
+                      <View style={{paddingHorizontal: 20}}>
+                        <Text style={globalStyles}>{ele?.pro_items}</Text>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode={'tail'}
+                          style={styles.itemtext}>
+                          {ele?.pro_desc}
+                        </Text>
+                      </View>
+                    </View>
+                    <View>
+                      <AntDesign name="right" size={20} color="#000" />
+                    </View>
+                  </View>
+                </Pressable>
               ))
             )}
           </View>
@@ -160,5 +305,28 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'space-between',
     margin: 10,
+  },
+  card: {
+    padding: 15,
+    borderRadius: 10,
+    width: Dimensions.get('window').width / 2.5,
+    height: Dimensions.get('window').height / 6,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    backgroundColor: '#B9D7E8',
+  },
+  card1: {
+    padding: 15,
+    borderRadius: 10,
+    width: Dimensions.get('window').width / 2.5,
+    height: Dimensions.get('window').height / 6,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    backgroundColor: '#B9D7E8',
+  },
+  itemtext: {
+    width: screenWidth / 2,
+    fontSize: 18,
+    color: '#000',
   },
 });

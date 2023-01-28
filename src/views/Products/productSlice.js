@@ -4,7 +4,8 @@ const initialState = {
   loading: false,
   error: null,
   data: {},
-  postMessage:''
+  postMessage:'',
+  updateData:{}
 };
 
 export const productSlice = createSlice({
@@ -27,6 +28,11 @@ export const productSlice = createSlice({
       state.loading = false,
       state.error = null,
       state.postMessage = action.payload
+    },
+    setUpdateProductDetailsSucess : (state,action)=>{
+      state.loading = false,
+      state.error = null,
+      state.updateData = action.payload
     }
   },
 });
@@ -35,7 +41,8 @@ export const {
   setProductDetailsLoading,
   setProductDetailsSuccess,
   setProductDetailsFailure,
-  setPostProductDetailsSucess
+  setPostProductDetailsSucess,
+  setUpdateProductDetailsSucess
 } = productSlice.actions;
 
 export default productSlice.reducer;

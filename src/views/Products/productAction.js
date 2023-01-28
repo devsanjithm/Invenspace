@@ -8,10 +8,17 @@ export const getProductDetails = payload => {
   };
 };
 export const postProductDetails = payload => {
-    console.log('===== @DH update profile details action =====', payload);
-    return {
-      type: actionTypes.postProductDetails,
-      data: payload,
-    };
+  console.log('===== @DH update profile details action =====', payload);
+  return {
+    type: actionTypes.postProductDetails,
+    data: payload,
   };
-  
+};
+
+export const updateProductDetails = payload => {
+  console.log('===== @DH update profile details action =====', payload);
+  return {
+    type: actionTypes.updateProductDetails,
+    data: payload,
+  };
+};
