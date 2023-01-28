@@ -19,5 +19,15 @@ const ProductAPIs = {
       throw error;
     }
   },
+  updateProduct:async payload =>{
+    try {
+      const res = await apiInstance.put('/products/update', payload);
+      return res;
+    } catch (error) {
+      console.log('=======', error);
+      throw error;
+      
+    }
+  }
 };
 export default ProductAPIs;

@@ -28,6 +28,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AppHeaders} from '../../components/AppHeaders';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {
+  setProductDetailsFailure,
+  setProductDetailsSuccess,
+} from './productSlice';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -76,6 +80,9 @@ export default function Product({navigation}) {
         visibilityTime: 5000,
       });
     }
+    return () => {
+      dispatch(setProductDetailsFailure({}));
+    };
   }, []);
 
   useEffect(() => {
@@ -86,7 +93,7 @@ export default function Product({navigation}) {
   }, [data]);
 
   useEffect(() => {
-    if (error !== null) {
+    if (!_.isEmpty(error)) {
       Toast.show({
         text1: 'ERROR',
         text2: error?.message,
@@ -121,7 +128,6 @@ export default function Product({navigation}) {
     });
     setProductData(newData);
   }
- 
 
   return (
     <>
@@ -136,7 +142,7 @@ export default function Product({navigation}) {
             <View style={{flexDirection: 'row'}}>
               <View style={{paddingHorizontal: 10}}>
                 <TextInput
-                  value={searchInput} 
+                  value={searchInput}
                   placeholder={'Search'}
                   onChangeText={text => search(text)}
                   style={{
@@ -144,6 +150,8 @@ export default function Product({navigation}) {
                     width: screenWidth / 2.5,
                     borderWidth: 1,
                     borderRadius: 10,
+                    padding: 5,
+                    paddingHorizontal: 10,
                   }}
                 />
               </View>
@@ -243,40 +251,45 @@ export default function Product({navigation}) {
               </View>
             ) : (
               productData?.map((ele, index) => (
-                <View
-                  style={{
-                    padding: 15,
-                    flexDirection: 'row',
-                    margin: 10,
-                    justifyContent:'space-between'
-                  }}
-                  key={index}>
-                  <View style={{flexDirection:'row'}}>
-                    <View
-                      style={{
-                        backgroundColor: '#e4e4e4',
-                        borderRadius: 20,
-                        width: 40,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <AntDesign name="paperclip" size={20} color="#000" />
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('productDisplay', {data: ele})
+                  }>
+                  <View
+                    style={{
+                      padding: 15,
+                      flexDirection: 'row',
+                      margin: 10,
+                      justifyContent: 'space-between',
+                    }}>
+                    <View style={{flexDirection: 'row'}}>
+                      <View
+                        style={{
+                          backgroundColor: '#e4e4e4',
+                          borderRadius: 20,
+                          width: 40,
+                          height: 40,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <AntDesign name="paperclip" size={20} color="#000" />
+                      </View>
+                      <View style={{paddingHorizontal: 20}}>
+                        <Text style={globalStyles}>{ele?.pro_items}</Text>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode={'tail'}
+                          style={styles.itemtext}>
+                          {ele?.pro_desc}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={{paddingHorizontal: 20}}>
-                      <Text style={globalStyles}>{ele?.pro_items}</Text>
-                      <Text style={globalStyles}>{ele?.pro_desc}</Text>
+                    <View>
+                      <AntDesign name="right" size={20} color="#000" />
                     </View>
                   </View>
-                  <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('productDisplay',{data:ele})}
-                    
-                    >
-                    <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
-                  </View>
-                </View>
+                </Pressable>
               ))
             )}
           </View>
@@ -310,5 +323,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     backgroundColor: '#B9D7E8',
+  },
+  itemtext: {
+    width: screenWidth / 2,
+    fontSize: 18,
+    color: '#000',
   },
 });
