@@ -4,8 +4,6 @@ import {AppHeaders} from '../components/AppHeaders';
 import Dashboard from '../views/Dashboard';
 import Product from '../views/Products/Product';
 import AddProducts from '../views/Products/AddProducts';
-import Stock from '../views/Stocks/Stock';
-import AddStock from '../views/Stocks/AddStock';
 import Customer from '../views/Customers/Customer';
 import AddCustomer from '../views/Customers/AddCustomer';
 import Purchase from '../views/Purchases/Purchase';
@@ -16,7 +14,6 @@ import Supplier from '../views/Suppliers/Supplier';
 import AddSupplier from '../views/Suppliers/AddSupplier';
 import SideNavPage from '../views/sideNavbarPage';
 import {Display} from '../views/Products/productDisplay';
-import {StockDisplay} from '../views/Stocks/stockDisplay';
 import {CustomerDisplay} from '../views/Customers/customerDisplay';
 import {PurchaseDisplay} from '../views/Purchases/purchaseDisplay';
 import {SalesDisplay} from '../views/Sales/salesDisplay';
@@ -41,46 +38,6 @@ export default function Homestack() {
     );
   }
 
-  function StockStack() {
-    const stockStack = createNativeStackNavigator();
-    return (
-      <stockStack.Navigator>
-        <stockStack.Screen
-          name="Stock1"
-          component={Stock}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <stockStack.Screen
-          name="AddStock"
-          component={AddStock}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-        <stockStack.Screen
-          name="stockDisplay"
-          component={StockDisplay}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-      </stockStack.Navigator>
-    );
-  }
 
   function CustomerStack() {
     const customerStack = createNativeStackNavigator();
@@ -252,7 +209,6 @@ export default function Homestack() {
       screenOptions={{animation: 'slide_from_right', headerShown: false}}>
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Product" component={ProductStack} />
-      <Stack.Screen name="Stock" component={StockStack} />
       <Stack.Screen name="Customer" component={CustomerStack} />
       <Stack.Screen name="Purchase" component={PurchaseStack} />
       <Stack.Screen name="Sale" component={SaleStack} />

@@ -9,6 +9,7 @@ import {clearAll} from '../../service/localstorage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppStatusBar from '../../components/Appstatusbar';
 import { setAuthDetailsSuccess } from '../Authpages/authSlice';
+import FloatingButton from '../../components/fab';
 
 export default function SideNavPage() {
   const navigation = useNavigation();
@@ -30,10 +31,6 @@ export default function SideNavPage() {
     {
       name: 'Products',
       link: 'Product',
-    },
-    {
-      name: 'Stocks',
-      link: 'Stock',
     },
     {
       name: 'Sales',

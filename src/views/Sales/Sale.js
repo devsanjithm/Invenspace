@@ -245,6 +245,11 @@ export default function Sale({navigation}) {
               </View>
             ) : (
               saleData?.map((ele, index) => (
+                <Pressable
+                     onPress={() => navigation.navigate('saleDisplay',{data:ele})}
+                     key={index}
+                    >
+                
                 <View
                   style={{
                     padding: 15,
@@ -252,7 +257,7 @@ export default function Sale({navigation}) {
                     margin: 10,
                     justifyContent:'space-between'
                   }}
-                  key={index}>
+                 >
                   <View style={{flexDirection:'row'}}>
                     <View
                       style={{
@@ -271,14 +276,12 @@ export default function Sale({navigation}) {
                     </View>
                   </View>
                   <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('saleDisplay',{data:ele})}
                     
-                    >
                     <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
+                  
                   </View>
                 </View>
+                </Pressable>
               ))
             )}
           </View>

@@ -21,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import Card, {InnerCard} from '../components/card';
 import {globalStyles} from '../utils/styles';
 import {LineChart} from 'react-native-chart-kit';
+import FloatingButton from '../components/fab';
 const screenWidth = Dimensions.get("window").width;
 export default function Dashboard() {
   const {setRoute} = useContext(UserContext);
@@ -406,8 +407,10 @@ export default function Dashboard() {
               />
               </View>
           </Card>
+        
         </ScrollView>
       </KeyboardAvoidingView>
+      <FloatingButton/>
     </SafeAreaView>
   );
 }

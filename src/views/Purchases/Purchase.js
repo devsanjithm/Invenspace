@@ -243,6 +243,10 @@ export default function Purchase({navigation}) {
               </View>
             ) : (
               purchaseData?.map((ele, index) => (
+                <Pressable
+                     onPress={() => navigation.navigate('purchaseDisplay',{data:ele})}
+                     key={index}
+                    >
                 <View
                   style={{
                     padding: 15,
@@ -250,7 +254,7 @@ export default function Purchase({navigation}) {
                     margin: 10,
                     justifyContent:'space-between'
                   }}
-                  key={index}>
+                  >
                   <View style={{flexDirection:'row'}}>
                     <View
                       style={{
@@ -269,14 +273,12 @@ export default function Purchase({navigation}) {
                     </View>
                   </View>
                   <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('purchaseDisplay',{data:ele})}
                     
-                    >
                     <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
+                  
                   </View>
                 </View>
+                </Pressable>
               ))
             )}
           </View>

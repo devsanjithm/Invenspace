@@ -21,7 +21,7 @@ import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
-import {getCustomerDetails} from './customerAction'
+import {getCustomerDetails} from './customerAction';
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import globalStyles from '../../components/Styles';
@@ -30,9 +30,10 @@ import {AppHeaders} from '../../components/AppHeaders';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FAB from '../../components/fab';
+import FloatingButton from '../../components/fab';
 
 export default function Customer({navigation}) {
-
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.customer);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
@@ -43,7 +44,7 @@ export default function Customer({navigation}) {
   const [searchInput, setSearchInput] = useState('');
 
   const backAction = useCallback(() => {
-    navigation.navigate('Dashboard')
+    navigation.navigate('Dashboard');
     return true;
   }, []);
 
@@ -52,7 +53,6 @@ export default function Customer({navigation}) {
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', backAction);
   }, [backAction]);
-
 
   function getData() {
     let userId = userDatafromRedux?.result?._id;
@@ -79,20 +79,20 @@ export default function Customer({navigation}) {
       });
     }
   }, []);
-  
+
   function search(text) {
     console.log(data);
     setSearchInput(text);
     const newData = data?.data.filter(item => {
-      const itemData = `${item?.cust_name?.toLowerCase()}${item?.cust_mobile}${item?.cust_email?.toLowerCase()}`;
-      
+      const itemData = `${item?.cust_name?.toLowerCase()}${
+        item?.cust_mobile
+      }${item?.cust_email?.toLowerCase()}`;
+
       const textData = text.toLowerCase();
       return itemData.indexOf(textData) > -1;
     });
     setCustomerData(newData);
   }
- 
- 
 
   useEffect(() => {
     if (!_.isEmpty(data)) {
@@ -127,19 +127,19 @@ export default function Customer({navigation}) {
   }
   return (
     <>
-    {loading ? <Loader /> : null}
-    <SafeAreaView
-    style={{
-      flex: 1,
-      backgroundColor: '#fff',
-      // justifyContent: 'flex-end',
-    }}>
-      <AppHeaders title={'Customer'} color={'#fff'} main={true}>
+      {loading ? <Loader /> : null}
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          // justifyContent: 'flex-end',
+        }}>
+        <AppHeaders title={'Customer'} color={'#fff'} main={true}>
           {handleSearchUIState ? (
             <View style={{flexDirection: 'row'}}>
               <View style={{paddingHorizontal: 10}}>
                 <TextInput
-                  value={searchInput} 
+                  value={searchInput}
                   placeholder={'Search'}
                   onChangeText={text => search(text)}
                   style={{
@@ -183,8 +183,8 @@ export default function Customer({navigation}) {
             </View>
           )}
         </AppHeaders>
-    <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-    <ScrollView
+        <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
+        <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
@@ -234,6 +234,7 @@ export default function Customer({navigation}) {
               Customers
             </Text>
           </View>
+          
           <View style={{padding: 10}}>
             {_.isEmpty(customerData) ? (
               <View
@@ -246,48 +247,47 @@ export default function Customer({navigation}) {
               </View>
             ) : (
               customerData?.map((ele, index) => (
-                <View
-                  style={{
-                    padding: 15,
-                    flexDirection: 'row',
-                    margin: 10,
-                    justifyContent:'space-between'
-                  }}
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('customerDisplay', {data: ele})
+                  }
                   key={index}>
-                  <View style={{flexDirection:'row'}}>
-                    <View
-                      style={{
-                        backgroundColor: '#e4e4e4',
-                        borderRadius: 20,
-                        width: 40,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <AntDesign name="paperclip" size={20} color="#000" />
+                  <View
+                    style={{
+                      padding: 15,
+                      flexDirection: 'row',
+                      margin: 10,
+                      justifyContent: 'space-between',
+                    }}>
+                    <View style={{flexDirection: 'row'}}>
+                      <View
+                        style={{
+                          backgroundColor: '#e4e4e4',
+                          borderRadius: 20,
+                          width: 40,
+                          height: 40,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <AntDesign name="paperclip" size={20} color="#000" />
+                      </View>
+                      <View style={{paddingHorizontal: 20}}>
+                        <Text style={globalStyles}>{ele?.cust_name}</Text>
+                        <Text style={globalStyles}>{ele?.cust_mobile}</Text>
+                      </View>
                     </View>
-                    <View style={{paddingHorizontal: 20}}>
-                      <Text style={globalStyles}>{ele?.cust_name}</Text>
-                      <Text style={globalStyles}>{ele?.cust_mobile}</Text>
+                    <View>
+                      <AntDesign name="right" size={20} color="#000" />
                     </View>
                   </View>
-                  <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('customerDisplay',{data:ele})}
-                    
-                    >
-                    <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
-                  </View>
-                </View>
+                </Pressable>
               ))
             )}
           </View>
         </ScrollView>
-  </SafeAreaView>
-  </>
-   
-);
+      </SafeAreaView>
+    </>
+  );
 }
 const styles = StyleSheet.create({
   container: {},

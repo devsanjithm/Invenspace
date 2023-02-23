@@ -4,8 +4,6 @@ export const actionTypes = {
   postAuthDetails:'postAuthDetails',
   getProductDetails:'getProductDetails',
   postProductDetails:'postProductDetails',
-  postStockDetails:'postStockDetails',
-  getStockDetails:'getStockDetails',
   getPurchaseDetails:'getPurchaseDetails',
   postPurchaseDetails:'postPurchaseDetails',
   getCustomerDetails:'getCustomerDetails',
