@@ -26,16 +26,16 @@ export default function AddProducts({navigation}) {
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const user_id = userDatafromRedux?.result?._id;
 
-  const backAction = useCallback(() => {
-    navigation.goBack();
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.goBack();
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.product);

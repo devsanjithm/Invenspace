@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, {useEffect, useCallback, useState, useContext} from 'react';
+
 // import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   ScrollView,
@@ -15,6 +16,7 @@ import {
   RefreshControl,
   TextInput,
   Pressable,
+  Alert,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
@@ -32,6 +34,8 @@ import {
   setProductDetailsFailure,
   setProductDetailsSuccess,
 } from './productSlice';
+import { setAuthDetailsSuccess } from '../Authpages/authSlice';
+import { clearAll } from '../../service/localstorage';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -44,17 +48,18 @@ export default function Product({navigation}) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const {setRoute} = useContext(UserContext);
 
   const backAction = useCallback(() => {
     navigation.navigate('Dashboard');
     return true;
   }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   function getData() {
     let userId = userDatafromRedux?.result?._id;
@@ -128,7 +133,22 @@ export default function Product({navigation}) {
     });
     setProductData(newData);
   }
-
+  async function handleLogout() {
+    Alert.alert('Logout', 'Are you sure you want to Logout?', [
+      // The "Yes" button
+      {
+        text: 'Yes',
+        onPress: () => {
+          dispatch(setAuthDetailsSuccess({}));
+          setRoute(false);
+          clearAll();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  }
   return (
     <>
       {loading ? <Loader /> : null}
@@ -293,6 +313,23 @@ export default function Product({navigation}) {
               ))
             )}
           </View>
+          <View>
+          <Pressable onPress={handleLogout}>
+            <View
+              style={{
+                padding: 10,
+                paddingHorizontal: 20,
+                margin: 20,
+                flexDirection: 'row',
+              }}>
+              <AntDesign name="logout" size={30} color="#000" />
+              <Text
+                style={{fontSize: 25, color: '#000', paddingHorizontal: 20}}>
+                Logout
+              </Text>
+            </View>
+          </Pressable>
+        </View>
         </ScrollView>
       </SafeAreaView>
     </>

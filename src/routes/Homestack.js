@@ -18,209 +18,192 @@ import {CustomerDisplay} from '../views/Customers/customerDisplay';
 import {PurchaseDisplay} from '../views/Purchases/purchaseDisplay';
 import {SalesDisplay} from '../views/Sales/salesDisplay';
 import {SupplierDisplay} from '../views/Suppliers/supplierDisplay';
-export default function Homestack() {
-  const Stack = createNativeStackNavigator();
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Dimensions } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Octicons from 'react-native-vector-icons/Octicons';
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import { useWindowDimensions } from 'react-native';
+import Settings from '../views/Settings/settings';
 
-  function ProductStack() {
-    const productStack = createNativeStackNavigator();
-    return (
-      <productStack.Navigator
-        initialRouteName="Product1"
-        screenOptions={{
-          animation: 'slide_from_right',
-          animationDuration: 250,
-          headerShown: false,
-        }}>
-        <productStack.Screen name="Product1" component={Product} />
-        <productStack.Screen name="AddProducts" component={AddProducts} />
-        <productStack.Screen name="productDisplay" component={Display} />
-      </productStack.Navigator>
-    );
-  }
-
-
-  function CustomerStack() {
-    const customerStack = createNativeStackNavigator();
-    return (
-      <customerStack.Navigator>
-        <customerStack.Screen
-          name="Customer1"
-          component={Customer}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <customerStack.Screen
-          name="AddCustomer"
-          component={AddCustomer}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-        <customerStack.Screen
-          name="customerDisplay"
-          component={CustomerDisplay}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-      </customerStack.Navigator>
-    );
-  }
-
-  function SaleStack() {
-    const saleStack = createNativeStackNavigator();
-    return (
-      <saleStack.Navigator>
-        <saleStack.Screen
-          name="Sale1"
-          component={Sale}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <saleStack.Screen
-          name="AddSale"
-          component={AddSale}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-        <saleStack.Screen
-          name="saleDisplay"
-          component={SalesDisplay}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-      </saleStack.Navigator>
-    );
-  }
-
-  function PurchaseStack() {
-    const purchaseStack = createNativeStackNavigator();
-    return (
-      <purchaseStack.Navigator>
-        <purchaseStack.Screen
-          name="Purchase1"
-          component={Purchase}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <purchaseStack.Screen
-          name="AddPurchase"
-          component={AddPurchase}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-        <purchaseStack.Screen
-          name="purchaseDisplay"
-          component={PurchaseDisplay}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-      </purchaseStack.Navigator>
-    );
-  }
-
-  function SupplierStack() {
-    const supplierStack = createNativeStackNavigator();
-    return (
-      <supplierStack.Navigator>
-        <supplierStack.Screen
-          name="Supplier1"
-          component={Supplier}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <supplierStack.Screen
-          name="AddSupplier"
-          component={AddSupplier}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-        <supplierStack.Screen
-          name="supplierDisplay"
-          component={SupplierDisplay}
-          options={{
-            header: props => (
-              <AppHeaders
-                title={'Inventory Dashboard'}
-                color={'#87CEEB'}
-                {...props}
-              />
-            ),
-          }}
-        />
-      </supplierStack.Navigator>
-    );
-  }
-
+function ProductStack() {
+  const productStack = createNativeStackNavigator();
   return (
-    <Stack.Navigator
-      initialRouteName="Dashboard"
-      screenOptions={{animation: 'slide_from_right', headerShown: false}}>
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="Product" component={ProductStack} />
-      <Stack.Screen name="Customer" component={CustomerStack} />
-      <Stack.Screen name="Purchase" component={PurchaseStack} />
-      <Stack.Screen name="Sale" component={SaleStack} />
-      <Stack.Screen name="Supplier" component={SupplierStack} />
-      <Stack.Screen
-        name="SideBarPage"
-        component={SideNavPage}
+    <productStack.Navigator
+      initialRouteName="Product1"
+      screenOptions={{
+        animation: 'fade_from_bottom',
+        headerShown: false,
+      }}
+      >
+      <productStack.Screen name="Product1" component={Product} />
+      <productStack.Screen name="AddProducts" component={AddProducts} />
+      <productStack.Screen name="productDisplay" component={Display} />
+    </productStack.Navigator>
+  );
+}
+function SettingStack() {
+  const settingStack = createNativeStackNavigator();
+  return (
+    <settingStack.Navigator
+      initialRouteName="setting"
+      screenOptions={{
+        animation: 'fade_from_bottom',
+        headerShown: false,
+      }}
+      >
+      <settingStack.Screen name="setting" component={Settings} />
+      <settingStack.Screen name="supplierDisplay" component={Supplier} />
+      <settingStack.Screen name="supplierDis" component={SupplierDisplay} />
+      <settingStack.Screen name="addsup" component={AddSupplier} />
+      <settingStack.Screen name="customerdis" component={Customer} />
+      <settingStack.Screen name="cusdis" component={CustomerDisplay} />
+      <settingStack.Screen name="addcus" component={AddCustomer} />
+    </settingStack.Navigator>
+  );
+}
+
+function CustomerStack() {
+  const customerStack = createNativeStackNavigator();
+  return (
+    <customerStack.Navigator>
+      <customerStack.Screen
+        name="Customer1"
+        component={Customer}
         options={{
-          animation: 'slide_from_left',
           headerShown: false,
         }}
       />
-    </Stack.Navigator>
+      <customerStack.Screen
+        name="AddCustomer"
+        component={AddCustomer}
+        options={{
+          header: props => (
+            <AppHeaders
+              title={'Inventory Dashboard'}
+              color={'#87CEEB'}
+              {...props}
+            />
+          ),
+        }}
+      />
+      <customerStack.Screen
+        name="customerDisplay"
+        component={CustomerDisplay}
+        options={{
+          header: props => (
+            <AppHeaders
+              title={'Inventory Dashboard'}
+              color={'#87CEEB'}
+              {...props}
+            />
+          ),
+        }}
+      />
+    </customerStack.Navigator>
+  );
+}
+function SaleStack() {
+  const saleStack = createNativeStackNavigator();
+  return (
+    <saleStack.Navigator>
+      <saleStack.Screen
+        name="Sale1"
+        component={Sale}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="AddSale"
+        component={AddSale}
+        options={{
+          header: props => (
+            <AppHeaders
+              title={'Inventory Dashboard'}
+              color={'#87CEEB'}
+              {...props}
+            />
+          ),
+        }}
+      />
+      <saleStack.Screen
+        name="saleDisplay"
+        component={SalesDisplay}
+        options={{
+          header: props => (
+            <AppHeaders
+              title={'Inventory Dashboard'}
+              color={'#87CEEB'}
+              {...props}
+            />
+          ),
+        }}
+      />
+    </saleStack.Navigator>
+  );
+}
+export default function Homestack() {
+  const Tab = createBottomTabNavigator();
+  const { height } = useWindowDimensions();
+  return (
+    
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({route}) => ({
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          height: height / 14,
+          paddingBottom: 10,
+          borderTopColor: '#fff',
+          elevation: 1,
+        },
+        tabBarHideOnKeyboard: true,
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused
+              ? { name: 'md-home', type: 'ionicons' }
+              : { name: 'md-home-outline', type: 'ionicons' };
+          } else if (route.name === 'Items') {
+            iconName = focused
+              ? { name: 'CodeSandbox', type: 'AntDesign' }
+              : { name: 'box', type: 'Feather' };
+          } else if (route.name === 'In/Out') {
+            iconName = focused
+              ? { name: 'arrow-swap', type: 'Fontisto' }
+              : { name: 'arrow-swap', type: 'Fontisto' };
+          }
+          else if (route.name === 'Settings') {
+            iconName = focused
+              ? { name: 'settings', type: 'ionicons' }
+              : { name: 'settings-outline', type: 'ionicons' };
+          }
+
+          // You can return any component that you like here!
+          if (iconName.type === 'ionicons') {
+            return <Ionicons name={iconName.name} size={size} color={color} />;
+          } else if (iconName.type === 'octicons') {
+            return <Octicons name={iconName.name} size={size} color={color} />;
+          } else if (iconName.type === 'Feather') {
+            return <Feather name={iconName.name} size={size} color={color} />;
+          } else if (iconName.type === 'AntDesign') {
+            return <AntDesign name={iconName.name} size={size} color={color} />;
+          } else if (iconName.type === 'Fontisto') {
+            return <Fontisto name={iconName.name} size={size} color={color} />;
+          }
+        },
+        tabBarActiveTintColor: '#386BF6',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+      <Tab.Screen name="Home" component={ProductStack} />
+      <Tab.Screen name="Items" component={SaleStack} />
+      <Tab.Screen name="In/Out" component={CustomerStack} />
+      <Tab.Screen name="Settings" component={SettingStack} />
+    </Tab.Navigator>
   );
 }

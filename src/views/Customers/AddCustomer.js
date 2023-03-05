@@ -26,18 +26,18 @@ import { setPostCustomerDetailsSucess } from './customerSlice';
 export default function AddCustomer({navigation}) {
 
   const {data: userDatafromRedux} = useSelector(state => state.auth);
-  const backAction = useCallback(() => {
-    navigation.goBack();
-    dispatch(setPostCustomerDetailsSucess({}))
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.goBack();
+  //   dispatch(setPostCustomerDetailsSucess({}))
+  //   return true;
+  // }, []);
   const user_id = userDatafromRedux?.result?._id;
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.customer);

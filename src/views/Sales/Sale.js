@@ -42,16 +42,16 @@ export default function Sale({navigation}) {
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [searchInput, setSearchInput] = useState('');
 
-  const backAction = useCallback(() => {
-    navigation.navigate('Dashboard')
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.navigate('Dashboard')
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
 
   function getData() {
