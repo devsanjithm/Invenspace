@@ -15,3 +15,10 @@ export const postSupplierDetails = payload => {
     };
   };
   
+  export const updateSupplierDetails = payload => {
+    console.log('===== @DH update profile details action =====', payload);
+    return {
+      type: actionTypes.updateSupplierDetails,
+      data: payload,
+    };
+  };

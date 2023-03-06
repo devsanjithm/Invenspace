@@ -34,6 +34,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FAB from '../../components/fab';
 import FloatingButton from '../../components/fab';
+import SupplierAPIs from '../Suppliers/supplierService';
+import CustomerAPIs from '../Customers/customerService';
 
 export default function Settings({navigation}) {
   const dispatch = useDispatch();
@@ -43,7 +45,8 @@ export default function Settings({navigation}) {
   const {userData, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
   const [handleSearchUIState, setSearchUIState] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  const [supcount, setSupcount] = useState();
+  const [cuscount, setCuscount] = useState();
 
   let username = userDatafromRedux?.result?.email;
 
@@ -57,6 +60,21 @@ export default function Settings({navigation}) {
   //   return () =>
   //     BackHandler.removeEventListener('hardwareBackPress', backAction);
   // }, [backAction]);
+
+   useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await SupplierAPIs.ProductCount();
+        const response2 = await CustomerAPIs.CustomerCount();
+        setSupcount(response?.data.data.count);
+        setCuscount(response2?.data.data.count);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   function handleRefresh() {
     setRefreshing(true);
@@ -156,7 +174,7 @@ export default function Settings({navigation}) {
               </View>
               <View style={{flexDirection: 'row'}}>
                 <View style={{paddingHorizontal: 20}}>
-                  <Text style={globalStyles}>1 supplier</Text>
+                  <Text style={globalStyles}>{supcount} supplier</Text>
                 </View>
                 <View style={{marginTop: 5}}>
                   <AntDesign name="right" size={18} color="#000" />
@@ -179,7 +197,7 @@ export default function Settings({navigation}) {
               </View>
               <View style={{flexDirection: 'row'}}>
                 <View style={{paddingHorizontal: 20}}>
-                  <Text style={globalStyles}>1 customer</Text>
+                  <Text style={globalStyles}>{cuscount} customer</Text>
                 </View>
                 <View style={{marginTop: 5}}>
                   <AntDesign name="right" size={18} color="#000" />

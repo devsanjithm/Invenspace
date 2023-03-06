@@ -32,6 +32,22 @@ function* postCustomerDetails(payload) {
     yield put(setCustomerDetailsFailure(error));
   }
 }
+function* updateCustomerDetails(payload) {
+  try {
+    yield put(setCustomerDetailsLoading());
+    console.log('===== @DH payload Customer saga =====', payload);
+    const data = yield call(ProductAPIs.updateProduct, payload.data);
+    console.log('===== @DH data Customer saga =====', data);
+    yield put(setUpdateCustomerDetailsSucess(data));
+  } catch (error) {
+    console.log('saga error', error);
+    yield put(setCustomerDetailsFailure(error));
+  }
+}
+
+function* watchOnUpdateCustomerDetails() {
+  yield takeLatest('updateCustomerDetails', updateCustomerDetails);
+}
 
 function* watchOnGetCustomerDetails() {
   yield takeLatest('getCustomerDetails', getCustomerDetails);
@@ -44,5 +60,5 @@ function* watchOnPostCustomerDetails() {
 
 
 export default function* customerSaga() {
-  yield all([fork(watchOnGetCustomerDetails),fork(watchOnPostCustomerDetails)]);
+  yield all([fork(watchOnGetCustomerDetails),fork(watchOnPostCustomerDetails),fork(watchOnUpdateCustomerDetails)]);
 }

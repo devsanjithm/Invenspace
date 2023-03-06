@@ -14,4 +14,10 @@ export const postCustomerDetails = payload => {
       data: payload,
     };
   };
-  
+  export const updateCustomerDetails = payload => {
+    console.log('===== @DH update profile details action =====', payload);
+    return {
+      type: actionTypes.updateCustomerDetails,
+      data: payload,
+    };
+  }; 
