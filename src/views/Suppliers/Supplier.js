@@ -62,8 +62,8 @@ export default function Sale({navigation}) {
       dispatch(getSupplierDetails(userId));
     } else {
       console.log('userdara ', userData);
-      userId = userData?.result?._id;
-      dispatch(getSupplierDetails(userId));
+      let payload = {where:{status:true}}
+      dispatch(getSupplierDetails(payload));
     }
     setRefreshing(false);
   }

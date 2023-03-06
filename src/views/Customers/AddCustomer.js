@@ -20,19 +20,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 import {getCustomerDetails, postCustomerDetails} from './customerAction';
 import _ from 'lodash';
-import { setPostCustomerDetailsSucess } from './customerSlice';
-
+import {setPostCustomerDetailsSucess} from './customerSlice';
 
 export default function AddCustomer({navigation}) {
-
-  const {data: userDatafromRedux} = useSelector(state => state.auth);
-  // const backAction = useCallback(() => {
-  //   navigation.goBack();
-  //   dispatch(setPostCustomerDetailsSucess({}))
-  //   return true;
-  // }, []);
-  const user_id = userDatafromRedux?.result?._id;
-
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', backAction);
   //   return () =>
@@ -49,12 +39,9 @@ export default function AddCustomer({navigation}) {
       cust_username: values.cust_username,
       cust_email: values.cust_email,
       cust_mobile: values.cust_mobile,
-      user_id: user_id,
     };
-    if(_.isString(user_id) && !_.isEmpty(user_id)){
-      dispatch(postCustomerDetails(payload));
-      dispatch(getCustomerDetails(user_id));
-    }
+    dispatch(postCustomerDetails(payload));
+    dispatch(getCustomerDetails());
   }
 
   useEffect(() => {
