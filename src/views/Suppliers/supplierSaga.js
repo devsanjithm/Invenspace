@@ -33,6 +33,23 @@ function* postSupplierDetails(payload) {
   }
 }
 
+function* updateSupplierDetails(payload) {
+  try {
+    yield put(setSupplierDetailsLoading());
+    console.log('===== @DH payload Product saga =====', payload);
+    const data = yield call(SupplierAPIs.updateProduct, payload.data);
+    console.log('===== @DH data Product saga =====', data);
+    yield put(setUpdateSupplierDetailsSucess(data));
+  } catch (error) {
+    console.log('saga error', error);
+    yield put(setSupplierDetailsFailure(error));
+  }
+}
+
+function* watchOnUpdateSupplierDetails() {
+  yield takeLatest('updateSupplierDetails', updateSupplierDetails);
+}
+
 function* watchOnGetSupplierDetails() {
   yield takeLatest('getSupplierDetails', getSupplierDetails);
 }
@@ -44,5 +61,5 @@ function* watchOnPostSupplierDetails() {
 
 
 export default function* supplierSaga() {
-  yield all([fork(watchOnGetSupplierDetails),fork(watchOnPostSupplierDetails)]);
+  yield all([fork(watchOnGetSupplierDetails),fork(watchOnPostSupplierDetails),fork(watchOnUpdateSupplierDetails)]);
 }

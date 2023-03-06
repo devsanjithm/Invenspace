@@ -97,7 +97,7 @@ export default function Sale({navigation}) {
   useEffect(() => {
     if (!_.isEmpty(data)) {
       console.log('data in product', data);
-      setSupplierData(data?.data);
+      setSupplierData(data?.data.data);
     }
   }, [data]);
 

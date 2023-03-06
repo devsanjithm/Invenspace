@@ -92,8 +92,8 @@ export default function Product({navigation}) {
 
   useEffect(() => {
     if (!_.isEmpty(data)) {
-      console.log('data in product', data);
-      setProductData(data?.data);
+      console.log('data in product', data.data.data);
+      setProductData(data?.data.data);
     }
   }, [data]);
 

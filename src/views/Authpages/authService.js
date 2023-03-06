@@ -3,7 +3,7 @@ import apiInstance from '../../service/axios/index';
 const LoginAPIs = {
   login: async payload => {
     try {
-      const res = await apiInstance.post('/user/login', payload);
+      const res = await apiInstance.post('/api/login', payload);
       return res;
     } catch (error) {
       console.log('=======', error);
@@ -13,7 +13,7 @@ const LoginAPIs = {
 
   register: async payload => {
     try {
-      const res = await apiInstance.post('/user/registration', payload);
+      const res = await apiInstance.post('/api/registration', payload);
       return res;
     } catch (error) {
       console.log('=======', error);
