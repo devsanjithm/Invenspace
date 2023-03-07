@@ -3,7 +3,7 @@ import apiInstance from '../../service/axios/index';
 const CustomerAPIs = {
   getCustomer: async payload => {
     try {
-      const res = await apiInstance.post('/api/getAllCustomer');
+      const res = await apiInstance.post('/api/getAllCustomer',payload);
       return res;
     } catch (error) {
       console.log('=======', error);

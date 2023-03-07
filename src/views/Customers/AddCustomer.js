@@ -25,17 +25,7 @@ import _ from 'lodash';
 import { setPostCustomerDetailsSucess } from './customerSlice';
 import { AppHeaders } from '../../components/AppHeaders';
 
-
 export default function AddCustomer({navigation}) {
-
-  const {data: userDatafromRedux} = useSelector(state => state.auth);
-  // const backAction = useCallback(() => {
-  //   navigation.goBack();
-  //   dispatch(setPostCustomerDetailsSucess({}))
-  //   return true;
-  // }, []);
-  const user_id = userDatafromRedux?.result?._id;
-
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', backAction);
   //   return () =>
@@ -59,10 +49,8 @@ export default function AddCustomer({navigation}) {
       // "cust_email":"email12345@email.com",
       // "cust_mobile":987654190,
     };
-    if(_.isString(user_id) && !_.isEmpty(user_id)){
-      dispatch(postCustomerDetails(payload));
-      dispatch(getCustomerDetails(user_id));
-    }
+    dispatch(postCustomerDetails(payload));
+    dispatch(getCustomerDetails());
   }
 
   useEffect(() => {

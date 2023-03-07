@@ -62,25 +62,27 @@ export default function Settings({navigation}) {
   //     BackHandler.removeEventListener('hardwareBackPress', backAction);
   // }, [backAction]);
 
-   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await SupplierAPIs.ProductCount();
-        const response2 = await CustomerAPIs.CustomerCount();
-        setSupcount(response?.data.data.count);
-        setCuscount(response2?.data.data.count);
-      } catch (error) {
-        console.error(error);
-      }
+  async function fetchData() {
+    try {
+      // payload = JSON.stringify(payload)
+      const response = await SupplierAPIs.ProductCount();
+      const response2 = await CustomerAPIs.CustomerCount();
+      setSupcount(response?.data.data.count);
+      setCuscount(response2?.data.data.count);
+    } catch (error) {
+      console.error(error);
     }
-
+    setRefreshing(false);
+  }
+  useEffect(() => {
     fetchData();
   }, []);
 
   function handleRefresh() {
-    setRefreshing(true);
     if (isInternet) {
+      setRefreshing(true);
       console.log(username);
+      fetchData()
     } else {
       Toast.show({
         type: 'error',
@@ -88,7 +90,7 @@ export default function Settings({navigation}) {
         text2: 'Try after Sometime',
         visibilityTime: 5000,
       });
-      setRefreshing(false);
+      setRefreshing(false)
     }
   }
   async function handleLogout() {
@@ -116,7 +118,7 @@ export default function Settings({navigation}) {
           backgroundColor: '#fff',
           // justifyContent: 'flex-end',
         }}>
-        <AppHeaders title={'Settings'} color={'#fff'} main={true}>
+        <AppHeaders title={'Settings'} color={'#fff'}>
           <View style={{flexDirection: 'row'}}>
             <View style={{paddingHorizontal: 10}}>
               <AntDesign
@@ -141,7 +143,8 @@ export default function Settings({navigation}) {
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }>
+          }
+          >
           <View>
             <ImageBackground source={Img2} style={styles.img}>
               <View style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
@@ -166,7 +169,8 @@ export default function Settings({navigation}) {
               paddingBottom: 15,
               borderBottomColor: '#e4e4e4',
               borderBottomWidth: 10,
-            }}/>
+            }}
+          />
           <View
             style={{
               marginTop: 15,
@@ -175,52 +179,62 @@ export default function Settings({navigation}) {
               borderBottomColor: '#e4e4e4',
               borderBottomWidth: 10,
             }}>
-            <Text style={{fontSize:20,color:'black',fontWeight:'700',marginLeft:15}}>Account Settings</Text>
-            <Pressable
-            onPress={() =>{navigation.navigate('supplierDisplay')}}
-            >
-            <View
+            <Text
               style={{
-                padding: 15,
-                flexDirection: 'row',
-                 marginLeft:10,
-                justifyContent: 'space-between',
+                fontSize: 20,
+                color: 'black',
+                fontWeight: '700',
+                marginLeft: 15,
               }}>
-              <View>
-                <Text style={globalStyles}>Supplier</Text>
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{paddingHorizontal: 20}}>
-                  <Text style={globalStyles}>{supcount} supplier</Text>
+              Account Settings
+            </Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('supplierDisplay');
+              }}>
+              <View
+                style={{
+                  padding: 15,
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <Text style={globalStyles}>Supplier</Text>
                 </View>
-                <View style={{marginTop: 5}}>
-                  <AntDesign name="right" size={18} color="#000" />
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{paddingHorizontal: 20}}>
+                    <Text style={globalStyles}>{supcount} supplier</Text>
+                  </View>
+                  <View style={{marginTop: 5}}>
+                    <AntDesign name="right" size={18} color="#000" />
+                  </View>
                 </View>
               </View>
-            </View>
             </Pressable>
             <Pressable
-            onPress={() =>{navigation.navigate('customerdis')}}
-            >
-            <View
-              style={{
-                padding: 15,
-                flexDirection: 'row',
-                 marginLeft:10,
-                justifyContent: 'space-between',
+              onPress={() => {
+                navigation.navigate('customerdis');
               }}>
-              <View>
-                <Text style={globalStyles}>Customer</Text>
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{paddingHorizontal: 20}}>
-                  <Text style={globalStyles}>{cuscount} customer</Text>
+              <View
+                style={{
+                  padding: 15,
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <Text style={globalStyles}>Customer</Text>
                 </View>
-                <View style={{marginTop: 5}}>
-                  <AntDesign name="right" size={18} color="#000" />
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{paddingHorizontal: 20}}>
+                    <Text style={globalStyles}>{cuscount} customer</Text>
+                  </View>
+                  <View style={{marginTop: 5}}>
+                    <AntDesign name="right" size={18} color="#000" />
+                  </View>
                 </View>
               </View>
-            </View>
             </Pressable>
           </View>
           <View
@@ -230,12 +244,20 @@ export default function Settings({navigation}) {
               borderBottomColor: '#e4e4e4',
               borderBottomWidth: 10,
             }}>
-            <Text style={{fontSize:20,color:'black',fontWeight:'500',marginLeft:15}}>Support</Text>
+            <Text
+              style={{
+                fontSize: 20,
+                color: 'black',
+                fontWeight: '500',
+                marginLeft: 15,
+              }}>
+              Support
+            </Text>
             <View
               style={{
                 padding: 15,
                 flexDirection: 'row',
-                marginLeft:10,
+                marginLeft: 10,
                 justifyContent: 'space-between',
               }}>
               <View>
@@ -254,7 +276,7 @@ export default function Settings({navigation}) {
               style={{
                 padding: 15,
                 flexDirection: 'row',
-                marginLeft:10,
+                marginLeft: 10,
                 justifyContent: 'space-between',
               }}>
               <View>

@@ -27,7 +27,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { useWindowDimensions } from 'react-native';
 import Settings from '../views/Settings/settings';
-
+import Home from '../views/home';
 function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
@@ -155,7 +155,7 @@ export default function Homestack() {
       screenOptions={({route}) => ({
         tabBarStyle: {
           backgroundColor: '#fff',
-          height: height / 14,
+          height: height / 15,
           paddingBottom: 10,
           borderTopColor: '#fff',
           elevation: 1,
@@ -200,8 +200,8 @@ export default function Homestack() {
         tabBarActiveTintColor: '#386BF6',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="Home" component={ProductStack} />
-      <Tab.Screen name="Items" component={ProductStack} />
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Items" component={SaleStack} />
       <Tab.Screen name="In/Out" component={CustomerStack} />
       <Tab.Screen name="Settings" component={SettingStack} />
     </Tab.Navigator>
