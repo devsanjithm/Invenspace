@@ -12,7 +12,7 @@ const ProductAPIs = {
   },
   setProduct: async payload => {
     try {
-      const res = await apiInstance.post('/products/add', payload);
+      const res = await apiInstance.post('/api/addproduct', payload);
       return res;
     } catch (error) {
       console.log('=======', error);

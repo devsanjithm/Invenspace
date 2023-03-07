@@ -26,6 +26,10 @@ import {
   setUpdateCustomerDetailsSucess,
 } from './customerSlice';
 import _ from 'lodash';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
@@ -126,31 +130,73 @@ export function CustomerDisplay({route, navigation}) {
     }
   }, [cusError]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(setUpdateCustomerDetailsSucess({}));
-      dispatch(setCustomerDetailsFailure({}));
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(setUpdateCustomerDetailsSucess({}));
+  //     dispatch(setCustomerDetailsFailure({}));
+  //   };
+  // }, []);
 
   return (
     <>
       {loading ? <Loader /> : null}
-      <AppHeaders title={editable?'Edit Customer':'View Customer'} color={'#fff'}>
-        <View>
+      <AppHeaders title={data?.cust_name} color={'#fff'}>
+      <View style={{flexDirection:'row',}}>
           <Pressable onPress={()=>{
             setEditable(true)
           }}>
             {
               !editable?
-              <Entypo name='edit' size={20} color='#000' />:null
+              <FontAwesome name='edit' size={20} color='#000' />:null
             }
           </Pressable>
+          <View style={{marginLeft:15,marginRight:10}}>
+          <Pressable onPress={()=>{
+            
+          }}>
+            {
+               !editable?
+              <AntDesign  name='delete' size={20} color='#000' />:null
+            }
+          </Pressable>
+          </View>
         </View>
       </AppHeaders>
       <KeyboardAvoidingView style={globalStyles.screenLayout}> 
         <SafeAreaView>
           <ScrollView>
+
+          {
+              !editable?
+          <View>
+            
+            <View>
+            <Text style={{color:'black',fontWeight:'600',fontSize:20,marginLeft:12,marginBottom:20}}>Account info</Text>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,}}>Account</Text>
+                <Text style={{fontSize:17,color:'black'}}>{data.cust_name}</Text>
+            </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,}}>Telephone</Text>
+                <View style={{flexDirection:'row'}}>
+                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.cust_mobile}</Text>
+                <Foundation name='telephone' size={20} color='blue' />
+                </View>
+              </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,}}>Email</Text>
+                <View style={{flexDirection:'row'}}>
+                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.cust_email}</Text>
+                <Fontisto name='email' size={20} color='blue' />
+                </View>
+              </View>
+            </View>
+            
+          </View>:null}
+          {
+              editable?
+            <View>
+              
             <View>
               <View style={styles.inputBox}>
                 <Input
@@ -227,8 +273,7 @@ export function CustomerDisplay({route, navigation}) {
                 />
               </View> */}
             </View>
-            {
-              editable?<View style={styles.bottomContainer}>
+            <View style={styles.bottomContainer}>
               <View style={styles.cnclBtn}>
                 <Pressable onPress={() => {setEditable(false)}}>
                   <Text style={styles.btnText}>Cancel</Text>
@@ -238,6 +283,7 @@ export function CustomerDisplay({route, navigation}) {
                 <Pressable onPress={onSubmit}>
                   <Text style={[styles.btnText, {color: '#fff'}]}>Submit</Text>
                 </Pressable>
+              </View>
               </View>
             </View>:null
             }

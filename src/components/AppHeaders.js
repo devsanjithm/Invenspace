@@ -43,6 +43,7 @@ export function AppHeaders(props) {
             </TouchableOpacity>
           ) : null}
 
+
           <Text style={styles.headerText}>{props.title} </Text>
           <View style={{padding: 20}}>{props.children}</View>
         </View>
@@ -51,3 +52,19 @@ export function AppHeaders(props) {
   );
 }
 
+
+const styles = StyleSheet.create({
+  headerText: {
+    color: '#000',
+    fontSize: 20,
+    flex: 1,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    // textAlign: 'center',
+    // paddingLeft: '20%',
+  },
+  headerLeftIcon: {
+    padding: 20,
+  },
+});

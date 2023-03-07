@@ -83,7 +83,7 @@ export default function Sale({navigation}) {
   
   function search(text) {
     setSearchInput(text);
-    const newData = data?.data.filter(item => {
+    const newData = data?.data.data.filter(item => {
       const itemData = `${item?.sup_name?.toLowerCase()}${item?.sup_mobile}${item?.sup_email}${
         item?._id
       }`;
