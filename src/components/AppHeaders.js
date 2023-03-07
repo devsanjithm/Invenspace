@@ -18,7 +18,8 @@ export function AppHeaders(props) {
   return (
     <>
       <SafeAreaView style={{backgroundColor: '#fff'}}>
-        <View style={{flexDirection: 'row',backgroundColor:props.color}}>
+        <View style={{flexDirection: 'row',backgroundColor:props.color,borderBottomColor: '#e4e4e4',
+  borderBottomWidth: 1,}}>
           <TouchableOpacity
             style={styles.headerLeftIcon}
             onPress={handleBack}>
@@ -33,6 +34,7 @@ export function AppHeaders(props) {
     </>
   );
 }
+
 
 const styles = StyleSheet.create({
   headerText: {

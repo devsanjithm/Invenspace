@@ -84,7 +84,7 @@ export default function Customer({navigation}) {
   function search(text) {
     console.log(data);
     setSearchInput(text);
-    const newData = data?.data.filter(item => {
+    const newData = data?.data.data.filter(item => {
       const itemData = `${item?.cust_name?.toLowerCase()}${
         item?.cust_mobile
       }${item?.cust_email?.toLowerCase()}`;

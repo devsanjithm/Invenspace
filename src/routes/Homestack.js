@@ -201,7 +201,7 @@ export default function Homestack() {
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen name="Home" component={ProductStack} />
-      <Tab.Screen name="Items" component={SaleStack} />
+      <Tab.Screen name="Items" component={ProductStack} />
       <Tab.Screen name="In/Out" component={CustomerStack} />
       <Tab.Screen name="Settings" component={SettingStack} />
     </Tab.Navigator>

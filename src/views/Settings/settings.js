@@ -15,6 +15,7 @@ import {
   BackHandler,
   RefreshControl,
   Pressable,
+  Alert,
 } from 'react-native';
 import Img2 from '../../assets/settings.jpg';
 import {FlatList} from 'react-native-gesture-handler';
@@ -89,6 +90,22 @@ export default function Settings({navigation}) {
       });
       setRefreshing(false);
     }
+  }
+  async function handleLogout() {
+    Alert.alert('Logout', 'Are you sure you want to Logout?', [
+      // The "Yes" button
+      {
+        text: 'Yes',
+        onPress: () => {
+          dispatch(setAuthDetailsSuccess({}));
+          setRoute(false);
+          clearAll();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
   }
   return (
     <>
@@ -253,9 +270,25 @@ export default function Settings({navigation}) {
               </View>
             </View>
           </View>
+          <Pressable onPress={handleLogout}>
+            <View
+              style={{
+                padding: 10,
+                paddingHorizontal: 10,
+                margin: 20,
+                flexDirection: 'row',
+              }}>
+              <AntDesign name="logout" size={16} color="#000" />
+              <Text
+                style={{fontSize: 16, color: '#000', paddingHorizontal: 20}}>
+                Logout
+              </Text>
+            </View>
+          </Pressable>
           <View>
             <Text> . App version 1.1</Text>
           </View>
+          
         </ScrollView>
       </SafeAreaView>
     </>
