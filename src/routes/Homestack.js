@@ -12,7 +12,6 @@ import Sale from '../views/Sales/Sale';
 import AddSale from '../views/Sales/AddSale';
 import Supplier from '../views/Suppliers/Supplier';
 import AddSupplier from '../views/Suppliers/AddSupplier';
-import SideNavPage from '../views/sideNavbarPage';
 import {Display} from '../views/Products/productDisplay';
 import {CustomerDisplay} from '../views/Customers/customerDisplay';
 import {PurchaseDisplay} from '../views/Purchases/purchaseDisplay';
@@ -28,6 +27,8 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import { useWindowDimensions } from 'react-native';
 import Settings from '../views/Settings/settings';
 import Home from '../views/home';
+import Transactions from '../views/transactions';
+import HistoryTransaction from '../views/transactions/historyTransaction';
 function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
@@ -105,41 +106,24 @@ function CustomerStack() {
     </customerStack.Navigator>
   );
 }
-function SaleStack() {
+function TransactionStack() {
   const saleStack = createNativeStackNavigator();
   return (
-    <saleStack.Navigator>
+    <saleStack.Navigator 
+    screenOptions={{animation:'fade_from_bottom'}}
+    >
       <saleStack.Screen
-        name="Sale1"
-        component={Sale}
+        name="Transaction"
+        component={Transactions}
         options={{
           headerShown: false,
         }}
       />
       <saleStack.Screen
-        name="AddSale"
-        component={AddSale}
+        name="History Transaction"
+        component={HistoryTransaction}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
-        }}
-      />
-      <saleStack.Screen
-        name="saleDisplay"
-        component={SalesDisplay}
-        options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
     </saleStack.Navigator>
@@ -201,8 +185,8 @@ export default function Homestack() {
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Items" component={SaleStack} />
-      <Tab.Screen name="In/Out" component={CustomerStack} />
+      <Tab.Screen name="Items" component={ProductStack} />
+      <Tab.Screen name="In/Out" component={TransactionStack} />
       <Tab.Screen name="Settings" component={SettingStack} />
     </Tab.Navigator>
   );

@@ -157,6 +157,7 @@ export default function Product({navigation}) {
             <TextInput
               value={searchInput}
               placeholder={'Search'}
+              placeholderTextColor={"#000"}
               onChangeText={text => search(text)}
               // left={ <Ionicons
               //   onPress={() => setSearchUIState(!handleSearchUIState)}
@@ -172,6 +173,7 @@ export default function Product({navigation}) {
                 padding: 5,
                 paddingHorizontal: 10,
                 backgroundColor: '#eee',
+                color:"#000"
               }}
             />
             
