@@ -20,20 +20,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 import {postSupplierDetails} from './supplierAction';
 import _ from 'lodash';
+import { AppHeaders } from '../../components/AppHeaders';
 
 export default function AddSupplier({navigation}) {
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const user_id=userDatafromRedux?.result?._id;
-  const backAction = useCallback(() => {
-    navigation.goBack();
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.goBack();
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.supplier);
 
@@ -100,11 +101,14 @@ export default function AddSupplier({navigation}) {
             backgroundColor: '#fff',
             // justifyContent: 'flex-end',
           }}>
-          <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
+             <AppHeaders title={'Add Supplier'} color={'#fff'} main={true}></AppHeaders>
+          <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content"  />
+          
           <KeyboardAvoidingView>
+            
             <ScrollView>
               <View>
-                <Text style={styles.top}>Add Customer</Text>
+                <Text style={styles.top}>Account info</Text>
               </View>
               <View style={styles.container}>
                 <TextInput
@@ -172,10 +176,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   top: {
-    fontSize: 25,
+    fontSize: 23,
     fontWeight: 'bold',
     color: 'black',
     marginTop: 20,
+    marginLeft:10
   },
   inputf: {
     width: '90%',

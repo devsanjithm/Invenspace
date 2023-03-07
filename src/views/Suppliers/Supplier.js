@@ -28,6 +28,7 @@ import globalStyles from '../../components/Styles';
 const screenWidth = Dimensions.get('window').width;
 import {AppHeaders} from '../../components/AppHeaders';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -42,16 +43,16 @@ export default function Sale({navigation}) {
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [searchInput, setSearchInput] = useState('');
 
-  const backAction = useCallback(() => {
-    navigation.navigate('Dashboard')
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.navigate('Dashboard')
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
 
   function getData() {
@@ -82,7 +83,7 @@ export default function Sale({navigation}) {
   
   function search(text) {
     setSearchInput(text);
-    const newData = data?.data.filter(item => {
+    const newData = data?.data.data.filter(item => {
       const itemData = `${item?.sup_name?.toLowerCase()}${item?.sup_mobile}${item?.sup_email}${
         item?._id
       }`;
@@ -96,7 +97,7 @@ export default function Sale({navigation}) {
   useEffect(() => {
     if (!_.isEmpty(data)) {
       console.log('data in product', data);
-      setSupplierData(data?.data);
+      setSupplierData(data?.data.data);
     }
   }, [data]);
 
@@ -133,7 +134,7 @@ export default function Sale({navigation}) {
       backgroundColor: '#fff',
       // justifyContent: 'flex-end',
     }}>
-      <AppHeaders title={'Sale'} color={'#fff'} main={true}>
+      <AppHeaders title={'Supplier'} color={'#fff'} main={true}>
           {handleSearchUIState ? (
             <View style={{flexDirection: 'row'}}>
               <View style={{paddingHorizontal: 10}}>
@@ -157,25 +158,26 @@ export default function Sale({navigation}) {
                   setSearchUIState(!handleSearchUIState);
                 }}
                 name="cancel"
-                size={30}
+                size={24}
                 color="#000"
               />
             </View>
           ) : (
             <View style={{flexDirection: 'row'}}>
+              
               <View style={{paddingHorizontal: 10}}>
                 <Ionicons
-                  onPress={() => navigation.navigate('AddSupplier')}
-                  name="ios-add-circle"
-                  size={30}
+                  onPress={() => setSearchUIState(!handleSearchUIState)}
+                  name="search"
+                  size={24}
                   color="#000"
                 />
               </View>
               <View style={{paddingHorizontal: 10}}>
                 <Ionicons
-                  onPress={() => setSearchUIState(!handleSearchUIState)}
-                  name="search"
-                  size={30}
+                  onPress={() => navigation.navigate('addsup')}
+                  name="ios-add-circle"
+                  size={24}
                   color="#000"
                 />
               </View>
@@ -187,52 +189,6 @@ export default function Sale({navigation}) {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
-          <View
-            style={{
-              flexDirection: 'row',
-              padding: 20,
-              justifyContent: 'space-between',
-            }}>
-            <View style={styles.card}>
-              <Text
-                style={[
-                  globalStyles.text,
-                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
-                ]}>
-                Supplier Demand
-              </Text>
-              <View>
-                {/* <View style={styles.iconWrapper}>
-                  <Entypo name="price-tag" size={35} color="#000" />
-                </View> */}
-                <Text
-                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
-                  9.8k
-                </Text>
-              </View>
-            </View>
-            <View style={styles.card1}>
-              <Text
-                style={[
-                  globalStyles.text,
-                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
-                ]}>
-                Advance
-              </Text>
-              <View>
-                {/* <Ionicons name="pie-chart" size={35} color="#000" /> */}
-                <Text
-                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
-                  2345
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={{paddingHorizontal: 20, paddingVertical: 10}}>
-            <Text style={[globalStyles.text, {fontSize: 25, color: '#000'}]}>
-              Supplier List
-            </Text>
-          </View>
           <View style={{padding: 10}}>
             {_.isEmpty(supplierData) ? (
               <View
@@ -240,45 +196,57 @@ export default function Sale({navigation}) {
                   flex: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  
                 }}>
                 <Text>NO Data</Text>
               </View>
             ) : (
               supplierData?.map((ele, index) => (
+                <Pressable
+                     onPress={() => navigation.navigate('supplierDis',{data:ele})}
+                     key={index}
+                    >
+                      
                 <View
                   style={{
                     padding: 15,
                     flexDirection: 'row',
-                    margin: 10,
-                    justifyContent:'space-between'
+                    margin: 5,
+                    justifyContent:'space-between',
+                    
+                    
                   }}
-                  key={index}>
+                >
                   <View style={{flexDirection:'row'}}>
                     <View
                       style={{
                         backgroundColor: '#e4e4e4',
                         borderRadius: 20,
-                        width: 40,
-                        height: 40,
+                        width: 30,
+                        height: 30,
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
-                      <AntDesign name="paperclip" size={20} color="#000" />
+                      <MaterialCommunityIcons name="handshake" size={20} color="#000" />
                     </View>
                     <View style={{paddingHorizontal: 20}}>
                       <Text style={globalStyles}>{ele?.sup_name}</Text>
-                      <Text style={globalStyles}>{ele?.sup_mobile}</Text>
+                      {/* <Text style={globalStyles}>{ele?.sup_mobile}</Text> */}
                     </View>
                   </View>
                   <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('supplierDisplay',{data:ele})}
                     
-                    >
                     <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
+                   
                   </View>
                 </View>
+                <View  style={{
+                   borderBottomColor: '#e4e4e4',
+                   borderBottomWidth: 0.5,
+                    
+                    
+                  }}></View>
+                </Pressable>
               ))
             )}
           </View>

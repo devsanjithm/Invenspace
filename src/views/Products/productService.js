@@ -3,7 +3,7 @@ import apiInstance from '../../service/axios/index';
 const ProductAPIs = {
   getProduct: async payload => {
     try {
-      const res = await apiInstance.get(`/products/getAll?user_id=${payload}`);
+      const res = await apiInstance.post('/api/getallproduct');
       return res;
     } catch (error) {
       console.log('=======', error);
@@ -12,7 +12,7 @@ const ProductAPIs = {
   },
   setProduct: async payload => {
     try {
-      const res = await apiInstance.post('/products/add', payload);
+      const res = await apiInstance.post('/api/addproduct', payload);
       return res;
     } catch (error) {
       console.log('=======', error);

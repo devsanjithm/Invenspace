@@ -42,16 +42,16 @@ export default function Sale({navigation}) {
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [searchInput, setSearchInput] = useState('');
 
-  const backAction = useCallback(() => {
-    navigation.navigate('Dashboard')
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.navigate('Dashboard')
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
 
   function getData() {
@@ -245,6 +245,11 @@ export default function Sale({navigation}) {
               </View>
             ) : (
               saleData?.map((ele, index) => (
+                <Pressable
+                     onPress={() => navigation.navigate('saleDisplay',{data:ele})}
+                     key={index}
+                    >
+                
                 <View
                   style={{
                     padding: 15,
@@ -252,7 +257,7 @@ export default function Sale({navigation}) {
                     margin: 10,
                     justifyContent:'space-between'
                   }}
-                  key={index}>
+                 >
                   <View style={{flexDirection:'row'}}>
                     <View
                       style={{
@@ -271,14 +276,12 @@ export default function Sale({navigation}) {
                     </View>
                   </View>
                   <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('saleDisplay',{data:ele})}
                     
-                    >
                     <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
+                  
                   </View>
                 </View>
+                </Pressable>
               ))
             )}
           </View>

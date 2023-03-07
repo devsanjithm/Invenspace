@@ -21,18 +21,20 @@ import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
-import {getCustomerDetails} from './customerAction'
+import {getCustomerDetails} from './customerAction';
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import globalStyles from '../../components/Styles';
 const screenWidth = Dimensions.get('window').width;
 import {AppHeaders} from '../../components/AppHeaders';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FAB from '../../components/fab';
+import FloatingButton from '../../components/fab';
 
 export default function Customer({navigation}) {
-
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.customer);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
@@ -42,17 +44,16 @@ export default function Customer({navigation}) {
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [searchInput, setSearchInput] = useState('');
 
-  const backAction = useCallback(() => {
-    navigation.navigate('Dashboard')
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.navigate('Dashboard');
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
-
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   function getData() {
     let userId = userDatafromRedux?.result?._id;
@@ -79,25 +80,25 @@ export default function Customer({navigation}) {
       });
     }
   }, []);
-  
+
   function search(text) {
     console.log(data);
     setSearchInput(text);
-    const newData = data?.data.filter(item => {
-      const itemData = `${item?.cust_name?.toLowerCase()}${item?.cust_mobile}${item?.cust_email?.toLowerCase()}`;
-      
+    const newData = data?.data.data.filter(item => {
+      const itemData = `${item?.cust_name?.toLowerCase()}${
+        item?.cust_mobile
+      }${item?.cust_email?.toLowerCase()}`;
+
       const textData = text.toLowerCase();
       return itemData.indexOf(textData) > -1;
     });
     setCustomerData(newData);
   }
- 
- 
 
   useEffect(() => {
     if (!_.isEmpty(data)) {
       console.log('data in product', data);
-      setCustomerData(data?.data);
+      setCustomerData(data?.data.data);
     }
   }, [data]);
 
@@ -158,25 +159,26 @@ export default function Customer({navigation}) {
                   setSearchUIState(!handleSearchUIState);
                 }}
                 name="cancel"
-                size={30}
+                size={24}
                 color="#000"
               />
             </View>
           ) : (
             <View style={{flexDirection: 'row'}}>
+              
               <View style={{paddingHorizontal: 10}}>
                 <Ionicons
-                  onPress={() => navigation.navigate('AddCustomer')}
-                  name="ios-add-circle"
-                  size={30}
+                  onPress={() => setSearchUIState(!handleSearchUIState)}
+                  name="search"
+                  size={24}
                   color="#000"
                 />
               </View>
               <View style={{paddingHorizontal: 10}}>
                 <Ionicons
-                  onPress={() => setSearchUIState(!handleSearchUIState)}
-                  name="search"
-                  size={30}
+                  onPress={() => navigation.navigate('addcus')}
+                  name="ios-add-circle"
+                  size={24}
                   color="#000"
                 />
               </View>
@@ -188,52 +190,6 @@ export default function Customer({navigation}) {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
-          <View
-            style={{
-              flexDirection: 'row',
-              padding: 20,
-              justifyContent: 'space-between',
-            }}>
-            <View style={styles.card}>
-              <Text
-                style={[
-                  globalStyles.text,
-                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
-                ]}>
-                Total Customers
-              </Text>
-              <View>
-                {/* <View style={styles.iconWrapper}>
-                  <Entypo name="price-tag" size={35} color="#000" />
-                </View> */}
-                <Text
-                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
-                  9.8k
-                </Text>
-              </View>
-            </View>
-            {/* <View style={styles.card1}>
-              <Text
-                style={[
-                  globalStyles.text,
-                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
-                ]}>
-                Yet to receive
-              </Text>
-              <View>
-                
-                <Text
-                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
-                  2345
-                </Text>
-              </View>
-            </View> */}
-          </View>
-          <View style={{paddingHorizontal: 20, paddingVertical: 10}}>
-            <Text style={[globalStyles.text, {fontSize: 25, color: '#000'}]}>
-              Customers
-            </Text>
-          </View>
           <View style={{padding: 10}}>
             {_.isEmpty(customerData) ? (
               <View
@@ -241,52 +197,63 @@ export default function Customer({navigation}) {
                   flex: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  
                 }}>
                 <Text>NO Data</Text>
               </View>
             ) : (
               customerData?.map((ele, index) => (
+                <Pressable
+                     onPress={() => navigation.navigate('cusdis',{data:ele})}
+                     key={index}
+                    >
+                      
                 <View
                   style={{
                     padding: 15,
                     flexDirection: 'row',
-                    margin: 10,
-                    justifyContent:'space-between'
+                    margin: 5,
+                    justifyContent:'space-between',
+                    
+                    
                   }}
-                  key={index}>
+                >
                   <View style={{flexDirection:'row'}}>
                     <View
                       style={{
                         backgroundColor: '#e4e4e4',
                         borderRadius: 20,
-                        width: 40,
-                        height: 40,
+                        width: 30,
+                        height: 30,
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
-                      <AntDesign name="paperclip" size={20} color="#000" />
+                      <MaterialCommunityIcons name="handshake" size={20} color="#000" />
                     </View>
                     <View style={{paddingHorizontal: 20}}>
                       <Text style={globalStyles}>{ele?.cust_name}</Text>
-                      <Text style={globalStyles}>{ele?.cust_mobile}</Text>
+                      {/* <Text style={globalStyles}>{ele?.sup_mobile}</Text> */}
                     </View>
                   </View>
                   <View>
-                    <Pressable
-                     onPress={() => navigation.navigate('customerDisplay',{data:ele})}
                     
-                    >
                     <AntDesign name='right' size={20} color="#000"/>
-                    </Pressable>
+                   
                   </View>
                 </View>
+                <View  style={{
+                   borderBottomColor: '#e4e4e4',
+                   borderBottomWidth: 0.5,
+                    
+                    
+                  }}></View>
+                </Pressable>
               ))
             )}
           </View>
         </ScrollView>
   </SafeAreaView>
   </>
-   
 );
 }
 const styles = StyleSheet.create({

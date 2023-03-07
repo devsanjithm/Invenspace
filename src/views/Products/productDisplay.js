@@ -31,10 +31,10 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 export function Display({route, navigation}) {
   console.log(route.params.data);
   const {data} = route.params;
-  const backAction = useCallback(() => {
-    navigation.goBack();
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.goBack();
+  //   return true;
+  // }, []);
   const dispatch = useDispatch();
   const {
     updateData,
@@ -53,11 +53,11 @@ export function Display({route, navigation}) {
 
   const [editable,setEditable] = useState(false);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   const defProductData = {
     pro_id: data?.pro_id,
@@ -158,7 +158,7 @@ export function Display({route, navigation}) {
           </Pressable>
         </View>
       </AppHeaders>
-      <KeyboardAvoidingView style={globalStyles.screenLayout}>
+      <KeyboardAvoidingView style={globalStyles.screenLayout}> 
         <SafeAreaView>
           <ScrollView>
             <View>
