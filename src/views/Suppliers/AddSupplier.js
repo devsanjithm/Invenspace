@@ -40,15 +40,12 @@ export default function AddSupplier({navigation}) {
 
   function handleSupplier(values) {
     const payload = {
-      sup_id: values.sup_id,
       sup_name: values.sup_name,
-      sup_username: values.sup_username,
       sup_email: values.sup_email,
-      sup_mobile: values.sup_mobile,
-      user_id: user_id,
+      sup_mobile: parseInt(values.sup_mobile),
     };
     dispatch(postSupplierDetails(payload));
-    dispatch(getCustomerDetails(user_id));
+    // dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {
@@ -66,7 +63,7 @@ export default function AddSupplier({navigation}) {
     if (error !== null) {
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message,
+        text2: error?.message?.error,
         type: 'error',
       });
     }

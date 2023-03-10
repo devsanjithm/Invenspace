@@ -34,8 +34,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {clearAll} from '../../service/localstorage';
 import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
+
 function Card1() {
   return (
     <View style={styles.cardContainer}>
@@ -64,11 +66,19 @@ function Card1() {
 }
 
 function Card2(props) {
+  const navigation = useNavigation()
   let loopedData = [];
   for (let i = 0; i < props?.data.length; i++) {
     const element = props?.data[i];
     loopedData.push(
-      <View key={i} style={{flexDirection: 'row',paddingHorizontal:10,justifyContent:'space-between'}}>
+      <Pressable key={i}  onPress={()=>{
+        if(element?.text === "Stock In"){
+          navigation.navigate('Stockin')
+        }else if(element?.text === "Register New Item"){
+          navigation.navigate('AddProducts')
+        }
+      }}>
+      <View style={{flexDirection: 'row',paddingHorizontal:10,justifyContent:'space-between'}}>
         <View style={{flexDirection:'row'}}>
         <View style={{padding:10}}>{element?.icon}</View>
         <Text style={{color: '#000',padding:10,fontSize:20}}>{element?.text}</Text>
@@ -76,7 +86,8 @@ function Card2(props) {
         <View style={{padding:10}}>
             <AntDesign name='right' size={20} color='#000' />
         </View>
-      </View>,
+      </View>
+      </Pressable>
     );
   }
   return (
