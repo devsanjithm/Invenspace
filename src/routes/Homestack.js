@@ -29,6 +29,9 @@ import Settings from '../views/Settings/settings';
 import Home from '../views/home';
 import Transactions from '../views/transactions';
 import HistoryTransaction from '../views/transactions/historyTransaction';
+import Stockin from '../views/transactions/stockin';
+import ListSupplier from '../views/transactions/listsupplier';
+import Listitem from '../views/transactions/listitems';
 function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
@@ -122,6 +125,27 @@ function TransactionStack() {
       <saleStack.Screen
         name="History Transaction"
         component={HistoryTransaction}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="Stockin"
+        component={Stockin}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listsupplier"
+        component={ListSupplier}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listitem"
+        component={Listitem}
         options={{
           headerShown: false,
         }}
