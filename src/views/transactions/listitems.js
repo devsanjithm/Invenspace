@@ -22,7 +22,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
-import {getProductDetails} from './productAction';
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import globalStyles from '../../components/Styles';
@@ -30,18 +29,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AppHeaders} from '../../components/AppHeaders';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {
-  setProductDetailsFailure,
-  setProductDetailsSuccess,
-} from './productSlice';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {setAuthDetailsSuccess} from '../Authpages/authSlice';
 import {clearAll} from '../../service/localstorage';
 import {Icon} from 'react-native-paper/lib/typescript/components/List/List';
 import {TextInputAffix} from 'react-native-paper/lib/typescript/components/TextInput/Adornment/TextInputAffix';
+import { getProductDetails } from '../Products/productAction';
+import { setProductDetailsFailure } from '../Products/productSlice';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function Product({navigation}) {
+export default function Listitem({navigation}) {
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.product);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
@@ -138,83 +136,133 @@ export default function Product({navigation}) {
   
   return (
     <>
-      {loading ? <Loader /> : null}
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-        }}>
-        <View style={{alignSelf: 'center', borderBottomColor: '#e4e4e4'}}>
-          <Text style={{fontSize: 25, color: 'black'}}>Products</Text>
-        </View>
-        <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-        <ScrollView
+    {loading ? <Loader /> : null}
+    <SafeAreaView
+    style={{
+      flex: 1,
+      backgroundColor: '#fff',
+      // justifyContent: 'flex-end',
+    }}>
+      <AppHeaders title={'Items'} color={'#fff'} main={true}>
+          {handleSearchUIState ? (
+            <View style={{flexDirection: 'row'}}>
+              <View style={{paddingHorizontal: 10}}>
+                <TextInput
+                  value={searchInput} 
+                  placeholder={'Search'}
+                  onChangeText={text => search(text)}
+                  style={{
+                    height: 35,
+                    width: screenWidth / 2.5,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                  }}
+                />
+              </View>
+              <MaterialIcons
+                onPress={() => {
+                  if (handleSearchUIState) {
+                    search('');
+                  }
+                  setSearchUIState(!handleSearchUIState);
+                }}
+                name="cancel"
+                size={24}
+                color="#000"
+              />
+            </View>
+          ) : (
+            <View style={{flexDirection: 'row'}}>
+              
+              <View style={{paddingHorizontal: 10}}>
+                <Ionicons
+                  onPress={() => setSearchUIState(!handleSearchUIState)}
+                  name="search"
+                  size={24}
+                  color="#000"
+                />
+              </View>
+              <View style={{paddingHorizontal: 10}}>
+                <Ionicons
+                  onPress={() => navigation.navigate('addsup')}
+                  name="ios-add-circle"
+                  size={24}
+                  color="#000"
+                />
+              </View>
+            </View>
+          )}
+        </AppHeaders>
+    <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
+    <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
-          <View style={{paddingHorizontal: 20, paddingVertical: 10}}></View>
-          <View style={{paddingHorizontal: 10, marginLeft: 10}}>
-            <TextInput
-              value={searchInput}
-              placeholder={'Search'}
-              placeholderTextColor={"#000"}
-              onChangeText={text => search(text)}
-              // left={ <Ionicons
-              //   onPress={() => setSearchUIState(!handleSearchUIState)}
-              //   name="search"
-              //   size={30}
-              //   color="#000"
-              // />}
-              style={{
-                height: 40,
-                width: screenWidth / 1.1,
-                borderWidth: 1,
-                borderRadius: 10,
-                padding: 5,
-                paddingHorizontal: 10,
-                backgroundColor: '#eee',
-                color:"#000"
-              }}
-            />
-            
-          </View>
-          <View style={styles.container}>
+          <View style={{padding: 10}}>
             {_.isEmpty(productData) ? (
-              <View style={styles.noDataContainer}>
-                <Text style={styles.noDataText}>NO Data</Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  
+                }}>
+                <Text>NO Data</Text>
               </View>
             ) : (
               productData?.map((ele, index) => (
                 <Pressable
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate('productDisplay', {data: ele})
-                  }
-                  style={styles.productContainer}>
-                  <View style={styles.iconContainer}>
-                    <AntDesign name="paperclip" size={24} color="#777" />
+                     onPress={() => navigation.navigate('Stockin',{data:ele})}
+                     key={index}
+                    >
+                      
+                <View
+                  style={{
+                    padding: 15,
+                    flexDirection: 'row',
+                    margin: 5,
+                    justifyContent:'space-between',
+                    
+                    
+                  }}
+                >
+                  <View style={{flexDirection:'row'}}>
+                    <View
+                      style={{
+                        backgroundColor: '#e4e4e4',
+                        borderRadius: 20,
+                        width: 30,
+                        height: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <MaterialCommunityIcons name="handshake" size={20} color="#000" />
+                    </View>
+                    <View style={{paddingHorizontal: 20}}>
+                      <Text style={globalStyles}>{ele?.pro_name}</Text>
+                      {/* <Text style={globalStyles}>{ele?.sup_mobile}</Text> */}
+                    </View>
                   </View>
-                  <View style={{marginLeft: 20, padding: 10}}>
-                    <Text style={styles.productName}>{ele.pro_name}</Text>
-                    <Text style={styles.productDesc}>{ele.pro_desc}</Text>
-                  </View>
+                  {/* <View>
+                    
+                    <AntDesign name='right' size={20} color="#000"/>
+                   
+                  </View> */}
+                </View>
+                <View  style={{
+                   borderBottomColor: '#e4e4e4',
+                   borderBottomWidth: 0.5,
+                    
+                    
+                  }}></View>
                 </Pressable>
               ))
             )}
           </View>
         </ScrollView>
-        <View
-          style={{paddingHorizontal: 10, alignSelf: 'flex-end', margin: 14}}>
-          <Ionicons
-            onPress={() => navigation.navigate('AddProducts')}
-            name="ios-add-circle"
-            size={60}
-            color="#000"
-          />
-        </View>
-      </SafeAreaView>
-    </>
-  );
+  </SafeAreaView>
+  </>
+);
 }
 const styles = StyleSheet.create({
   container: {
@@ -255,56 +303,4 @@ const styles = StyleSheet.create({
   },
 });
 
-{
-  /* <AppHeaders title={'Products'} color={'#fff'} main={true}>
-          {handleSearchUIState ? (
-            <View style={{flexDirection: 'row'}}>
-              <View style={{paddingHorizontal: 10}}>
-                <TextInput
-                  value={searchInput}
-                  placeholder={'Search'}
-                  onChangeText={text => search(text)}
-                  style={{
-                    height: 35,
-                    width: screenWidth / 2.5,
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    padding: 5,
-                    paddingHorizontal: 10,
-                  }}
-                />
-              </View>
-              <MaterialIcons
-                onPress={() => {
-                  if (handleSearchUIState) {
-                    search('');
-                  }
-                  setSearchUIState(!handleSearchUIState);
-                }}
-                name="cancel"
-                size={30}
-                color="#000"
-              />
-            </View>
-          ) : (
-            <View style={{flexDirection: 'row'}}>
-              <View style={{paddingHorizontal: 10}}>
-                <Ionicons
-                  onPress={() => navigation.navigate('AddProducts')}
-                  name="ios-add-circle"
-                  size={30}
-                  color="#000"
-                />
-              </View>
-              <View style={{paddingHorizontal: 10}}>
-                <Ionicons
-                  onPress={() => setSearchUIState(!handleSearchUIState)}
-                  name="search"
-                  size={30}
-                  color="#000"
-                />
-              </View>
-            </View>
-          )}
-        </AppHeaders> */
-}
+
