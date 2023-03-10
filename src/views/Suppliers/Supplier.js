@@ -103,9 +103,10 @@ export default function Sale({navigation}) {
 
   useEffect(() => {
     if (error !== null) {
+      console.log(error);
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message,
+        text2: error?.message?.error,
         type: 'error',
       });
     }

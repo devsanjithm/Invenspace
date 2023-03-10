@@ -184,18 +184,18 @@ useEffect(() => {
             <View>
             <Text style={{color:'black',fontWeight:'600',fontSize:20,marginLeft:12,marginBottom:20}}>Account info</Text>
             <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
-                <Text style={{fontSize:17,}}>Account</Text>
+                <Text style={{fontSize:17,color:"#000"}}>Account</Text>
                 <Text style={{fontSize:17,color:'black'}}>{data.sup_name}</Text>
             </View>
             <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
-                <Text style={{fontSize:17,}}>Telephone</Text>
+                <Text style={{fontSize:17,color:"#000"}}>Telephone</Text>
                 <View style={{flexDirection:'row'}}>
                 <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.sup_mobile}</Text>
                 <Foundation name='telephone' size={20} color='blue' />
                 </View>
               </View>
             <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
-                <Text style={{fontSize:17,}}>Email</Text>
+                <Text style={{fontSize:17,color:"#000"}}>Email</Text>
                 <View style={{flexDirection:'row'}}>
                 <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.sup_email}</Text>
                 <Fontisto name='email' size={20} color='blue' />

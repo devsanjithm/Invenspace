@@ -52,14 +52,14 @@ export default function AddProducts({navigation}) {
       pro_name:values.ProductName,
       pro_desc: values.Description,
       pro_price:parseInt(values.Price),
-      user_id: user_id,
+      // user_id: user_id,
 
       //   "pro_desc":"hello",
       // "pro_name":"laptop1",
       // "pro_price
     };
     dispatch(postProductDetails(payload));
-    dispatch(getCustomerDetails(user_id));
+    // dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export default function AddProducts({navigation}) {
     if (!_.isEmpty(error)) {
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message,
+        text2: error?.message?.error,
         type: 'error',
       });
     }

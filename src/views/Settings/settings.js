@@ -37,13 +37,14 @@ import FAB from '../../components/fab';
 import FloatingButton from '../../components/fab';
 import SupplierAPIs from '../Suppliers/supplierService';
 import CustomerAPIs from '../Customers/customerService';
-
+import { setAuthDetailsSuccess } from '../Authpages/authSlice';
+import { clearAll } from '../../service/localstorage';
 export default function Settings({navigation}) {
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.customer);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const [customerData, setCustomerData] = useState([]);
-  const {userData, isInternet} = useContext(UserContext);
+  const {userData,setRoute, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [supcount, setSupcount] = useState();
@@ -66,11 +67,17 @@ export default function Settings({navigation}) {
     try {
       // payload = JSON.stringify(payload)
       const response = await SupplierAPIs.ProductCount();
-      const response2 = await CustomerAPIs.CustomerCount();
       setSupcount(response?.data.data.count);
+      const response2 = await CustomerAPIs.CustomerCount();
+      console.log(response,"----------------------------  ");
       setCuscount(response2?.data.data.count);
     } catch (error) {
-      console.error(error);
+      Toast.show({
+        text1: 'ERROR',
+        text2: error?.message?.error,
+        type: 'error',
+      });
+      console.log(error);
     }
     setRefreshing(false);
   }
