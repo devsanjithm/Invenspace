@@ -16,10 +16,11 @@ import {
   RefreshControl,
   Pressable,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import Img2 from '../../assets/settings.jpg';
 import {FlatList} from 'react-native-gesture-handler';
-import {Button} from 'react-native-paper';
+import {Button, Modal} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
@@ -31,26 +32,25 @@ import {AppHeaders} from '../../components/AppHeaders';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FAB from '../../components/fab';
-import FloatingButton from '../../components/fab';
 import SupplierAPIs from '../Suppliers/supplierService';
 import CustomerAPIs from '../Customers/customerService';
-import { setAuthDetailsSuccess } from '../Authpages/authSlice';
-import { clearAll } from '../../service/localstorage';
+import {setAuthDetailsSuccess} from '../Authpages/authSlice';
+import {clearAll} from '../../service/localstorage';
+import CommonAPIs from '../../service/commonredux/commonService';
+import { postCompanyDetails } from '../../service/commonredux/commonAction';
 export default function Settings({navigation}) {
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.customer);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
-  const [customerData, setCustomerData] = useState([]);
-  const {userData,setRoute, isInternet} = useContext(UserContext);
+  const {userData, setRoute, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
   const [handleSearchUIState, setSearchUIState] = useState(false);
   const [supcount, setSupcount] = useState();
   const [cuscount, setCuscount] = useState();
+  const [memcount, setMemcount] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
 
-  let username = userDatafromRedux?.result?.email;
+  let username = userDatafromRedux?.data.user.name;
 
   // const backAction = useCallback(() => {
   //   navigation.navigate('Dashboard');
@@ -69,8 +69,11 @@ export default function Settings({navigation}) {
       const response = await SupplierAPIs.ProductCount();
       setSupcount(response?.data.data.count);
       const response2 = await CustomerAPIs.CustomerCount();
-      console.log(response,"----------------------------  ");
       setCuscount(response2?.data.data.count);
+      const response3 = await CommonAPIs.getMemberCount();
+      setMemcount(response3?.data.data.count);
+
+      // setMemcount(response3?.data.data.count);
     } catch (error) {
       Toast.show({
         text1: 'ERROR',
@@ -82,6 +85,10 @@ export default function Settings({navigation}) {
     setRefreshing(false);
   }
   useEffect(() => {
+    console.log(
+      'hi-----------------------------------',
+      userDatafromRedux?.result?._id,
+    );
     fetchData();
   }, []);
 
@@ -89,7 +96,7 @@ export default function Settings({navigation}) {
     if (isInternet) {
       setRefreshing(true);
       console.log(username);
-      fetchData()
+      fetchData();
     } else {
       Toast.show({
         type: 'error',
@@ -97,7 +104,7 @@ export default function Settings({navigation}) {
         text2: 'Try after Sometime',
         visibilityTime: 5000,
       });
-      setRefreshing(false)
+      setRefreshing(false);
     }
   }
   async function handleLogout() {
@@ -116,6 +123,22 @@ export default function Settings({navigation}) {
       },
     ]);
   }
+  const [text, setText] = useState('');
+
+  const handleSubmit = () => {
+    const payload = {
+      name:text,
+    };
+    dispatch(postCompanyDetails(payload));
+    console.log(text);
+    setText('');
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+    setText('');
+  };
+
   return (
     <>
       {loading ? <Loader /> : null}
@@ -150,8 +173,7 @@ export default function Settings({navigation}) {
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }
-          >
+          }>
           <View>
             <ImageBackground source={Img2} style={styles.img}>
               <View style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
@@ -178,6 +200,122 @@ export default function Settings({navigation}) {
               borderBottomWidth: 10,
             }}
           />
+          <View
+            style={{
+              marginTop: 15,
+              // marginLeft:20,
+              paddingBottom: 15,
+              borderBottomColor: '#e4e4e4',
+              borderBottomWidth: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: 'black',
+                fontWeight: '700',
+                marginLeft: 15,
+              }}>
+              Manage Team
+            </Text>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+              }}>
+              <View
+                style={{
+                  padding: 15,
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <Text style={globalStyles}>Team Name</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{paddingHorizontal: 20}}>
+                    <Text style={globalStyles}>Invenspace</Text>
+                  </View>
+                  <View style={{marginTop: 5}}>
+                    <AntDesign name="right" size={18} color="#000" />
+                  </View>
+                </View>
+              </View>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('memdis');
+              }}>
+              <View
+                style={{
+                  padding: 15,
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <Text style={globalStyles}>Member</Text>
+                </View>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('memdis');
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{paddingHorizontal: 20}}>
+                      <Text style={globalStyles}>{memcount} members</Text>
+                    </View>
+                    <View style={{marginTop: 5}}>
+                      <AntDesign name="right" size={18} color="#000" />
+                    </View>
+                  </View>
+                </Pressable>
+              </View>
+              <View style={{marginLeft: 22}}>
+                <Text style={{color: 'blue', fontSize: 15}}>+Invite</Text>
+              </View>
+            </Pressable>
+          </View>
+          <View
+            style={{
+              marginTop: 15,
+              // marginLeft:20,
+              paddingBottom: 15,
+              borderBottomColor: '#e4e4e4',
+              borderBottomWidth: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: 'black',
+                fontWeight: '700',
+                marginLeft: 15,
+              }}>
+              Category Settings
+            </Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('category');
+              }}>
+              <View
+                style={{
+                  padding: 15,
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <Text style={globalStyles}>item</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{paddingHorizontal: 20}}>
+                    <Text style={globalStyles}>6 categories</Text>
+                  </View>
+                  <View style={{marginTop: 5}}>
+                    <AntDesign name="right" size={18} color="#000" />
+                  </View>
+                </View>
+              </View>
+            </Pressable>
+          </View>
           <View
             style={{
               marginTop: 15,
@@ -317,8 +455,73 @@ export default function Settings({navigation}) {
           <View>
             <Text> . App version 1.1</Text>
           </View>
-          
         </ScrollView>
+        <Modal visible={modalVisible}>
+          <View
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View
+              style={{backgroundColor: 'white', borderRadius: 8, padding: 16}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  marginBottom: 8,
+                  color: 'black',
+                  textAlign: 'center',
+                }}>
+                Edit Team Name
+              </Text>
+              <TextInput
+                style={{
+                  height: 60,
+                  width: 250,
+                  borderColor: 'gray',
+                  borderWidth: 1,
+                  borderRadius: 4,
+                  padding: 8,
+                  marginBottom: 25,
+                  marginTop: 20,
+                }}
+                onChangeText={setText}
+                value={text}
+                placeholder="Enter new name"
+              />
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <TouchableOpacity
+                  onPress={handleCancel}
+                  style={{
+                    backgroundColor: 'red',
+                    padding: 8,
+                    borderRadius: 4,
+                    width: 100,
+                    height: 40,
+                  }}>
+                  <Text style={{color: 'white', textAlign: 'center'}}>
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={{
+                    backgroundColor: 'blue',
+                    padding: 8,
+                    borderRadius: 4,
+                    width: 100,
+                    height: 40,
+                  }}>
+                  <Text style={{color: 'white', textAlign: 'center'}}>
+                    Submit
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </>
   );

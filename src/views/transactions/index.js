@@ -162,7 +162,7 @@ export default function Transactions({navigation}) {
         <View style={{padding: 10}}>
           <View style={{alignItems: 'flex-end'}}>
             <Pressable onPress={()=>{
-        navigation.navigate('Stockin')
+        navigation.navigate('Stockout')
     }}>
             <AntDesign name="plus" size={25} color="#000" />
             </Pressable>
