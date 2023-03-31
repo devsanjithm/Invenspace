@@ -50,7 +50,7 @@ export default function Settings({navigation}) {
   const [memcount, setMemcount] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
-  let username = userDatafromRedux?.data.user.name;
+  let username = userDatafromRedux?.data?.user?.name;
 
   // const backAction = useCallback(() => {
   //   navigation.navigate('Dashboard');

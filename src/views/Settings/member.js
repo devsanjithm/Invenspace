@@ -61,7 +61,7 @@ export default function Member({navigation}) {
       let payload = {
         where:{
             status:true,
-            company_id:userDatafromRedux.data.user.Company.id,
+            company_id:userDatafromRedux?.data?.user?.Company?.id,
         }
     }
       dispatch(getMemberDetails(payload));
@@ -85,7 +85,7 @@ export default function Member({navigation}) {
 
 
   useEffect(() => {
-    console.log(userDatafromRedux.data.user.Company.id,"------------------------------------ company")
+    console.log(userDatafromRedux?.data?.user?.Company?.id,"------------------------------------ company")
     if (!_.isEmpty(data)) {
       console.log('data in member', data);
       setMemberData(data?.data.data);
