@@ -92,7 +92,7 @@ export function Display({route, navigation}) {
       return;
     }
     const payload = {
-      id: data._id,
+      id: data.id,
     };
     let isUpdate = false;
     if (defProductData.pro_desc !== productData.pro_desc) {
@@ -103,9 +103,11 @@ export function Display({route, navigation}) {
       payload.pro_items = productData.pro_items;
       isUpdate = true;
     }
+    console.log(payload);
     if (isUpdate) {
       dispatch(updateProductDetails(payload));
       getData();
+      dispatch(getProductDetails())
     }else{
       Toast.show({
         text1: 'INFO !',

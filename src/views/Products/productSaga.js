@@ -8,11 +8,11 @@ import {
   setUpdateProductDetailsSucess
 } from './productSlice';
 
-function* getProductDetails(payload) {
+function* getProductDetails() {
   try {
     yield put(setProductDetailsLoading());
-    console.log('===== @DH payload Product saga =====', payload);
-    const data = yield call(ProductAPIs.getProduct, payload.data);
+    console.log('===== @DH payload Product saga =====');
+    const data = yield call(ProductAPIs.getProduct);
     console.log('===== @DH data Product saga =====', data);
     yield put(setProductDetailsSuccess(data));
   } catch (error) {

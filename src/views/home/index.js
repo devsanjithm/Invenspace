@@ -35,10 +35,11 @@ import {clearAll} from '../../service/localstorage';
 import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
+import HomeAPIs from './homeService';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
-function Card1() {
+function Card1(props) {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.innerCardContainer}>
@@ -48,15 +49,15 @@ function Card1() {
         </View>
         <View style={styles.cardStocksWrapper}>
           <View style={styles.cardStock}>
-            <Text style={styles.cardStocksUpText}>1001</Text>
+            <Text style={styles.cardStocksUpText}>{props?.data?.total}</Text>
             <Text style={styles.cardStocksDownText}>total</Text>
           </View>
           <View style={styles.cardStock}>
-            <Text style={styles.cardStocksUpText}>0</Text>
+            <Text style={styles.cardStocksUpText}>{props?.data?.stockIN}</Text>
             <Text style={styles.cardStocksDownText}>Stock In</Text>
           </View>
           <View style={styles.cardStock}>
-            <Text style={styles.cardStocksUpText}>0</Text>
+            <Text style={styles.cardStocksUpText}>{props?.data?.stockOut}</Text>
             <Text style={styles.cardStocksDownText}>Stock Out</Text>
           </View>
         </View>
@@ -101,6 +102,7 @@ function Card2(props) {
 }
 
 export default function Home({navigation}) {
+  const [dashboardDatacount,setDashboardData]=useState()
   const itemData = [
     {
       icon: <MaterialIcons name="add-chart" size={25} color="#000" />,
@@ -130,6 +132,16 @@ export default function Home({navigation}) {
     }
   ]
 
+  useEffect(() => {
+    async function data(){
+      const data = await HomeAPIs.getDashboardCount();
+      console.log(data.data);
+      setDashboardData(data.data)
+    }
+    data()
+  }, [])
+  
+
   return (
     <>
       <SafeAreaView style={globalStyles.screenLayout}>
@@ -137,7 +149,7 @@ export default function Home({navigation}) {
           <Text style={styles.Header}>Home</Text>
         </View>
         <ScrollView>
-          <Card1 />
+          <Card1 data={dashboardDatacount}/>
           <Card2 data={itemData} heading={'Add Item'} />
           <Card2 data={stockData} heading={'Stock In/Out'} />
           <Card2 data={lowStockData} heading={'Low Stock Remainder'} />

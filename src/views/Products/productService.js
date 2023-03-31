@@ -1,7 +1,7 @@
 import apiInstance from '../../service/axios/index';
 
 const ProductAPIs = {
-  getProduct: async payload => {
+  getProduct: async () => {
     try {
       const res = await apiInstance.post('/api/getallproduct');
       return res;
@@ -21,7 +21,7 @@ const ProductAPIs = {
   },
   updateProduct:async payload =>{
     try {
-      const res = await apiInstance.put('/products/update', payload);
+      const res = await apiInstance.put('/api/updateproduct', payload);
       return res;
     } catch (error) {
       console.log('=======', error);

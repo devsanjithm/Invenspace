@@ -28,6 +28,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Input from '../../components/Input';
+import { getProductDetails } from './productAction';
 export default function AddProducts({navigation}) {
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const user_id = userDatafromRedux?.result?._id;
@@ -47,17 +48,29 @@ export default function AddProducts({navigation}) {
   const {postMessage, loading, error} = useSelector(state => state.product);
 
   function handleProduct(values) {
-    const payload = {
+    const product = {
       pro_id: values.pro_id,
-      pro_name:values.ProductName,
+      pro_name: values.ProductName,
       pro_desc: values.Description,
-      pro_price:parseInt(values.Price),
+      pro_price: parseInt(values.Price),
       // user_id: user_id,
 
       //   "pro_desc":"hello",
       // "pro_name":"laptop1",
       // "pro_price
     };
+    const category = {
+      type: 'sationary',
+      manufacturer: 'Luxor',
+      color: 'red',
+    };
+    const payload = {};
+
+    payload['product'] = product;
+    payload['category'] = category;
+
+    console.log(payload);
+
     dispatch(postProductDetails(payload));
     // dispatch(getCustomerDetails(user_id));
   }
@@ -77,6 +90,8 @@ export default function AddProducts({navigation}) {
         text2: postMessage?.message,
         type: 'success',
       });
+      navigation.goBack()
+      dispatch(getProductDetails())
     }
   }, [postMessage]);
 
@@ -151,10 +166,8 @@ export default function AddProducts({navigation}) {
                   </View>
                   <View style={{marginTop: 30}}>
                     <View style={{flexDirection: 'row', marginBottom: 35}}>
-                      <Text style={styles.text}>Item id      </Text>
+                      <Text style={styles.text}>Product id</Text>
                       <TextInput
-                        mode="outlined"
-                        label={'input item id'}
                         autoCapitalize="none"
                         onChangeText={handleChange('pro_id')}
                         onBlur={handleBlur('pro_id')}
@@ -162,11 +175,10 @@ export default function AddProducts({navigation}) {
                         value={values.pro_id}
                         style={styles.inputf}></TextInput>
                     </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35,}}>
-                      <Text style={styles.text}>Pro Name </Text>
+                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                      <Text style={styles.text}>Product Name </Text>
                       <TextInput
-                        mode="outlined"
-                        label={'input item name'}
+                        // label={'input item name'}
                         autoCapitalize="none"
                         onChangeText={handleChange('ProductName')}
                         onBlur={handleBlur('ProductName')}
@@ -175,10 +187,8 @@ export default function AddProducts({navigation}) {
                         style={styles.inputf}></TextInput>
                     </View>
                     <View style={{flexDirection: 'row', marginBottom: 35}}>
-                      <Text style={styles.text}>Price         </Text>
+                      <Text style={styles.text}>Product Price</Text>
                       <TextInput
-                        mode="outlined"
-                        label={'input item price'}
                         autoCapitalize="none"
                         onChangeText={handleChange('Price')}
                         onBlur={handleBlur('Price')}
@@ -187,10 +197,8 @@ export default function AddProducts({navigation}) {
                         style={styles.inputf}></TextInput>
                     </View>
                     <View style={{flexDirection: 'row', marginBottom: 35}}>
-                      <Text style={styles.text}>Pro Name</Text>
+                      <Text style={styles.text}>Product description</Text>
                       <TextInput
-                        mode="outlined"
-                        label={'input item Description'}
                         autoCapitalize="none"
                         onChangeText={handleChange('Description')}
                         onBlur={handleBlur('Description')}

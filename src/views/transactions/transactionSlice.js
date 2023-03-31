@@ -23,6 +23,7 @@ export const transactionSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.data = action.payload;
+      state.postMessage = action.payload
     },
     setTransactionDetailsFailure: (state, action) => {
       state.loading = false;
@@ -32,6 +33,9 @@ export const transactionSlice = createSlice({
       state.loading = false,
       state.error = null,
       state.postMessage = action.payload
+    },
+    setpostMessagefalse:(state,action)=>{
+      state.postMessage = ''
     }
   },
 });
@@ -42,6 +46,7 @@ export const {
   setTransactionDetailsFailure,
   setAddTransactionSuccess,
   setGetAllTransactionSucess,
+  setpostMessagefalse
 } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

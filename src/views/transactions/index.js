@@ -36,14 +36,13 @@ import {clearAll} from '../../service/localstorage';
 import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
 import transactionsService from './transactionsService';
-import { useNavigation } from '@react-navigation/native';
-import { Modal } from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {Modal} from 'react-native-paper';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
-
 function Card(props) {
-    const navigation = useNavigation()
+  const navigation = useNavigation();
   let loopedData = [];
   if (_.isEmpty(props?.data)) {
     return null;
@@ -54,65 +53,65 @@ function Card(props) {
   let stockInIcon = (
     <FontAwesome name="angle-double-up" size={25} color="#000" />
   );
-  
-
 
   for (let i = 0; i < props?.data.length; i++) {
     const element = props?.data[i];
     const type = element?.type;
     loopedData.push(
       <View key={i}>
-          <Pressable onPress={()=>{
-        navigation.navigate('History Transaction',{id:element?.id})
-    }}>
-        <View style={styles.card2InnerContainer}>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingHorizontal: 10,
-            justifyContent: 'space-between',
+        <Pressable
+          onPress={() => {
+            navigation.navigate('History Transaction', {id: element?.id});
           }}>
-          <Text style={styles.card2Heading}>
-            {type === 1 ? 'Stock Out' : 'Stock In'}
-          </Text>
-          <Text style={{color: '#000', fontSize: 20, padding: 10}}>
-            {type ===1 ? element?.customer?.cust_name:element?.suppiler?.sup_name}
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingHorizontal: 10,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{padding: 10}}>
-              {element?.type === 1 ? stockOutIcon : stockInIcon}
+          <View style={styles.card2InnerContainer}>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingHorizontal: 10,
+                justifyContent: 'space-between',
+              }}>
+              <Text style={styles.card2Heading}>
+                {type === 1 ? 'Stock Out' : 'Stock In'}
+              </Text>
+              <Text style={{color: '#000', fontSize: 20, padding: 10}}>
+                {type === 1
+                  ? element?.customer?.cust_name
+                  : element?.suppiler?.sup_name}
+              </Text>
             </View>
-            <Text style={{color: '#000', padding: 10, fontSize: 20}}>
-              {element?.product?.pro_name}
-            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingHorizontal: 10,
+                justifyContent: 'space-between',
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{padding: 10}}>
+                  {element?.type === 1 ? stockOutIcon : stockInIcon}
+                </View>
+                <Text style={{color: '#000', padding: 10, fontSize: 20}}>
+                  {element?.product?.pro_name}
+                </Text>
+              </View>
+              <View style={{padding: 10}}>
+                <Text
+                  style={[
+                    {padding: 10, fontSize: 20},
+                    type === 1 ? {color: 'red'} : {color: 'green'},
+                  ]}>
+                  {type === 1 ? '-' : ''}
+                  {element?.quantity}
+                </Text>
+              </View>
+            </View>
           </View>
-          <View style={{padding: 10}}>
-            <Text
-              style={[
-                {padding: 10,fontSize:20},
-                type === 1 ? {color: 'red'} : {color: 'green'},
-              ]}>
-              {type === 1 ? '-' : ''}
-              {element?.quantity}
-            </Text>
-          </View>
-        </View>
-        </View>
         </Pressable>
-      </View>
+      </View>,
     );
   }
   return (
-  
     <View style={styles.cardContainer}>
-        <View>{loopedData}</View>
+      <View>{loopedData}</View>
     </View>
   );
 }
@@ -122,21 +121,21 @@ export default function Transactions({navigation}) {
   const [transactionData, setTransactionData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  function handleToggleModal(){
+  function handleToggleModal() {
     setIsVisible(!isVisible);
-  };
+  }
 
   async function getAllTransactions() {
     let data;
     let payload = {
       include: {
         product: true,
-        customer:true,
-        suppiler:true
+        customer: true,
+        suppiler: true,
       },
-      where:{
-        status:true
-      }
+      where: {
+        status: true,
+      },
     };
     try {
       data = await transactionsService.getAllTransaction(payload);
@@ -168,10 +167,11 @@ export default function Transactions({navigation}) {
         {loading ? <Loader /> : null}
         <View style={{padding: 10}}>
           <View style={{alignItems: 'flex-end'}}>
-            <Pressable onPress={()=>{
-          handleToggleModal();
-    }}>
-            <AntDesign name="plus" size={25} color="#000" />
+            <Pressable
+              onPress={() => {
+                handleToggleModal();
+              }}>
+              <AntDesign name="plus" size={25} color="#000" />
             </Pressable>
           </View>
         </View>
@@ -182,24 +182,33 @@ export default function Transactions({navigation}) {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
-          <Card data={transactionData}/>
+          <Card data={transactionData} />
         </ScrollView>
-        <Modal visible={isVisible} onDismiss={handleToggleModal} contentContainerStyle={styles.modalContainer} animationType="slide">
-        <TouchableOpacity style={styles.closeButton} onPress={handleToggleModal}>
-          <Text style={styles.closeButtonText}>X</Text>
-        </TouchableOpacity>
-        <TouchableOpacity  onPress={() => {
-                    navigation.navigate('Stockin');
-                  }}>
-          <Text style={styles.modalText}>Stock IN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity  onPress={() => {
-                    navigation.navigate('Stockout');
-                  }}>
-          <Text style={styles.modalText}>Stock Out</Text>
-        </TouchableOpacity>
-      
-      </Modal>
+        <Modal
+          visible={isVisible}
+          onDismiss={handleToggleModal}
+          contentContainerStyle={styles.modalContainer}
+          animationType="slide">
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={handleToggleModal}>
+            <Text style={styles.closeButtonText}>X</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsVisible(false)
+              navigation.navigate('Stockin');
+            }}>
+            <Text style={styles.modalText}>Stock IN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsVisible(false)
+              navigation.navigate('Stockout');
+            }}>
+            <Text style={styles.modalText}>Stock Out</Text>
+          </TouchableOpacity>
+        </Modal>
       </SafeAreaView>
     </>
   );
@@ -223,7 +232,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 7,
     padding: 10,
-    marginVertical:10
+    marginVertical: 10,
   },
   card2Heading: {
     color: '#000',
@@ -249,7 +258,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     width: '100%',
-    
   },
   closeButton: {
     alignSelf: 'flex-end',
@@ -264,6 +272,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom:15
+    marginBottom: 15,
+    color:'#000'
   },
 });

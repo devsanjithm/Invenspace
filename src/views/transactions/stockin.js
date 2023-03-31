@@ -36,41 +36,91 @@ import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
 import transactionsService from './transactionsService';
 import {Button} from 'react-native-paper';
+import {addTransaction, getAllTransaction} from './transactionAction';
+import {useNavigation} from '@react-navigation/native';
+import { setAddTransactionSuccess, setpostMessagefalse } from './transactionSlice';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
-export default function Stockin({navigation, route}) {
-  const [loading, setLoading] = useState(false);
+export default function Stockin({route}) {
+  // const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [supData, setSupData] = useState(null);
   const [itemData, setItemData] = useState(null);
-  const [showsup, setShowsup] = useState("Select");
-  const [showitem, setShowitem] = useState("Select");
-
-
+  const [showsup, setShowsup] = useState('Select');
+  const [showitem, setShowitem] = useState('Select');
+  const [quantity, setQuantity] = useState(0);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const {postMessage, loading, error, data} = useSelector(
+    state => state.transaction,
+  );
   function handleRefresh() {
     setRefreshing(true);
   }
 
   useEffect(() => {
-    if(route.params){
-    const {data} = route.params;
-    if(data.pro_name){
-        setItemData(data)
-        setShowitem(data.pro_name)
-    }else{
-    setSupData(data)
-    setShowsup(data.sup_name)
+    if (route.params) {
+      const {data} = route.params;
+      if (data.pro_name) {
+        setItemData(data);
+        setShowitem(data.pro_name);
+      } else {
+        setSupData(data);
+        setShowsup(data.sup_name);
+      }
     }
-    }
-    console.log("hii")
+    console.log('hii');
   }, [route]);
 
-  function handleSubmit(){
-    console.log("hii");
-    console.log(supData.id)
-    console.log(itemData.id)
-    
+  useEffect(() => {
+    if (!_.isEmpty(postMessage)) {
+      console.log('data in product', postMessage);
+      Toast.show({
+        text1: 'SUCCESS',
+        text2: postMessage?.message,
+        type: 'success',
+      });
+      dispatch(setpostMessagefalse())
+      navigation.goBack();
+      dispatch(getAllTransaction());
+    }
+  }, [postMessage]);
+
+  useEffect(() => {
+    console.log(postMessage); 
+    if (!_.isEmpty(error)) {
+      Toast.show({
+        text1: 'ERROR',
+        text2: error?.message?.error,
+        type: 'error',
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+  
+    return () => {
+      setAddTransactionSuccess({})
+    }
+  }, [])
+  
+
+  function handleSubmit() {
+    console.log('hii');
+    console.log(supData.id);
+    console.log(itemData.id);
+
+    const payload = {
+      product_id: itemData.id,
+      type: 0,
+      quantity: parseInt(quantity),
+      suppiler_id: supData.id,
+    };
+
+    console.log(payload);
+
+    dispatch(addTransaction(payload));
   }
 
   return (
@@ -110,21 +160,21 @@ export default function Stockin({navigation, route}) {
               Stock In
             </Text>
             <View>
-                <Pressable onPress={() => {
-                handleSubmit();
-              }}
-                >
-              <Text
-                style={[
-                  {
-                    fontSize: 18,
-                    paddingHorizontal: 100,
-                    paddingBottom: 10,
-                    color: 'black',
-                  },
-                ]}>
-                Save Draft
-              </Text>
+              <Pressable
+                onPress={() => {
+                  handleSubmit();
+                }}>
+                <Text
+                  style={[
+                    {
+                      fontSize: 18,
+                      paddingHorizontal: 100,
+                      paddingBottom: 10,
+                      color: 'black',
+                    },
+                  ]}>
+                  Save Draft
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -157,42 +207,36 @@ export default function Stockin({navigation, route}) {
               marginTop: 15,
               paddingLeft: 10,
               paddingRight: 10,
-              marginBottom:15
+              marginBottom: 15,
             }}>
             <Text style={{fontSize: 15}}>Supplier</Text>
-            <Pressable
-             onPress={() =>
-                navigation.navigate('listsupplier')
-              }>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 15}}>{showsup}</Text>
-              <View style={{marginLeft: 10}}>
-                <AntDesign name="right" size={20} color="#000" />
+            <Pressable onPress={() => navigation.navigate('listsupplier')}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontSize: 15}}>{showsup}</Text>
+                <View style={{marginLeft: 10}}>
+                  <AntDesign name="right" size={20} color="#000" />
+                </View>
               </View>
-            </View>
             </Pressable>
           </View>
-          <Pressable
-             onPress={() =>
-                navigation.navigate('listitem')
-              }>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 15,
-              paddingLeft: 10,
-              paddingRight: 10,
-              marginBottom:10
-            }}>
-            <Text style={{fontSize: 15}}>Items</Text>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 15}}>{showitem}</Text>
-              <View style={{marginLeft: 10}}>
-                <AntDesign name="right" size={20} color="#000" />
+          <Pressable onPress={() => navigation.navigate('listitem')}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 15,
+                paddingLeft: 10,
+                paddingRight: 10,
+                marginBottom: 10,
+              }}>
+              <Text style={{fontSize: 15}}>Items</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontSize: 15}}>{showitem}</Text>
+                <View style={{marginLeft: 10}}>
+                  <AntDesign name="right" size={20} color="#000" />
+                </View>
               </View>
             </View>
-          </View>
           </Pressable>
           <View
             style={{
@@ -201,22 +245,28 @@ export default function Stockin({navigation, route}) {
               marginTop: 15,
               paddingLeft: 10,
               paddingRight: 10,
-              marginBottom:15
+              marginBottom: 15,
             }}>
-                <View style={{marginTop:5}}>
-            <Text style={{fontSize: 15}}>Note</Text>
+            <View style={{marginTop: 5}}>
+              <Text style={{fontSize: 15}}>Enter Quantity</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-             
               <View style={{marginLeft: 10}}>
-              <TextInput placeholder='Enter notes here'></TextInput>
+                <TextInput
+                  onChangeText={setQuantity}
+                  placeholder="Enter quantity"></TextInput>
               </View>
             </View>
           </View>
-          <View style={{marginTop:400 }}>
-            <Button mode='contained' color='#448EE4' onPress={() => {
+          <View style={{marginTop: 400}}>
+            <Button
+              mode="contained"
+              color="#448EE4"
+              onPress={() => {
                 handleSubmit();
-              }}>Submit</Button>
+              }}>
+              Submit
+            </Button>
           </View>
         </ScrollView>
       </SafeAreaView>

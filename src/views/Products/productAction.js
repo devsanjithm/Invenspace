@@ -1,10 +1,9 @@
 import {actionTypes} from '../../utils/constant';
 
-export const getProductDetails = payload => {
-  console.log('===== @DH get auth details action =====', payload);
+export const getProductDetails = () => {
+  console.log('===== @DH get auth details action =====');
   return {
-    type: actionTypes.getProductDetails,
-    data: payload,
+    type: actionTypes.getProductDetails
   };
 };
 export const postProductDetails = payload => {
