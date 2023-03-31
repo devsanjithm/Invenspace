@@ -6,6 +6,10 @@ const transactionsService = {
   },
   getTransaction: async payload => {
       return await apiInstance.get(`/api/getTransaction/${payload?.id}`);
+  },
+  addTransaction: async payload => {
+      return await apiInstance.post('/api/addTransaction',payload);
   }
+
 };
 export default transactionsService;

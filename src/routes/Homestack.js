@@ -32,6 +32,12 @@ import HistoryTransaction from '../views/transactions/historyTransaction';
 import Stockin from '../views/transactions/stockin';
 import ListSupplier from '../views/transactions/listsupplier';
 import Listitem from '../views/transactions/listitems';
+import StockOut from '../views/transactions/stockout';
+import ListCustomer from '../views/transactions/listcustomer';
+import Listitems from '../views/transactions/listitem2';
+import Member from '../views/Settings/member';
+import Addmember from '../views/Settings/addmember';
+import Category from '../views/Settings/category';
 function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
@@ -65,6 +71,9 @@ function SettingStack() {
       <settingStack.Screen name="customerdis" component={Customer} />
       <settingStack.Screen name="cusdis" component={CustomerDisplay} />
       <settingStack.Screen name="addcus" component={AddCustomer} />
+      <settingStack.Screen name="memdis" component={Member} />
+      <settingStack.Screen name="addmem" component={Addmember} />
+      <settingStack.Screen name="category" component={Category} />
     </settingStack.Navigator>
   );
 }
@@ -137,6 +146,20 @@ function TransactionStack() {
         }}
       />
       <saleStack.Screen
+        name="Stockout"
+        component={StockOut}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listcustomer"
+        component={ListCustomer}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
         name="listsupplier"
         component={ListSupplier}
         options={{
@@ -146,6 +169,13 @@ function TransactionStack() {
       <saleStack.Screen
         name="listitem"
         component={Listitem}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listitem2"
+        component={Listitems}
         options={{
           headerShown: false,
         }}

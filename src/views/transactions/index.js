@@ -37,6 +37,7 @@ import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
 import transactionsService from './transactionsService';
 import { useNavigation } from '@react-navigation/native';
+import { Modal } from 'react-native-paper';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
@@ -53,6 +54,8 @@ function Card(props) {
   let stockInIcon = (
     <FontAwesome name="angle-double-up" size={25} color="#000" />
   );
+  
+
 
   for (let i = 0; i < props?.data.length; i++) {
     const element = props?.data[i];
@@ -118,6 +121,10 @@ export default function Transactions({navigation}) {
   const [loading, setLoading] = useState(false);
   const [transactionData, setTransactionData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  function handleToggleModal(){
+    setIsVisible(!isVisible);
+  };
 
   async function getAllTransactions() {
     let data;
@@ -162,7 +169,7 @@ export default function Transactions({navigation}) {
         <View style={{padding: 10}}>
           <View style={{alignItems: 'flex-end'}}>
             <Pressable onPress={()=>{
-        navigation.navigate('Stockin')
+          handleToggleModal();
     }}>
             <AntDesign name="plus" size={25} color="#000" />
             </Pressable>
@@ -177,6 +184,22 @@ export default function Transactions({navigation}) {
           }>
           <Card data={transactionData}/>
         </ScrollView>
+        <Modal visible={isVisible} onDismiss={handleToggleModal} contentContainerStyle={styles.modalContainer} animationType="slide">
+        <TouchableOpacity style={styles.closeButton} onPress={handleToggleModal}>
+          <Text style={styles.closeButtonText}>X</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={() => {
+                    navigation.navigate('Stockin');
+                  }}>
+          <Text style={styles.modalText}>Stock IN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={() => {
+                    navigation.navigate('Stockout');
+                  }}>
+          <Text style={styles.modalText}>Stock Out</Text>
+        </TouchableOpacity>
+      
+      </Modal>
       </SafeAreaView>
     </>
   );
@@ -208,5 +231,39 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingVertical: 10,
     paddingHorizontal: 10,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'blue',
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    position: 'absolute',
+    bottom: 10,
+    width: '100%',
+    
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 10,
+  },
+  closeButtonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  modalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom:15
   },
 });
