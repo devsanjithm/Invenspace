@@ -16,8 +16,7 @@ import {
   RefreshControl,
   Pressable,
 } from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import {Button} from 'react-native-paper';
+
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
