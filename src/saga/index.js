@@ -6,6 +6,7 @@ import customerSaga from '../views/Customers/customerSaga';
 import saleSaga from '../views/Sales/saleSaga';
 import supplierSaga from '../views/Suppliers/supplierSaga';
 import commonSaga from '../service/commonredux/commonSaga';
+import transactionSaga from '../views/transactions/transactionSaga';
 
 
 export default function* rootSaga() {
@@ -16,7 +17,8 @@ export default function* rootSaga() {
    fork(customerSaga),
    fork(saleSaga),
    fork(supplierSaga),
-   fork(commonSaga)
+   fork(commonSaga),
+   fork(transactionSaga),
 
   ]);
 }

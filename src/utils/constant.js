@@ -18,6 +18,9 @@ export const actionTypes = {
   getMemberDetails:'getMemberDetails',
   postMemberDetails:"postMemberDetails",
   postCompanyDetails:"postCompanyDetails",
+  getAllTransaction:"getAllTransaction",
+  getTransaction:"getTransaction",
+  addTransaction:"addTransaction",
 };
 export const authTokenKey = "AUTH_TOKEN";
 export const userDataKey = "userData"
