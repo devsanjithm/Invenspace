@@ -21,7 +21,13 @@ import Loader from '../../components/Loader';
 import {postProductDetails} from './productAction';
 import _ from 'lodash';
 import {AppHeaders} from '../../components/AppHeaders';
-import { setPostProductDetailsSucess, setProductDetailsFailure } from './productSlice';
+import {
+  setPostProductDetailsSucess,
+  setProductDetailsFailure,
+} from './productSlice';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Input from '../../components/Input';
 export default function AddProducts({navigation}) {
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const user_id = userDatafromRedux?.result?._id;
@@ -43,23 +49,25 @@ export default function AddProducts({navigation}) {
   function handleProduct(values) {
     const payload = {
       pro_id: values.pro_id,
-      pro_num: values.Productcode,
+      pro_name:values.ProductName,
       pro_desc: values.Description,
-      pro_type: values.ProductName,
-      pro_items: values.pro_items,
-      user_id: user_id,
+      pro_price:parseInt(values.Price),
+      // user_id: user_id,
+
+      //   "pro_desc":"hello",
+      // "pro_name":"laptop1",
+      // "pro_price
     };
     dispatch(postProductDetails(payload));
-    dispatch(getCustomerDetails(user_id));
+    // dispatch(getCustomerDetails(user_id));
   }
 
   useEffect(() => {
-    return()=>{
-      dispatch(setPostProductDetailsSucess({}))
-      dispatch(setProductDetailsFailure({}))
-    }
-  }, [])
-  
+    return () => {
+      dispatch(setPostProductDetailsSucess({}));
+      dispatch(setProductDetailsFailure({}));
+    };
+  }, []);
 
   useEffect(() => {
     if (!_.isEmpty(postMessage)) {
@@ -69,7 +77,6 @@ export default function AddProducts({navigation}) {
         text2: postMessage?.message,
         type: 'success',
       });
-
     }
   }, [postMessage]);
 
@@ -77,7 +84,7 @@ export default function AddProducts({navigation}) {
     if (!_.isEmpty(error)) {
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message,
+        text2: error?.message?.error,
         type: 'error',
       });
     }
@@ -116,82 +123,83 @@ export default function AddProducts({navigation}) {
               // justifyContent: 'flex-end',
             }}>
             <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-            <AppHeaders title={'Add Products'} color={'#fff'} />
+            <AppHeaders title={'Add Item'} color={'#fff'}>
+              <MaterialIcons
+                onPress={() => {
+                  navigation.goBack();
+                }}
+                name="cancel"
+                size={24}
+                color="#000"
+              />
+            </AppHeaders>
             <KeyboardAvoidingView>
               <ScrollView>
                 <View
                   style={{
                     margin: 10,
                     marginHorizontal: 20,
+                    justifyContent: 'center',
                   }}>
-                  <View>
-                    <Text style={styles.top}>Add Product</Text>
+                  <View style={styles.Box}>
+                    <Entypo
+                      name="camera"
+                      size={25}
+                      color="black"
+                      style={styles.icon}
+                    />
                   </View>
-                  <View style={styles.container}>
-                    <TextInput
-                      mode="outlined"
-                      label={'Product ID'}
-                      autoCapitalize="none"
-                      onChangeText={handleChange('pro_id')}
-                      onBlur={handleBlur('pro_id')}
-                      value={values.pro_id}
-                      style={styles.inputf}></TextInput>
-                    <TextInput
-                      mode="outlined"
-                      label={'Product Name'}
-                      autoCapitalize="none"
-                      onChangeText={handleChange('ProductName')}
-                      onBlur={handleBlur('ProductName')}
-                      value={values.ProductName}
-                      style={styles.inputf}></TextInput>
-                    <TextInput
-                      mode="outlined"
-                      label={'Product code'}
-                      autoCapitalize="none"
-                      onChangeText={handleChange('Productcode')}
-                      onBlur={handleBlur('Productcode')}
-                      value={values.Productcode}
-                      style={styles.inputf}></TextInput>
-                    <TextInput
-                      mode="outlined"
-                      label={'pro_items'}
-                      autoCapitalize="none"
-                      onChangeText={handleChange('pro_items')}
-                      onBlur={handleBlur('pro_items')}
-                      value={values.pro_items}
-                      style={styles.inputf}></TextInput>
-                    <TextInput
-                      mode="outlined"
-                      label={'Specification'}
-                      autoCapitalize="none"
-                      onChangeText={handleChange('Specification')}
-                      onBlur={handleBlur('Specification')}
-                      value={values.Specification}
-                      style={styles.inputf}></TextInput>
-                    <TextInput
-                      mode="outlined"
-                      label={'Price'}
-                      autoCapitalize="none"
-                      onChangeText={handleChange('Price')}
-                      onBlur={handleBlur('Price')}
-                      value={values.Price}
-                      style={styles.inputf}></TextInput>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%',
-                      }}>
+                  <View style={{marginTop: 30}}>
+                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                      <Text style={styles.text}>Item id      </Text>
                       <TextInput
                         mode="outlined"
-                        label={'Product Description'}
+                        label={'input item id'}
+                        autoCapitalize="none"
+                        onChangeText={handleChange('pro_id')}
+                        onBlur={handleBlur('pro_id')}
+                        backgroundColor="white"
+                        value={values.pro_id}
+                        style={styles.inputf}></TextInput>
+                    </View>
+                    <View style={{flexDirection: 'row', marginBottom: 35,}}>
+                      <Text style={styles.text}>Pro Name </Text>
+                      <TextInput
+                        mode="outlined"
+                        label={'input item name'}
+                        autoCapitalize="none"
+                        onChangeText={handleChange('ProductName')}
+                        onBlur={handleBlur('ProductName')}
+                        backgroundColor="white"
+                        value={values.ProductName}
+                        style={styles.inputf}></TextInput>
+                    </View>
+                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                      <Text style={styles.text}>Price         </Text>
+                      <TextInput
+                        mode="outlined"
+                        label={'input item price'}
+                        autoCapitalize="none"
+                        onChangeText={handleChange('Price')}
+                        onBlur={handleBlur('Price')}
+                        backgroundColor="white"
+                        value={values.Price}
+                        style={styles.inputf}></TextInput>
+                    </View>
+                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                      <Text style={styles.text}>Pro Name</Text>
+                      <TextInput
+                        mode="outlined"
+                        label={'input item Description'}
                         autoCapitalize="none"
                         onChangeText={handleChange('Description')}
                         onBlur={handleBlur('Description')}
+                        backgroundColor="white"
                         value={values.Description}
-                        style={{width: '95%'}}></TextInput>
+                        style={styles.inputf}></TextInput>
                     </View>
                   </View>
+
                   <View style={styles.button}>
                     <Button
                       mode="contained"
@@ -217,16 +225,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  top: {
-    fontSize: 25,
-    fontWeight: 'bold',
+  text: {
+    fontSize: 17,
     color: 'black',
-    marginTop: 20,
+    fontWeight: '300',
+    marginRight: 20,
+  },
+  Box: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#eee',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    alignSelf: 'center',
+  },
+  icon: {
+    position: 'absolute',
+    right: 0,
+    top: 55,
+  },
+  inputBox: {
+    marginVertical: 15,
     marginHorizontal: 10,
+    backgroundColor: '#fff',
+    borderRadius: 10,
   },
   inputf: {
-    width: '46%',
-    margin: 5,
+    width: '60%',
+    // margin: 5,
+    marginLeft: 15,
+    height: 30,
   },
   button: {
     flex: 1,

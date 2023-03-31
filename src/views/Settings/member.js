@@ -21,7 +21,7 @@ import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
-import {getSupplierDetails} from './supplierAction'
+// import {getMemberDetails} from './commonAction'
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import globalStyles from '../../components/Styles';
@@ -31,17 +31,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getMemberDetails } from '../../service/commonredux/commonAction';
 
-export default function Sale({navigation}) {
+export default function Member({navigation}) {
 
   const dispatch = useDispatch();
-  const {data, loading, error} = useSelector(state => state.supplier);
+  const {data, loading, error} = useSelector(state => state.common);
   const {data: userDatafromRedux} = useSelector(state => state.auth);
-  const [supplierData, setSupplierData] = useState([]);
+  const [memberData, setMemberData] = useState([]);
   const {userData, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [handleSearchUIState, setSearchUIState] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  
 
   // const backAction = useCallback(() => {
   //   navigation.navigate('Dashboard')
@@ -56,15 +56,16 @@ export default function Sale({navigation}) {
 
 
   function getData() {
-    let userId = userDatafromRedux?.result?._id;
-    console.log('usedata form redux ', userDatafromRedux);
-    if (_.isString(userId)) {
-      dispatch(getSupplierDetails(userId));
-    } else {
+    
       console.log('userdara ', userData);
-      let payload = {where:{status:true}}
-      dispatch(getSupplierDetails(payload));
+      let payload = {
+        where:{
+            status:true,
+            company_id:userDatafromRedux.data.user.Company.id,
+        }
     }
+      dispatch(getMemberDetails(payload));
+    
     setRefreshing(false);
   }
 
@@ -81,23 +82,13 @@ export default function Sale({navigation}) {
     }
   }, []);
   
-  function search(text) {
-    setSearchInput(text);
-    const newData = data?.data.data.filter(item => {
-      const itemData = `${item?.sup_name?.toLowerCase()}${item?.sup_mobile}${item?.sup_email}${
-        item?._id
-      }`;
-      const textData = text.toLowerCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    setSupplierData(newData);
-  }
- 
+
 
   useEffect(() => {
+    console.log(userDatafromRedux.data.user.Company.id,"------------------------------------ company")
     if (!_.isEmpty(data)) {
-      console.log('data in product', data);
-      setSupplierData(data?.data.data);
+      console.log('data in member', data);
+      setMemberData(data?.data.data);
     }
   }, [data]);
 
@@ -135,35 +126,8 @@ export default function Sale({navigation}) {
       backgroundColor: '#fff',
       // justifyContent: 'flex-end',
     }}>
-      <AppHeaders title={'Supplier'} color={'#fff'} main={true}>
-          {handleSearchUIState ? (
-            <View style={{flexDirection: 'row'}}>
-              <View style={{paddingHorizontal: 10}}>
-                <TextInput
-                  value={searchInput} 
-                  placeholder={'Search'}
-                  onChangeText={text => search(text)}
-                  style={{
-                    height: 35,
-                    width: screenWidth / 2.5,
-                    borderWidth: 1,
-                    borderRadius: 10,
-                  }}
-                />
-              </View>
-              <MaterialIcons
-                onPress={() => {
-                  if (handleSearchUIState) {
-                    search('');
-                  }
-                  setSearchUIState(!handleSearchUIState);
-                }}
-                name="cancel"
-                size={24}
-                color="#000"
-              />
-            </View>
-          ) : (
+      <AppHeaders title={'Members'} color={'#fff'} main={true}>
+          
             <View style={{flexDirection: 'row'}}>
               
               <View style={{paddingHorizontal: 10}}>
@@ -176,14 +140,14 @@ export default function Sale({navigation}) {
               </View>
               <View style={{paddingHorizontal: 10}}>
                 <Ionicons
-                  onPress={() => navigation.navigate('addsup')}
+                  onPress={() => navigation.navigate('addmem')}
                   name="ios-add-circle"
                   size={24}
                   color="#000"
                 />
               </View>
             </View>
-          )}
+        
         </AppHeaders>
     <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
     <ScrollView
@@ -191,7 +155,7 @@ export default function Sale({navigation}) {
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
           <View style={{padding: 10}}>
-            {_.isEmpty(supplierData) ? (
+            {_.isEmpty(memberData) ? (
               <View
                 style={{
                   flex: 1,
@@ -202,9 +166,9 @@ export default function Sale({navigation}) {
                 <Text>NO Data</Text>
               </View>
             ) : (
-              supplierData?.map((ele, index) => (
+              memberData?.map((ele, index) => (
                 <Pressable
-                     onPress={() => navigation.navigate('supplierDis',{data:ele})}
+                    //  onPress={() => navigation.navigate('supplierDis',{data:ele})}
                      key={index}
                     >
                       
@@ -231,7 +195,7 @@ export default function Sale({navigation}) {
                       <MaterialCommunityIcons name="handshake" size={20} color="#000" />
                     </View>
                     <View style={{paddingHorizontal: 20}}>
-                      <Text style={globalStyles}>{ele?.sup_name}</Text>
+                      <Text style={globalStyles}>{ele?.name}</Text>
                       {/* <Text style={globalStyles}>{ele?.sup_mobile}</Text> */}
                     </View>
                   </View>

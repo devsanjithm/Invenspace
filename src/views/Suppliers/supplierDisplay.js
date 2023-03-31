@@ -30,6 +30,10 @@ import {
 } from './supplierSlice';
 import _ from 'lodash';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 export function SupplierDisplay({route}) {
@@ -138,31 +142,77 @@ useEffect(() => {
   }
 }, [supError]);
 
-useEffect(() => {
-  return () => {
-    dispatch(setUpdateSupplierDetailsSucess({}));
-    dispatch(setSupplierDetailsFailure({}));
-  };
-}, []);
+// useEffect(() => {
+//   return () => {
+//     dispatch(setUpdateSupplierDetailsSucess({}));
+//     dispatch(setSupplierDetailsFailure({}));
+//   };
+// }, []);
 
   return (
     <>
       {loading ? <Loader /> : null}
-      <AppHeaders title={editable?'Edit Supplier':'View Supplier'} color={'#fff'}>
-        <View>
+      <AppHeaders title={data?.sup_name} color={'#fff'}>
+        <View style={{flexDirection:'row',}}>
           <Pressable onPress={()=>{
             setEditable(true)
           }}>
             {
               !editable?
-              <Entypo name='edit' size={20} color='#000' />:null
+              <FontAwesome name='edit' size={20} color='#000' />:null
             }
           </Pressable>
+          <View style={{marginLeft:15,marginRight:10}}>
+          <Pressable onPress={()=>{
+            
+          }}>
+            {
+               !editable?
+              <AntDesign  name='delete' size={20} color='#000' />:null
+            }
+          </Pressable>
+          </View>
         </View>
       </AppHeaders>
       <KeyboardAvoidingView style={globalStyles.screenLayout}> 
         <SafeAreaView>
           <ScrollView>
+          {
+              !editable?
+          <View>
+            
+            <View>
+            <Text style={{color:'black',fontWeight:'600',fontSize:20,marginLeft:12,marginBottom:20}}>Account info</Text>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,color:"#000"}}>Account</Text>
+                <Text style={{fontSize:17,color:'black'}}>{data.sup_name}</Text>
+            </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,color:"#000"}}>Telephone</Text>
+                <View style={{flexDirection:'row'}}>
+                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.sup_mobile}</Text>
+                <Foundation name='telephone' size={20} color='blue' />
+                </View>
+              </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,color:"#000"}}>Email</Text>
+                <View style={{flexDirection:'row'}}>
+                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.sup_email}</Text>
+                <Fontisto name='email' size={20} color='blue' />
+                </View>
+              </View>
+            </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
+                <Text style={{fontSize:17,}}>Username</Text>
+                <View style={{flexDirection:'row'}}>
+                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.sup_username}</Text>
+                </View>
+             </View>
+          </View>:null}
+        
+      
+          {
+              editable?
             <View>
               <View style={styles.inputBox}>
                 <Input
@@ -223,9 +273,8 @@ useEffect(() => {
                   disabled={!editable}
                 />
               </View>
-            </View>
-            {
-              editable?<View style={styles.bottomContainer}>
+            
+            <View style={styles.bottomContainer}>
               <View style={styles.cnclBtn}>
                 <Pressable onPress={() => {setEditable(false)}}>
                   <Text style={styles.btnText}>Cancel</Text>
@@ -236,7 +285,8 @@ useEffect(() => {
                   <Text style={[styles.btnText, {color: '#fff'}]}>Submit</Text>
                 </Pressable>
               </View>
-            </View>:null
+            </View>
+             </View>:null
             }
             
           </ScrollView>

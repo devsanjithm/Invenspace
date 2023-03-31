@@ -34,8 +34,10 @@ import {
   setProductDetailsFailure,
   setProductDetailsSuccess,
 } from './productSlice';
-import { setAuthDetailsSuccess } from '../Authpages/authSlice';
-import { clearAll } from '../../service/localstorage';
+import {setAuthDetailsSuccess} from '../Authpages/authSlice';
+import {clearAll} from '../../service/localstorage';
+import {Icon} from 'react-native-paper/lib/typescript/components/List/List';
+import {TextInputAffix} from 'react-native-paper/lib/typescript/components/TextInput/Adornment/TextInputAffix';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -101,7 +103,7 @@ export default function Product({navigation}) {
     if (!_.isEmpty(error)) {
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message,
+        text2: error?.message?.error,
         type: 'error',
       });
     }
@@ -124,8 +126,8 @@ export default function Product({navigation}) {
 
   function search(text) {
     setSearchInput(text);
-    const newData = data?.data.filter(item => {
-      const itemData = `${item?.pro_desc?.toLowerCase()}${item?.pro_items?.toLowerCase()}${item?.pro_type?.toLowerCase()}${
+    const newData = data?.data.data.filter(item => {
+      const itemData = `${item?.pro_desc?.toLowerCase()}${item?.pro_name?.toLowerCase()}${item?.pro_type?.toLowerCase()}${
         item?._id
       }`;
       const textData = text.toLowerCase();
@@ -133,22 +135,7 @@ export default function Product({navigation}) {
     });
     setProductData(newData);
   }
-  async function handleLogout() {
-    Alert.alert('Logout', 'Are you sure you want to Logout?', [
-      // The "Yes" button
-      {
-        text: 'Yes',
-        onPress: () => {
-          dispatch(setAuthDetailsSuccess({}));
-          setRoute(false);
-          clearAll();
-        },
-      },
-      {
-        text: 'No',
-      },
-    ]);
-  }
+  
   return (
     <>
       {loading ? <Loader /> : null}
@@ -157,7 +144,119 @@ export default function Product({navigation}) {
           flex: 1,
           backgroundColor: '#fff',
         }}>
-        <AppHeaders title={'Products'} color={'#fff'} main={true}>
+        <View style={{alignSelf: 'center', borderBottomColor: '#e4e4e4'}}>
+          <Text style={{fontSize: 25, color: 'black'}}>Products</Text>
+        </View>
+        <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }>
+          <View style={{paddingHorizontal: 20, paddingVertical: 10}}></View>
+          <View style={{paddingHorizontal: 10, marginLeft: 10}}>
+            <TextInput
+              value={searchInput}
+              placeholder={'Search'}
+              placeholderTextColor={"#000"}
+              onChangeText={text => search(text)}
+              // left={ <Ionicons
+              //   onPress={() => setSearchUIState(!handleSearchUIState)}
+              //   name="search"
+              //   size={30}
+              //   color="#000"
+              // />}
+              style={{
+                height: 40,
+                width: screenWidth / 1.1,
+                borderWidth: 1,
+                borderRadius: 10,
+                padding: 5,
+                paddingHorizontal: 10,
+                backgroundColor: '#eee',
+                color:"#000"
+              }}
+            />
+            
+          </View>
+          <View style={styles.container}>
+            {_.isEmpty(productData) ? (
+              <View style={styles.noDataContainer}>
+                <Text style={styles.noDataText}>NO Data</Text>
+              </View>
+            ) : (
+              productData?.map((ele, index) => (
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('productDisplay', {data: ele})
+                  }
+                  style={styles.productContainer}>
+                  <View style={styles.iconContainer}>
+                    <AntDesign name="paperclip" size={24} color="#777" />
+                  </View>
+                  <View style={{marginLeft: 20, padding: 10}}>
+                    <Text style={styles.productName}>{ele.pro_name}</Text>
+                    <Text style={styles.productDesc}>{ele.pro_desc}</Text>
+                  </View>
+                </Pressable>
+              ))
+            )}
+          </View>
+        </ScrollView>
+        <View
+          style={{paddingHorizontal: 10, alignSelf: 'flex-end', margin: 14}}>
+          <Ionicons
+            onPress={() => navigation.navigate('AddProducts')}
+            name="ios-add-circle"
+            size={60}
+            color="#000"
+          />
+        </View>
+      </SafeAreaView>
+    </>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'white',
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noDataText: {
+    fontSize: 18,
+    color: '#555',
+  },
+  productContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginBottom: 20,
+    padding: 10,
+    elevation: 9,
+    borderRadius: 10,
+  },
+  iconContainer: {
+    marginRight: 10,
+  },
+  productName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  productDesc: {
+    fontSize: 16,
+    color: '#777',
+  },
+});
+
+{
+  /* <AppHeaders title={'Products'} color={'#fff'} main={true}>
           {handleSearchUIState ? (
             <View style={{flexDirection: 'row'}}>
               <View style={{paddingHorizontal: 10}}>
@@ -207,163 +306,5 @@ export default function Product({navigation}) {
               </View>
             </View>
           )}
-        </AppHeaders>
-        <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }>
-          <View
-            style={{
-              flexDirection: 'row',
-              padding: 20,
-              justifyContent: 'space-between',
-            }}>
-            <View style={styles.card}>
-              <Text
-                style={[
-                  globalStyles.text,
-                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
-                ]}>
-                Items in Hand
-              </Text>
-              <View>
-                {/* <View style={styles.iconWrapper}>
-                  <Entypo name="price-tag" size={35} color="#000" />
-                </View> */}
-                <Text
-                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
-                  9.8k
-                </Text>
-              </View>
-            </View>
-            <View style={styles.card1}>
-              <Text
-                style={[
-                  globalStyles.text,
-                  {fontSize: 20, paddingTop: 10, color: '#6b6b6b'},
-                ]}>
-                Will be received
-              </Text>
-              <View>
-                {/* <Ionicons name="pie-chart" size={35} color="#000" /> */}
-                <Text
-                  style={[globalStyles.text, {color: '#000', fontSize: 33}]}>
-                  2345
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={{paddingHorizontal: 20, paddingVertical: 10}}>
-            <Text style={[globalStyles.text, {fontSize: 25, color: '#000'}]}>
-              Products List
-            </Text>
-          </View>
-          <View style={{padding: 10}}>
-            {_.isEmpty(productData) ? (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text>NO Data</Text>
-              </View>
-            ) : (
-              productData?.map((ele, index) => (
-                <Pressable
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate('productDisplay', {data: ele})
-                  }>
-                  <View
-                    style={{
-                      padding: 15,
-                      flexDirection: 'row',
-                      margin: 10,
-                      justifyContent: 'space-between',
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <View
-                        style={{
-                          backgroundColor: '#e4e4e4',
-                          borderRadius: 20,
-                          width: 40,
-                          height: 40,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <AntDesign name="paperclip" size={20} color="#000" />
-                      </View>
-                      <View style={{paddingHorizontal: 20}}>
-                        <Text style={globalStyles}>{ele?.pro_items}</Text>
-                        <Text
-                          numberOfLines={1}
-                          ellipsizeMode={'tail'}
-                          style={styles.itemtext}>
-                          {ele?.pro_desc}
-                        </Text>
-                      </View>
-                    </View>
-                    <View>
-                      <AntDesign name="right" size={20} color="#000" />
-                    </View>
-                  </View>
-                </Pressable>
-              ))
-            )}
-          </View>
-          <View>
-          <Pressable onPress={handleLogout}>
-            <View
-              style={{
-                padding: 10,
-                paddingHorizontal: 20,
-                margin: 20,
-                flexDirection: 'row',
-              }}>
-              <AntDesign name="logout" size={30} color="#000" />
-              <Text
-                style={{fontSize: 25, color: '#000', paddingHorizontal: 20}}>
-                Logout
-              </Text>
-            </View>
-          </Pressable>
-        </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+        </AppHeaders> */
 }
-const styles = StyleSheet.create({
-  container: {},
-  top: {
-    flexDirection: 'row',
-    marginTop: 20,
-    justifyContent: 'space-between',
-    margin: 10,
-  },
-  card: {
-    padding: 15,
-    borderRadius: 10,
-    width: Dimensions.get('window').width / 2.5,
-    height: Dimensions.get('window').height / 6,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-    backgroundColor: '#B9D7E8',
-  },
-  card1: {
-    padding: 15,
-    borderRadius: 10,
-    width: Dimensions.get('window').width / 2.5,
-    height: Dimensions.get('window').height / 6,
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    backgroundColor: '#B9D7E8',
-  },
-  itemtext: {
-    width: screenWidth / 2,
-    fontSize: 18,
-    color: '#000',
-  },
-});

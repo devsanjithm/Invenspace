@@ -70,7 +70,7 @@ export default function Login({navigation}) {
 
   useEffect(() => {
     if (!_.isEmpty(data)) {
-      // console.log("data in login",data);
+      console.log("data in login",data); 
       setLocalStorageItem(authTokenKey,data?.data.token)
       setLocalStorageItem(appRouteKey,"true")
       setLocalStorageItem(userDataKey,JSON.stringify(data))

@@ -12,7 +12,6 @@ import Sale from '../views/Sales/Sale';
 import AddSale from '../views/Sales/AddSale';
 import Supplier from '../views/Suppliers/Supplier';
 import AddSupplier from '../views/Suppliers/AddSupplier';
-import SideNavPage from '../views/sideNavbarPage';
 import {Display} from '../views/Products/productDisplay';
 import {CustomerDisplay} from '../views/Customers/customerDisplay';
 import {PurchaseDisplay} from '../views/Purchases/purchaseDisplay';
@@ -27,12 +26,23 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { useWindowDimensions } from 'react-native';
 import Settings from '../views/Settings/settings';
-
+import Home from '../views/home';
+import Transactions from '../views/transactions';
+import HistoryTransaction from '../views/transactions/historyTransaction';
+import Stockin from '../views/transactions/stockin';
+import ListSupplier from '../views/transactions/listsupplier';
+import Listitem from '../views/transactions/listitems';
+import StockOut from '../views/transactions/stockout';
+import ListCustomer from '../views/transactions/listcustomer';
+import Listitems from '../views/transactions/listitem2';
+import Member from '../views/Settings/member';
+import Addmember from '../views/Settings/addmember';
+import Category from '../views/Settings/category';
 function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
     <productStack.Navigator
-      initialRouteName="Product1"
+      // initialRouteName="Product1"
       screenOptions={{
         animation: 'fade_from_bottom',
         headerShown: false,
@@ -61,6 +71,9 @@ function SettingStack() {
       <settingStack.Screen name="customerdis" component={Customer} />
       <settingStack.Screen name="cusdis" component={CustomerDisplay} />
       <settingStack.Screen name="addcus" component={AddCustomer} />
+      <settingStack.Screen name="memdis" component={Member} />
+      <settingStack.Screen name="addmem" component={Addmember} />
+      <settingStack.Screen name="category" component={Category} />
     </settingStack.Navigator>
   );
 }
@@ -105,41 +118,66 @@ function CustomerStack() {
     </customerStack.Navigator>
   );
 }
-function SaleStack() {
+function TransactionStack() {
   const saleStack = createNativeStackNavigator();
   return (
-    <saleStack.Navigator>
+    <saleStack.Navigator 
+    screenOptions={{animation:'fade_from_bottom'}}
+    >
       <saleStack.Screen
-        name="Sale1"
-        component={Sale}
+        name="Transaction"
+        component={Transactions}
         options={{
           headerShown: false,
         }}
       />
       <saleStack.Screen
-        name="AddSale"
-        component={AddSale}
+        name="History Transaction"
+        component={HistoryTransaction}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <saleStack.Screen
-        name="saleDisplay"
-        component={SalesDisplay}
+        name="Stockin"
+        component={Stockin}
         options={{
-          header: props => (
-            <AppHeaders
-              title={'Inventory Dashboard'}
-              color={'#87CEEB'}
-              {...props}
-            />
-          ),
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="Stockout"
+        component={StockOut}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listcustomer"
+        component={ListCustomer}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listsupplier"
+        component={ListSupplier}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listitem"
+        component={Listitem}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <saleStack.Screen
+        name="listitem2"
+        component={Listitems}
+        options={{
+          headerShown: false,
         }}
       />
     </saleStack.Navigator>
@@ -155,7 +193,7 @@ export default function Homestack() {
       screenOptions={({route}) => ({
         tabBarStyle: {
           backgroundColor: '#fff',
-          height: height / 14,
+          height: height / 15,
           paddingBottom: 10,
           borderTopColor: '#fff',
           elevation: 1,
@@ -200,9 +238,9 @@ export default function Homestack() {
         tabBarActiveTintColor: '#386BF6',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="Home" component={ProductStack} />
-      <Tab.Screen name="Items" component={SaleStack} />
-      <Tab.Screen name="In/Out" component={CustomerStack} />
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Items" component={ProductStack} />
+      <Tab.Screen name="In/Out" component={TransactionStack} />
       <Tab.Screen name="Settings" component={SettingStack} />
     </Tab.Navigator>
   );

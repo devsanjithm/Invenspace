@@ -62,8 +62,8 @@ export default function Customer({navigation}) {
       dispatch(getCustomerDetails(userId));
     } else {
       console.log('userdara ', userData);
-      userId = userData?.result?._id;
-      dispatch(getCustomerDetails(userId));
+      let payload = {where:{status:true}}
+      dispatch(getCustomerDetails(payload));
     }
     setRefreshing(false);
   }
@@ -84,7 +84,7 @@ export default function Customer({navigation}) {
   function search(text) {
     console.log(data);
     setSearchInput(text);
-    const newData = data?.data.filter(item => {
+    const newData = data?.data?.data.filter(item => {
       const itemData = `${item?.cust_name?.toLowerCase()}${
         item?.cust_mobile
       }${item?.cust_email?.toLowerCase()}`;
@@ -106,7 +106,7 @@ export default function Customer({navigation}) {
     if (error !== null) {
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message,
+        text2: error?.message?.error,
         type: 'error',
       });
     }
@@ -142,12 +142,15 @@ export default function Customer({navigation}) {
                 <TextInput
                   value={searchInput} 
                   placeholder={'Search'}
+                  placeholderTextColor={'#868686'}
                   onChangeText={text => search(text)}
                   style={{
                     height: 35,
                     width: screenWidth / 2.5,
                     borderWidth: 1,
                     borderRadius: 10,
+                    padding:10,
+                    color:"#000"
                   }}
                 />
               </View>

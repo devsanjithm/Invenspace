@@ -21,7 +21,6 @@ import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import AppStatusBar from '../../components/Appstatusbar';
 import Loader from '../../components/Loader';
-import {getSupplierDetails} from './supplierAction'
 import {UserContext} from '../../service/context/context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import globalStyles from '../../components/Styles';
@@ -31,8 +30,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getSupplierDetails } from '../Suppliers/supplierAction';
 
-export default function Sale({navigation}) {
+export default function ListSupplier({navigation}) {
 
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.supplier);
@@ -103,10 +103,9 @@ export default function Sale({navigation}) {
 
   useEffect(() => {
     if (error !== null) {
-      console.log(error);
       Toast.show({
         text1: 'ERROR',
-        text2: error?.message?.error,
+        text2: error?.message,
         type: 'error',
       });
     }
@@ -135,7 +134,7 @@ export default function Sale({navigation}) {
       backgroundColor: '#fff',
       // justifyContent: 'flex-end',
     }}>
-      <AppHeaders title={'Supplier'} color={'#fff'} main={true}>
+      <AppHeaders title={'Suppliers'} color={'#fff'} main={true}>
           {handleSearchUIState ? (
             <View style={{flexDirection: 'row'}}>
               <View style={{paddingHorizontal: 10}}>
@@ -204,7 +203,7 @@ export default function Sale({navigation}) {
             ) : (
               supplierData?.map((ele, index) => (
                 <Pressable
-                     onPress={() => navigation.navigate('supplierDis',{data:ele})}
+                     onPress={() => navigation.navigate('Stockin',{data:ele})}
                      key={index}
                     >
                       
@@ -235,11 +234,11 @@ export default function Sale({navigation}) {
                       {/* <Text style={globalStyles}>{ele?.sup_mobile}</Text> */}
                     </View>
                   </View>
-                  <View>
+                  {/* <View>
                     
                     <AntDesign name='right' size={20} color="#000"/>
                    
-                  </View>
+                  </View> */}
                 </View>
                 <View  style={{
                    borderBottomColor: '#e4e4e4',
