@@ -37,6 +37,8 @@ import moment from 'moment';
 import transactionsService from './transactionsService';
 import {Button} from 'react-native-paper';
 import {addTransaction, getAllTransaction} from './transactionAction';
+import { setpostMessagefalse } from './transactionSlice';
+import { CommonActions } from '@react-navigation/native';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
@@ -44,13 +46,39 @@ export default function StockOut({navigation, route}) {
   const {postMessage, loading, error, data} = useSelector(
     state => state.transaction,
   );
+
+  const backAction = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index:0,
+        routes:[{name:'Home'}]
+      })
+    )
+    return true;
+  }, []);
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [backAction]);
+
   const [refreshing, setRefreshing] = React.useState(false);
   const [cusData, setCusData] = useState(null);
   const [itemData, setItemData] = useState(null);
   const [showcus, setShowcus] = useState('Select');
   const [showitem, setShowitem] = useState('Select');
   const [quantity, setQuantity] = useState(0);
-const dispatch = useDispatch()
+  let payload = {
+    include: {
+      product: true,
+      customer: true,
+      suppiler: true,
+    },
+    where: {
+      status: true,
+    },
+  };
+  const dispatch = useDispatch();
   function handleRefresh() {
     setRefreshing(true);
   }
@@ -93,8 +121,9 @@ const dispatch = useDispatch()
         text2: postMessage?.message,
         type: 'success',
       });
+      dispatch(setpostMessagefalse());
       navigation.goBack();
-      dispatch(getAllTransaction());
+      dispatch(getAllTransaction(payload));
     }
   }, [postMessage]);
 

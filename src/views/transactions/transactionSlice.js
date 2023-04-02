@@ -4,7 +4,8 @@ const initialState = {
   loading: false,
   error: null,
   data: {},
-  postMessage:''
+  postMessage:{},
+  singleData :{},
 };
 
 export const transactionSlice = createSlice({
@@ -17,12 +18,11 @@ export const transactionSlice = createSlice({
     setGetTransactionSuccess: (state, action) => {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.singleData = action.payload;
     },
     setAddTransactionSuccess: (state, action) => {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
       state.postMessage = action.payload
     },
     setTransactionDetailsFailure: (state, action) => {
@@ -31,11 +31,11 @@ export const transactionSlice = createSlice({
     },
     setGetAllTransactionSucess : (state,action)=>{
       state.loading = false,
-      state.error = null,
-      state.postMessage = action.payload
+      state.error = null
+      state.data = action.payload
     },
     setpostMessagefalse:(state,action)=>{
-      state.postMessage = ''
+      state.postMessage = {}
     }
   },
 });

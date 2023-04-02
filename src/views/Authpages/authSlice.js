@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   error: null,
   data: {},
+  loginData:{}
 };
 
 export const authSlice = createSlice({
@@ -17,11 +18,15 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.data = action.payload;
+      state.loginData = action.payload
     },
     setAuthDetailsFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
+    setUserData:(state,action)=>{
+      state.loginData = action.payload
+    }
   },
 });
 
@@ -29,6 +34,7 @@ export const {
   setAuthDetailsLoading,
   setAuthDetailsSuccess,
   setAuthDetailsFailure,
+  setUserData
 } = authSlice.actions;
 
 export default authSlice.reducer;

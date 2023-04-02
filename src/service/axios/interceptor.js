@@ -7,6 +7,7 @@ export const requestInterceptor = async config => {
     if (token) {
       config.headers.common.Authorization = token;
     }
+    console.log(`--------------${config.method}----- ${config.baseURL}${config.url} ---------------------------`)
     return config;
   } catch (error) {
     return config;

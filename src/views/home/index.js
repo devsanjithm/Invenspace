@@ -74,9 +74,11 @@ function Card2(props) {
     loopedData.push(
       <Pressable key={i}  onPress={()=>{
         if(element?.text === "Stock In"){
-          navigation.navigate('Stockin')
+          navigation.navigate('In/Out',{screen:'Stockin'})
         }else if(element?.text === "Register New Item"){
-          navigation.navigate('AddProducts')
+          navigation.navigate('Items',{screen:'AddProducts'})
+        }else if(element?.text === "Stock Out"){
+          navigation.navigate('In/Out',{screen:'Stockout'})
         }
       }}>
       <View style={{flexDirection: 'row',paddingHorizontal:10,justifyContent:'space-between'}}>
@@ -103,6 +105,22 @@ function Card2(props) {
 
 export default function Home({navigation}) {
   const [dashboardDatacount,setDashboardData]=useState()
+  const [refreshing, setRefreshing] = React.useState(false);
+  const {setRoute, isInternet} = useContext(UserContext);
+  function handleRefresh() {
+    if (isInternet) {
+      setRefreshing(true);
+      data();
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'No Internet',
+        text2: 'Try after Sometime',
+        visibilityTime: 5000,
+      });
+      setRefreshing(false);
+    }
+  }
   const itemData = [
     {
       icon: <MaterialIcons name="add-chart" size={25} color="#000" />,
@@ -132,12 +150,13 @@ export default function Home({navigation}) {
     }
   ]
 
+  async function data(){
+    const data = await HomeAPIs.getDashboardCount();
+    console.log(data.data);
+    setDashboardData(data.data)
+    setRefreshing(false)
+  }
   useEffect(() => {
-    async function data(){
-      const data = await HomeAPIs.getDashboardCount();
-      console.log(data.data);
-      setDashboardData(data.data)
-    }
     data()
   }, [])
   
@@ -145,14 +164,19 @@ export default function Home({navigation}) {
   return (
     <>
       <SafeAreaView style={globalStyles.screenLayout}>
+        <AppStatusBar backgroundColor='#fff' barStyle='dark-content'/>
         <View>
           <Text style={styles.Header}>Home</Text>
         </View>
-        <ScrollView>
+        <ScrollView
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+        >
           <Card1 data={dashboardDatacount}/>
           <Card2 data={itemData} heading={'Add Item'} />
           <Card2 data={stockData} heading={'Stock In/Out'} />
-          <Card2 data={lowStockData} heading={'Low Stock Remainder'} />
+          {/* <Card2 data={lowStockData} heading={'Low Stock Remainder'} /> */}
           <Card2 data={dashboardData} heading={'Dashboard'} />
         </ScrollView>
       </SafeAreaView>

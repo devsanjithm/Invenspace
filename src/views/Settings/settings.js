@@ -37,31 +37,26 @@ import CustomerAPIs from '../Customers/customerService';
 import {setAuthDetailsSuccess} from '../Authpages/authSlice';
 import {clearAll} from '../../service/localstorage';
 import CommonAPIs from '../../service/commonredux/commonService';
-import { postCompanyDetails } from '../../service/commonredux/commonAction';
+import {postCompanyDetails} from '../../service/commonredux/commonAction';
+import CustomModal from '../../components/Modal';
 export default function Settings({navigation}) {
   const dispatch = useDispatch();
   const {data, loading, error} = useSelector(state => state.customer);
-  const {data: userDatafromRedux} = useSelector(state => state.auth);
-  const {userData, setRoute, isInternet} = useContext(UserContext);
+  const {data: userDatafromRedux, loginData} = useSelector(state => state.auth);
+  const {loading: commonLoading} = useSelector(state => state.common);
+  const {setRoute, isInternet} = useContext(UserContext);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [handleSearchUIState, setSearchUIState] = useState(false);
   const [supcount, setSupcount] = useState();
   const [cuscount, setCuscount] = useState();
   const [memcount, setMemcount] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [userDetails, setUserDetails] = useState(
+    _.isEmpty(userDatafromRedux) ? loginData : userDatafromRedux,
+  );
 
-  let username = userDatafromRedux?.data?.user?.name;
+  let username = userDetails?.data?.user?.name;
 
-  // const backAction = useCallback(() => {
-  //   navigation.navigate('Dashboard');
-  //   return true;
-  // }, []);
-
-  // useEffect(() => {
-  //   BackHandler.addEventListener('hardwareBackPress', backAction);
-  //   return () =>
-  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
-  // }, [backAction]);
+  const handleModalClose = () => setModalVisible(false);
 
   async function fetchData() {
     try {
@@ -84,11 +79,13 @@ export default function Settings({navigation}) {
     }
     setRefreshing(false);
   }
+
   useEffect(() => {
-    console.log(
-      'hi-----------------------------------',
-      userDatafromRedux?.result?._id,
-    );
+    console.log(userDetails, '090909009');
+    setUserDetails(loginData);
+  }, [loginData]);
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -123,25 +120,23 @@ export default function Settings({navigation}) {
       },
     ]);
   }
-  const [text, setText] = useState('');
+  const [text, setText] = useState(userDetails?.data?.user.Company?.name);
 
   const handleSubmit = () => {
     const payload = {
-      name:text,
+      name: text,
     };
     dispatch(postCompanyDetails(payload));
-    console.log(text);
-    setText('');
+    handleCancel();
   };
 
   const handleCancel = () => {
     setModalVisible(false);
-    setText('');
   };
 
   return (
     <>
-      {loading ? <Loader /> : null}
+      {loading || commonLoading ? <Loader /> : null}
       <SafeAreaView
         style={{
           flex: 1,
@@ -188,7 +183,9 @@ export default function Settings({navigation}) {
                 />
               </View>
               <View>
-                <Text style={styles.container1}>Invenspace</Text>
+                <Text style={styles.container1}>
+                  {userDetails?.data?.user?.Company?.name}
+                </Text>
               </View>
             </ImageBackground>
           </View>
@@ -233,7 +230,9 @@ export default function Settings({navigation}) {
                 </View>
                 <View style={{flexDirection: 'row'}}>
                   <View style={{paddingHorizontal: 20}}>
-                    <Text style={globalStyles}>Invenspace</Text>
+                    <Text style={globalStyles}>
+                      {userDetails?.data?.user.Company?.name}
+                    </Text>
                   </View>
                   <View style={{marginTop: 5}}>
                     <AntDesign name="right" size={18} color="#000" />
@@ -456,13 +455,13 @@ export default function Settings({navigation}) {
             <Text> . App version 1.1</Text>
           </View>
         </ScrollView>
-        <Modal visible={modalVisible}>
-          <View
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+        <CustomModal
+          visible={modalVisible}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={handleModalClose}
+          onDismiss={handleModalClose}>
+          <View>
             <View
               style={{backgroundColor: 'white', borderRadius: 8, padding: 16}}>
               <Text
@@ -475,21 +474,26 @@ export default function Settings({navigation}) {
                 }}>
                 Edit Team Name
               </Text>
-              <TextInput
+              <View
                 style={{
-                  height: 60,
-                  width: 250,
-                  borderColor: 'gray',
-                  borderWidth: 1,
-                  borderRadius: 4,
-                  padding: 8,
-                  marginBottom: 25,
-                  marginTop: 20,
-                }}
-                onChangeText={setText}
-                value={text}
-                placeholder="Enter new name"
-              />
+                  alignItems: 'center',
+                }}>
+                <TextInput
+                  style={{
+                    height: 60,
+                    width: 250,
+                    borderColor: 'gray',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    padding: 8,
+                    marginBottom: 25,
+                    marginTop: 20,
+                  }}
+                  onChangeText={setText}
+                  value={text}
+                  placeholder="Enter new name"
+                />
+              </View>
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <TouchableOpacity
@@ -521,7 +525,7 @@ export default function Settings({navigation}) {
               </View>
             </View>
           </View>
-        </Modal>
+        </CustomModal>
       </SafeAreaView>
     </>
   );

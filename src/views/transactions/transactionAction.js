@@ -15,7 +15,7 @@ export const getTransaction = payload => {
   };
 };
 export const addTransaction = payload => {
-  console.log('===== @DH get Transaction details action =====', payload);
+  console.log('===== @DH add Transaction details action =====', payload);
   return {
     type: actionTypes.addTransaction,
     data: payload,

@@ -31,13 +31,13 @@ const CommonAPIs = {
   },
   setCompany: async payload => {
     try {
-      const res = await apiInstance.post('/api/company-update',payload);
+      const res = await apiInstance.put('/api/company-update',payload);
       return res;
     } catch (error) {
       console.log('=======', error);
       throw error;
     }
-  },
+  }
 
 //   setSale: async payload => {
 //     try {

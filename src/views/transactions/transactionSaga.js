@@ -42,16 +42,16 @@ function* addTransaction(payload) {
 }
 
 function* watchOngetAllTransaction() {
-  yield takeLatest('addTransaction', addTransaction);
+  yield takeLatest('getAllTransaction', getAllTransaction);
 }
 
 function* watchOngetTransaction() {
-  yield takeLatest('getAllTransaction', getAllTransaction);
+  yield takeLatest('getTransaction', getTransaction);
 }
 
 
 function* watchOnaddTransaction() {
-  yield takeLatest('getTransaction', getTransaction);
+  yield takeLatest('addTransaction', addTransaction);
 }
 
 

@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   error: null,
   data: {},
-  postMessage:''
+  postMessage:'',
 };
 
 export const commonSlice = createSlice({
@@ -13,6 +13,9 @@ export const commonSlice = createSlice({
   reducers: {
     setMemberDetailsLoading: state => {
       state.loading = true;
+    },
+    setMemberDetailsLoadingFalse: state => {
+      state.loading = false;
     },
     setMemberDetailsSuccess: (state, action) => {
       state.loading = false;
@@ -41,7 +44,8 @@ export const {
   setMemberDetailsSuccess,
   setMemberDetailsFailure,
   setPostMemberDetailsSucess,
-  setPostCompanyDetailsSucess
+  setPostCompanyDetailsSucess,
+  setMemberDetailsLoadingFalse
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

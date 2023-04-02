@@ -38,6 +38,7 @@ import moment from 'moment';
 import transactionsService from './transactionsService';
 import {useNavigation} from '@react-navigation/native';
 import {Modal} from 'react-native-paper';
+import { getAllTransaction } from './transactionAction';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
@@ -117,16 +118,16 @@ function Card(props) {
 }
 
 export default function Transactions({navigation}) {
-  const [loading, setLoading] = useState(false);
   const [transactionData, setTransactionData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const dispatch = useDispatch();
+  const {data, loading} = useSelector(state => state.transaction);
   function handleToggleModal() {
     setIsVisible(!isVisible);
   }
 
-  async function getAllTransactions() {
-    let data;
+  async function getAlTransactions() {
     let payload = {
       include: {
         product: true,
@@ -138,32 +139,32 @@ export default function Transactions({navigation}) {
       },
     };
     try {
-      data = await transactionsService.getAllTransaction(payload);
-      console.log(data?.data?.data);
-      setTransactionData(data?.data?.data);
-      setLoading(false);
+      dispatch(getAllTransaction(payload));
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
-    setLoading(false);
     setRefreshing(false);
   }
 
+  useEffect(() => {
+    if (!_.isEmpty(data)) {
+      setTransactionData(data?.data?.data);
+    }
+  }, [data]);
+
   function handleRefresh() {
     setRefreshing(true);
-    getAllTransactions();
+    getAlTransactions();
   }
 
   useEffect(() => {
-    setLoading(true);
-    getAllTransactions();
+    getAlTransactions();
   }, []);
 
   return (
     <>
       <SafeAreaView style={globalStyles.screenLayout}>
-        <AppStatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
+        <AppStatusBar backgroundColor={loading ? 'rgba(0,0,0,0.75)' : '#fff'} barStyle={'dark-content'} />
         {loading ? <Loader /> : null}
         <View style={{padding: 10}}>
           <View style={{alignItems: 'flex-end'}}>
@@ -196,14 +197,14 @@ export default function Transactions({navigation}) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setIsVisible(false)
+              setIsVisible(false);
               navigation.navigate('Stockin');
             }}>
             <Text style={styles.modalText}>Stock IN</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setIsVisible(false)
+              setIsVisible(false);
               navigation.navigate('Stockout');
             }}>
             <Text style={styles.modalText}>Stock Out</Text>
@@ -273,6 +274,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 15,
-    color:'#000'
+    color: '#000',
   },
 });

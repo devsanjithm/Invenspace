@@ -35,55 +35,48 @@ import {clearAll} from '../../service/localstorage';
 import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
 import transactionsService from './transactionsService';
+import {getTransaction} from './transactionAction';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
 export default function HistoryTransaction({navigation, route}) {
   const id = route.params.id;
-  const [loading, setLoading] = useState(false);
   const [transactionData, setTransactionData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const dispatch = useDispatch();
+  const {singleData, loading} = useSelector(state => state.transaction);
 
-  async function getAllTransactions() {
-    let data;
-    let payload = {
-      include: {
-        product: true,
-        customer: true,
-        suppiler: true,
-      },
-      where: {
-        status: true,
-        id: id,
-      },
-    };
+  async function getTransactions() {
     try {
-      data = await transactionsService.getAllTransaction(payload);
-      console.log(data?.data?.data);
-      setTransactionData(data?.data?.data[0]);
-      setLoading(false);
+      dispatch(getTransaction(id));
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
-    setLoading(false);
     setRefreshing(false);
   }
 
+  useEffect(() => {
+    if (!_.isEmpty(singleData)) {
+      setTransactionData(singleData?.data?.data);
+    }
+  }, [singleData]);
+
   function handleRefresh() {
     setRefreshing(true);
-    getAllTransactions();
+    getTransactions();
   }
 
   useEffect(() => {
-    setLoading(true);
-    getAllTransactions();
+    getTransactions();
   }, []);
 
   return (
     <>
       <SafeAreaView style={globalStyles.screenLayout}>
-        <AppStatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
+        <AppStatusBar
+          backgroundColor={loading ? 'rgba(0,0,0,0.75)' : '#fff'}
+          barStyle={'dark-content'}
+        />
         {loading ? <Loader /> : null}
         <View
           style={{
@@ -113,7 +106,10 @@ export default function HistoryTransaction({navigation, route}) {
             </Text>
           </View>
         </View>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }>
           <View>
             <Text style={{color: '#828282', padding: 10, fontSize: 15}}>
               {moment(transactionData?.created_at).format(
@@ -127,7 +123,13 @@ export default function HistoryTransaction({navigation, route}) {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text style={styles.headerText}>
+            <Text
+              style={[
+                styles.headerText,
+                transactionData?.type === 1
+                  ? {color: '#FF6600'}
+                  : {color: '#448EE4'},
+              ]}>
               {transactionData?.type === 1 ? 'Stock Out' : 'Stock In'}
             </Text>
             <Text style={{color: '#828282', padding: 10, fontSize: 18}}>
@@ -144,17 +146,14 @@ export default function HistoryTransaction({navigation, route}) {
             }}>
             <View>
               <View>
-                <Text style={globalStyles.text}>
+                <Text style={[globalStyles.text,{fontSize:23}]}>
                   {transactionData?.product?.pro_name}
                 </Text>
               </View>
               <View>
                 <Text style={globalStyles.text}>
                   {transactionData?.product?.pro_price} |{' '}
-                  {Math.abs(
-                    transactionData?.product?.totalOUT -
-                      transactionData?.product?.totalIN,
-                  )}
+                  {transactionData?.product?.quantity}
                 </Text>
               </View>
             </View>

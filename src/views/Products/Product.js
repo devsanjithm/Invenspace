@@ -52,10 +52,16 @@ export default function Product({navigation}) {
   const [searchInput, setSearchInput] = useState('');
   const {setRoute} = useContext(UserContext);
 
-  const backAction = useCallback(() => {
-    navigation.navigate('Dashboard');
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   if(!_.isEmpty(searchInput)){
+  //     setProductData(data?.data.data);
+  //     setSearchInput('')
+  //     return true
+  //   }else{
+  //     // navigation.goBack();
+  //     return false;
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', backAction);
@@ -135,7 +141,7 @@ export default function Product({navigation}) {
     });
     setProductData(newData);
   }
-  
+
   return (
     <>
       {loading ? <Loader /> : null}
@@ -145,7 +151,7 @@ export default function Product({navigation}) {
           backgroundColor: '#fff',
         }}>
         <View style={{alignSelf: 'center', borderBottomColor: '#e4e4e4'}}>
-          <Text style={{fontSize: 25, color: 'black'}}>Products</Text>
+          <Text style={{fontSize: 25, color: 'black',marginVertical:10}}>Products</Text>
         </View>
         <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
         <ScrollView
@@ -156,8 +162,8 @@ export default function Product({navigation}) {
           <View style={{paddingHorizontal: 10, marginLeft: 10}}>
             <TextInput
               value={searchInput}
-              placeholder={'Search'}
-              placeholderTextColor={"#000"}
+              placeholder={'Search by Item name'}
+              placeholderTextColor={'gray'}
               onChangeText={text => search(text)}
               // left={ <Ionicons
               //   onPress={() => setSearchUIState(!handleSearchUIState)}
@@ -168,15 +174,13 @@ export default function Product({navigation}) {
               style={{
                 height: 40,
                 width: screenWidth / 1.1,
-                borderWidth: 1,
                 borderRadius: 10,
                 padding: 5,
                 paddingHorizontal: 10,
                 backgroundColor: '#eee',
-                color:"#000"
+                color: '#000',
               }}
             />
-            
           </View>
           <View style={styles.container}>
             {_.isEmpty(productData) ? (
@@ -191,12 +195,24 @@ export default function Product({navigation}) {
                     navigation.navigate('productDisplay', {data: ele})
                   }
                   style={styles.productContainer}>
-                  <View style={styles.iconContainer}>
-                    <AntDesign name="paperclip" size={24} color="#777" />
+                  <View style={{flexDirection:"row",alignItems:'center',paddingHorizontal:10}}>
+                    <View style={styles.iconContainer}>
+                      <AntDesign name="paperclip" size={24} color="#777" />
+                    </View>
+                    <View style={{ padding: 10}}>
+                      <Text style={styles.productName}>{ele.pro_name}</Text>
+                      <Text 
+                      ellipsizeMode='tail'
+                      numberOfLines={1}
+                      style={styles.productDesc}>{ele.pro_desc}</Text>
+                    </View>
                   </View>
-                  <View style={{marginLeft: 20, padding: 10}}>
-                    <Text style={styles.productName}>{ele.pro_name}</Text>
-                    <Text style={styles.productDesc}>{ele.pro_desc}</Text>
+                  <View >
+                    <Text style={{
+                      color:"blue",
+                      paddingHorizontal:20,
+                      fontSize:20
+                    }}>{ele?.quantity}</Text>
                   </View>
                 </Pressable>
               ))
@@ -219,7 +235,7 @@ export default function Product({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 20,
     backgroundColor: 'white',
   },
   noDataContainer: {
@@ -240,6 +256,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 9,
     borderRadius: 10,
+    justifyContent:"space-between"
   },
   iconContainer: {
     marginRight: 10,
@@ -252,6 +269,7 @@ const styles = StyleSheet.create({
   productDesc: {
     fontSize: 16,
     color: '#777',
+    width:screenWidth/2
   },
 });
 

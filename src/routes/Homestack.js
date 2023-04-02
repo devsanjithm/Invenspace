@@ -42,7 +42,7 @@ function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
     <productStack.Navigator
-      // initialRouteName="Product1"
+      initialRouteName="Product1"
       screenOptions={{
         animation: 'fade_from_bottom',
         headerShown: false,

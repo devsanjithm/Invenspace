@@ -17,7 +17,6 @@ const rootReducer = combineReducers({
     supplier:supplierReducer,
     common:commonReducer,
     transaction:transactionReducer,
-
 });
 
 export default rootReducer;

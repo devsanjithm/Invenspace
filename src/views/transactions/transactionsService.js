@@ -5,7 +5,7 @@ const transactionsService = {
       return await apiInstance.post('/api/getAllTransaction',payload);
   },
   getTransaction: async payload => {
-      return await apiInstance.get(`/api/getTransaction/${payload?.id}`);
+      return await apiInstance.get(`/api/getTransaction/${payload}`);
   },
   addTransaction: async payload => {
       return await apiInstance.post('/api/addTransaction',payload);

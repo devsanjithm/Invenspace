@@ -29,20 +29,26 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Input from '../../components/Input';
 import { getProductDetails } from './productAction';
+import { CommonActions } from '@react-navigation/native';
 export default function AddProducts({navigation}) {
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const user_id = userDatafromRedux?.result?._id;
 
-  // const backAction = useCallback(() => {
-  //   navigation.goBack();
-  //   return true;
-  // }, []);
+  const backAction = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index:0,
+        routes:[{name:'Home'}]
+      })
+    )
+    return true;
+  }, []);
 
-  // useEffect(() => {
-  //   BackHandler.addEventListener('hardwareBackPress', backAction);
-  //   return () =>
-  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
-  // }, [backAction]);
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [backAction]);
 
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.product);
@@ -141,7 +147,14 @@ export default function AddProducts({navigation}) {
             <AppHeaders title={'Add Item'} color={'#fff'}>
               <MaterialIcons
                 onPress={() => {
-                  navigation.goBack();
+                  // navigation.navigate('Product1');
+                  // navigation.poptoTop()
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index:0,
+                      routes:[{name:'Home'}]
+                    })
+                  )
                 }}
                 name="cancel"
                 size={24}

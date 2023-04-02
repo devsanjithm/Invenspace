@@ -37,7 +37,7 @@ import moment from 'moment';
 import transactionsService from './transactionsService';
 import {Button} from 'react-native-paper';
 import {addTransaction, getAllTransaction} from './transactionAction';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation,CommonActions} from '@react-navigation/native';
 import { setAddTransactionSuccess, setpostMessagefalse } from './transactionSlice';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
@@ -52,9 +52,36 @@ export default function Stockin({route}) {
   const [quantity, setQuantity] = useState(0);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {postMessage, loading, error, data} = useSelector(
+  let payload = {
+    include: {
+      product: true,
+      customer: true,
+      suppiler: true,
+    },
+    where: {
+      status: true,
+    },
+  };
+  const {postMessage, loading, error} = useSelector(
     state => state.transaction,
   );
+
+  const backAction = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index:0,
+        routes:[{name:'Home'}]
+      })
+    )
+    return true;
+  }, []);
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [backAction]);
+
+
   function handleRefresh() {
     setRefreshing(true);
   }
@@ -83,7 +110,7 @@ export default function Stockin({route}) {
       });
       dispatch(setpostMessagefalse())
       navigation.goBack();
-      dispatch(getAllTransaction());
+      dispatch(getAllTransaction(payload));
     }
   }, [postMessage]);
 
