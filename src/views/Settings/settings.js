@@ -123,11 +123,15 @@ export default function Settings({navigation}) {
   const [text, setText] = useState(userDetails?.data?.user.Company?.name);
 
   const handleSubmit = () => {
+    if(text.length>3 && /^[a-zA-Z]+$/.test(text)){
     const payload = {
       name: text,
     };
     dispatch(postCompanyDetails(payload));
     handleCancel();
+  }else{
+    alert("team name must be a string and greater than 3 characters")
+  }
   };
 
   const handleCancel = () => {

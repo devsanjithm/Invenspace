@@ -16,6 +16,7 @@ import AppStatusBar from '../../components/Appstatusbar';
 import React, {useEffect, useCallback} from 'react';
 import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
+import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 import {getCustomerDetails, postCustomerDetails} from './customerAction';
@@ -24,6 +25,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import _ from 'lodash';
 import { setPostCustomerDetailsSucess } from './customerSlice';
 import { AppHeaders } from '../../components/AppHeaders';
+import { useState } from 'react';
 
 export default function AddCustomer({navigation}) {
   // useEffect(() => {
@@ -34,15 +36,42 @@ export default function AddCustomer({navigation}) {
 
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.customer);
+  // const [userDetails, setUserDetails] = useState(
+  //   _.isEmpty(userDatafromRedux) ? loginData : userDatafromRedux,
+  // );
+  
+  const loginSchema = yup.object().shape({
+    cust_email: yup
+      .string()
+      .email('Enter a valid email')
+      .required('Email is required'),
+    cust_id: yup
+      .string()
+      // .min(8, ({min}) => 'password must be atleast 8 characters')
+      .required('id is required'),
+    cust_name: yup
+      .string()
+       .min(4, ({min}) => 'name must be atleast 4 characters')
+      .required('name is required'),
+    cust_mobile: yup
+    .string()
+       .min(10, ({min}) => 'mobile must have 10 digits')
+      .required('mobile no is required'),
+      cust_username: yup
+      .string()
+       .min(4, ({min}) => 'udername must be atleast 4 characters')
+      .required('username is required'),
+
+  });
 
   function handleCustomer(values) {
     const payload = {
-      cust_id: values.cust_id,
+      // cust_id: values.cust_id,
       cust_name: values.cust_name,
-      cust_username: values.cust_username,
+      // cust_username: values.cust_username,
       cust_email: values.cust_email,
-      cust_mobile: values.cust_mobile,
-      user_id: user_id,
+      cust_mobile: parseInt(values.cust_mobile),
+      // user_id: user_id,
 
       // "cust_id":"2338",
       // "cust_name":"thirdd",
@@ -56,6 +85,7 @@ export default function AddCustomer({navigation}) {
   useEffect(() => {
     if (!_.isEmpty(postMessage)) {
       console.log('data in customer', postMessage);
+      // console.log(userDetails?.data?.user)
       Toast.show({
         text1: 'SUCCESS',
         text2: postMessage?.message,
@@ -89,7 +119,7 @@ export default function AddCustomer({navigation}) {
         }}
         validateOnMount={true}
         onSubmit={values => handleCustomer(values)}
-        //   validationSchema={loginSchema}
+        validationSchema={loginSchema}
       >
         {({
           handleChange,
@@ -101,105 +131,92 @@ export default function AddCustomer({navigation}) {
           isValid,
         }) => (
           <SafeAreaView
-            style={{
-              flex: 1,
-              backgroundColor: '#fff',
-              // justifyContent: 'flex-end',
-            }}>
-            <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-            <KeyboardAvoidingView>
-            <AppHeaders title={'Add Item'} color={'#fff'}>
-              <MaterialIcons
-                onPress={() => {
-                  navigation.goBack();
-                }}
-                name="cancel"
-                size={24}
-                color="#000"
-              />
-            </AppHeaders>
-              <ScrollView>
-              <View
-                  style={{
-                    margin: 10,
-                    marginHorizontal: 20,
-                    justifyContent: 'center',
+          style={{
+            flex: 1,
+            backgroundColor: '#fff',
+            // justifyContent: 'flex-end',
+          }}>
+             <AppHeaders title={'Add Customer'} color={'#fff'} main={true}></AppHeaders>
+          <AppStatusBar backgroundColor={'#fff'} barStyle="dark-content"  />
+          
+          <KeyboardAvoidingView>
+            
+            <ScrollView>
+              <View>
+                <Text style={styles.top}>Account info</Text>
+              </View>
+              <View style={styles.container}>
+                <TextInput
+                  mode="outlined"
+                  keyboardType='numeric'
+                  label={'Customer ID'}
+                  autoCapitalize="none"
+                  onChangeText={handleChange('cust_id')}
+                  onBlur={handleBlur('cust_id')}
+                  value={values.cust_id}
+                  style={styles.inputf}></TextInput>
+                  {errors.cust_id && touched.cust_id && (
+                    <Text style={styles.errors}>{errors.cust_id}</Text>
+                  )}
+                <TextInput
+                  mode="outlined"
+                  label={'Customer Name'}
+                  autoCapitalize="none"
+                  onChangeText={handleChange('cust_name')}
+                  onBlur={handleBlur('cust_name')}
+                  value={values.cust_name}
+                  style={styles.inputf}></TextInput>
+                  {errors.cust_name && touched.cust_name && (
+                    <Text style={styles.errors}>{errors.cust_name}</Text>
+                  )}
+                <TextInput
+                  mode="outlined"
+                  label={'Mobile no'}
+                  autoCapitalize="none"
+                  keyboardType='numeric'
+                  onChangeText={handleChange('cust_mobile')}
+                  onBlur={handleBlur('cust_mobile')}
+                  value={values.cust_mobile}
+                  style={styles.inputf}></TextInput>
+                  {errors.cust_mobile && touched.cust_mobile && (
+                    <Text style={styles.errors}>{errors.cust_mobile}</Text>
+                  )}
+                <TextInput
+                  mode="outlined"
+                  label={'Username'}
+                  autoCapitalize="none"
+                  onChangeText={handleChange('cust_username')}
+                  onBlur={handleBlur('cust_username')}
+                  value={values.cust_username}
+                  style={styles.inputf}></TextInput>
+                  {errors.cust_username && touched.cust_username && (
+                    <Text style={styles.errors}>{errors.cust_username}</Text>
+                  )}
+                <TextInput
+                  mode="outlined"
+                  label={'Email id'}
+                  autoCapitalize="none"
+                  onChangeText={handleChange('cust_email')}
+                  onBlur={handleBlur('cust_email')}
+                  value={values.cust_email}
+                  style={styles.inputf}></TextInput>
+                  {errors.cust_email && touched.cust_email && (
+                    <Text style={styles.errors}>{errors.cust_email}</Text>
+                  )}
+              </View>
+              <View style={styles.button}>
+                <Button
+                  mode="contained"
+                  color="#87CEEB"
+                  onPress={() => {
+                    handleSubmit();
                   }}>
-                  <View style={styles.Box}>
-                    <Entypo
-                      name="camera"
-                      size={25}
-                      color="black"
-                      style={styles.icon}
-                    />
-                  </View>
-                  <View style={{marginTop: 30}}>
-                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
-                      <Text style={styles.text}>Customer id      </Text>
-                      <TextInput
-                        mode="outlined"
-                        label={'input cus id'}
-                        autoCapitalize="none"
-                        onChangeText={handleChange('cust_id')}
-                        onBlur={handleBlur('cust_id')}
-                        backgroundColor="white"
-                        value={values.cust_id}
-                        style={styles.inputf}></TextInput>
-                    </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
-                      <Text style={styles.text}>Cus Name </Text>
-                      <TextInput
-                        mode="outlined"
-                        label={'input Cus name'}
-                        autoCapitalize="none"
-                        onChangeText={handleChange('cust_name')}
-                        onBlur={handleBlur('cust_name')}
-                        backgroundColor="white"
-                        value={values.cust_name}
-                        style={styles.inputf}></TextInput>
-                    </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
-                      <Text style={styles.text}>Email        </Text>
-                      <TextInput
-                        mode="outlined"
-                        label={'input cus email'}
-                        autoCapitalize="none"
-                        onChangeText={handleChange('cust_email')}
-                        onBlur={handleBlur('cust_email')}
-                        backgroundColor="white"
-                        value={values.cust_email}
-                        style={styles.inputf}></TextInput>
-                    </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
-                      <Text style={styles.text}>Cust mobile</Text>
-                      <TextInput
-                        mode="outlined"
-                        label={'input item Description'}
-                        autoCapitalize="none"
-                        onChangeText={handleChange('cust_mobile')}
-                        onBlur={handleBlur('cust_mobile')}
-                        backgroundColor="white"
-                        value={values.cust_mobile}
-                        style={styles.inputf}></TextInput>
-                    </View>
-                    
-                    
-                  </View>
-
-                  <View style={styles.button}>
-                    <Button
-                      mode="contained"
-                      color="#87CEEB"
-                      onPress={() => {
-                        handleSubmit();
-                      }}>
-                      Add
-                    </Button>
-                  </View>
-                </View>
-              </ScrollView>
-            </KeyboardAvoidingView>
-          </SafeAreaView>
+                  Add
+                </Button>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
         )}
       </Formik>
     </>
@@ -212,31 +229,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   top: {
-    fontSize: 25,
+    fontSize: 23,
     fontWeight: 'bold',
     color: 'black',
     marginTop: 20,
+    marginLeft:10
   },
   inputf: {
     width: '90%',
     margin: 5,
     marginLeft: 15,
-  },
-  text: {
-    fontSize: 17,
-    color: 'black',
-    fontWeight: '300',
-    marginRight: 20,
-  },
-  Box: {
-    width: 80,
-    height: 80,
-    backgroundColor: '#eee',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    paddingRight: 10,
-    alignSelf: 'center',
   },
   button: {
     flex: 1,
@@ -245,10 +247,10 @@ const styles = StyleSheet.create({
     // justifyContent:'center',
     alignSelf: 'center',
   },
-  inputf: {
-    width: '60%',
-    // margin: 5,
-    marginLeft: 15,
-    height: 30,
+  errors: {
+    fontSize: 14,
+    color: 'red',
+    marginTop: 5,
+    paddingLeft: 10,
   },
 });

@@ -28,6 +28,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Input from '../../components/Input';
+import * as yup from 'yup';
 import { getProductDetails } from './productAction';
 import { CommonActions } from '@react-navigation/native';
 export default function AddProducts({navigation}) {
@@ -53,11 +54,33 @@ export default function AddProducts({navigation}) {
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.product);
 
+  const loginSchema = yup.object().shape({
+    ProductName: yup
+      .string()
+      .required('name is required')
+      .min(3, ({min}) => 'name must be atleast 3 characters'),
+    pro_id: yup
+      .string()
+      // .min(8, ({min}) => 'password must be atleast 8 characters')
+      .required('id is required'),
+    quantity: yup
+      .string()
+      .required('quantity is required'),
+    Price: yup
+      .string()
+      .required('Price is required'),
+    Description: yup
+      .string()
+      .required('Description is required'),
+
+  });
+
   function handleProduct(values) {
     const product = {
       pro_id: values.pro_id,
       pro_name: values.ProductName,
       pro_desc: values.Description,
+      quantity:parseInt(values.quantity),
       pro_price: parseInt(values.Price),
       // user_id: user_id,
 
@@ -66,9 +89,9 @@ export default function AddProducts({navigation}) {
       // "pro_price
     };
     const category = {
-      type: 'sationary',
-      manufacturer: 'Luxor',
-      color: 'red',
+      type: values.type,
+      manufacturer: values.manufacturer,
+      color: values.color,
     };
     const payload = {};
 
@@ -123,10 +146,14 @@ export default function AddProducts({navigation}) {
           Specification: '',
           Price: '',
           Description: '',
+          quantity:'',
+          type:'',
+          manufacturer:'',
+          color:'',
         }}
         validateOnMount={true}
         onSubmit={values => handleProduct(values)}
-        //   validationSchema={loginSchema}
+        validationSchema={loginSchema}
       >
         {({
           handleChange,
@@ -178,8 +205,11 @@ export default function AddProducts({navigation}) {
                     />
                   </View>
                   <View style={{marginTop: 30}}>
-                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
                       <Text style={styles.text}>Product id</Text>
+                      {errors.pro_id && touched.pro_id && (
+                    <Text style={styles.errors}>{errors.pro_id}</Text>
+                  )}
                       <TextInput
                         autoCapitalize="none"
                         onChangeText={handleChange('pro_id')}
@@ -187,8 +217,10 @@ export default function AddProducts({navigation}) {
                         backgroundColor="white"
                         value={values.pro_id}
                         style={styles.inputf}></TextInput>
+                      
                     </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                    
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
                       <Text style={styles.text}>Product Name </Text>
                       <TextInput
                         // label={'input item name'}
@@ -198,9 +230,16 @@ export default function AddProducts({navigation}) {
                         backgroundColor="white"
                         value={values.ProductName}
                         style={styles.inputf}></TextInput>
+                       
                     </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35}}>
-                      <Text style={styles.text}>Product Price</Text>
+                    {errors.ProductName && touched.ProductName && (
+                    <Text style={styles.errors}>{errors.ProductName}</Text>
+                  )}
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
+                      <Text style={styles.text}>Product Price  </Text>
+                      {errors.Price && touched.Price && (
+                    <Text style={styles.errors}>{errors.Price}</Text>
+                  )}
                       <TextInput
                         autoCapitalize="none"
                         onChangeText={handleChange('Price')}
@@ -208,17 +247,75 @@ export default function AddProducts({navigation}) {
                         backgroundColor="white"
                         value={values.Price}
                         style={styles.inputf}></TextInput>
+                       
                     </View>
-                    <View style={{flexDirection: 'row', marginBottom: 35}}>
+                   
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
+                      <Text style={styles.text}>Product Quantity</Text>
+                      {errors.quantity && touched.quantity && (
+                    <Text style={styles.errors}>{errors.quantity}</Text>
+                  )}
+                      <TextInput
+                        autoCapitalize="none"
+                        keyboardType='numeric'
+                        onChangeText={handleChange('quantity')}
+                        onBlur={handleBlur('quantity')}
+                        backgroundColor="white"
+                        value={values.quantity}
+                        style={{width:'50%',height:25}}></TextInput>
+                       
+                    </View>
+                    
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
                       <Text style={styles.text}>Product description</Text>
+                      {errors.Description && touched.Description && (
+                    <Text style={styles.errors}>{errors.Description}</Text>
+                  )}
+                    
                       <TextInput
                         autoCapitalize="none"
                         onChangeText={handleChange('Description')}
                         onBlur={handleBlur('Description')}
                         backgroundColor="white"
                         value={values.Description}
+                        style={{width:'50%',height:25}}></TextInput>
+                       
+                    </View>
+                    <View style={{alignSelf:'center'}}>
+                      <Text style={{fontSize:20,color:'black',marginBottom:25}}>Category</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
+                      <Text style={styles.text}>Type</Text>
+                      <TextInput
+                        autoCapitalize="none"
+                        onChangeText={handleChange('type')}
+                        onBlur={handleBlur('type')}
+                        backgroundColor="white"
+                        value={values.type}
+                        style={styles.inputf}></TextInput>
+                        
+                    </View>
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
+                      <Text style={styles.text}>Manufacturer</Text>
+                      <TextInput
+                        autoCapitalize="none"
+                        onChangeText={handleChange('manufacturer')}
+                        onBlur={handleBlur('manufacturer')}
+                        backgroundColor="white"
+                        value={values.manufacturer}
                         style={styles.inputf}></TextInput>
                     </View>
+                    <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
+                      <Text style={styles.text}>Colour</Text>
+                      <TextInput
+                        autoCapitalize="none"
+                        onChangeText={handleChange('color')}
+                        onBlur={handleBlur('color')}
+                        backgroundColor="white"
+                        value={values.color}
+                        style={styles.inputf}></TextInput>
+                    </View>
+
                   </View>
 
                   <View style={styles.button}>
@@ -274,16 +371,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   inputf: {
-    width: '60%',
+    width: '50%',
     // margin: 5,
     marginLeft: 15,
-    height: 30,
+    height: 25,
+    color:'black'
   },
   button: {
     flex: 1,
     width: '50%',
-    marginTop: 50,
+    marginTop: 20,
     // justifyContent:'center',
     alignSelf: 'center',
+  },
+  errors: {
+    fontSize: 14,
+    color: 'red',
+    marginTop: 5,
+    paddingLeft: 10,
   },
 });

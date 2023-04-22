@@ -19,6 +19,7 @@ import {
   import {useDispatch, useSelector} from 'react-redux';
   import Loader from '../../components/Loader';
   import _ from 'lodash';
+  import * as yup from 'yup';
 import { postMemberDetails } from '../../service/commonredux/commonAction';
 import { AppHeaders } from '../../components/AppHeaders';
   export default function Addmember({navigation}) {
@@ -37,6 +38,28 @@ import { AppHeaders } from '../../components/AppHeaders';
   
     const dispatch = useDispatch();
     const {postMessage, loading, error} = useSelector(state => state.common);
+    const loginSchema = yup.object().shape({
+      email: yup
+        .string()
+        .email('Enter a valid email')
+        .required('Email is required'),
+        password: yup
+        .string()
+        .min(8, ({min}) => 'password must be atleast 8 characters')
+        .required('password is required')
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+          'Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character',
+        ),
+      name: yup
+        .string()
+         .min(4, ({min}) => 'name must be atleast 4 characters')
+        .required('name is required'),
+      phone: yup
+      .string()
+         .min(10, ({min}) => 'mobile must have 10 digits')
+        .required('mobile no is required'),
+    });
   
     function handleSale(values) {
       const payload = {
@@ -86,7 +109,7 @@ import { AppHeaders } from '../../components/AppHeaders';
           }}
           validateOnMount={true}
           onSubmit={values => handleSale(values)}
-          //   validationSchema={loginSchema}
+           validationSchema={loginSchema}
         >
           {({
             handleChange,
@@ -138,17 +161,12 @@ import { AppHeaders } from '../../components/AppHeaders';
                       label={'Email'}
                       autoCapitalize="none"
                       onChangeText={handleChange('email')}
-                      // onBlur={handleBlur('email')}
+                      onBlur={handleBlur('email')}
                       value={values.email}
                       style={styles.inputf}></TextInput>
-                    {/* <TextInput
-                    mode="outlined"
-                    label={'Sale Id'}
-                    autoCapitalize="none"
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    style={styles.inputf}></TextInput> */}
+                      {errors.email && touched.email && (
+                    <Text style={styles.errors}>{errors.email}</Text>
+                  )}
                     <TextInput
                       mode="outlined"
                       label={'Password'}
@@ -157,6 +175,9 @@ import { AppHeaders } from '../../components/AppHeaders';
                       onBlur={handleBlur('password')}
                       value={values.password}
                       style={styles.inputf}></TextInput>
+                      {errors.password && touched.password && (
+                    <Text style={styles.errors}>{errors.password}</Text>
+                  )}
                     <TextInput
                       mode="outlined"
                       label={'Mobile'}
@@ -165,6 +186,9 @@ import { AppHeaders } from '../../components/AppHeaders';
                       onBlur={handleBlur('phone')}
                       value={values.phone}
                       style={styles.inputf}></TextInput>
+                      {errors.phone && touched.phone && (
+                    <Text style={styles.errors}>{errors.phone}</Text>
+                  )}
                     <TextInput
                       mode="outlined"
                       label={'Name'}
@@ -173,6 +197,9 @@ import { AppHeaders } from '../../components/AppHeaders';
                       onBlur={handleBlur('name')}
                       value={values.name}
                       style={styles.inputf}></TextInput>
+                      {errors.name && touched.name && (
+                    <Text style={styles.errors}>{errors.name}</Text>
+                  )}
                     {/* <TextInput
                       mode="outlined"
                       label={'Sale Id'}
@@ -238,6 +265,12 @@ import { AppHeaders } from '../../components/AppHeaders';
       marginTop: 150,
       // justifyContent:'center',
       alignSelf: 'center',
+    },
+    errors: {
+      fontSize: 14,
+      color: 'red',
+      marginTop: 5,
+      paddingLeft: 10,
     },
   });
   

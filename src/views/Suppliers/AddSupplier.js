@@ -16,6 +16,7 @@ import AppStatusBar from '../../components/Appstatusbar';
 import React, {useEffect, useCallback} from 'react';
 import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
+import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 import {postSupplierDetails} from './supplierAction';
@@ -37,6 +38,30 @@ export default function AddSupplier({navigation}) {
   // }, [backAction]);
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.supplier);
+
+  const loginSchema = yup.object().shape({
+    sup_email: yup
+      .string()
+      .email('Enter a valid email')
+      .required('Email is required'),
+    sup_id: yup
+      .string()
+      // .min(8, ({min}) => 'password must be atleast 8 characters')
+      .required('id is required'),
+    sup_name: yup
+      .string()
+       .min(4, ({min}) => 'name must be atleast 4 characters')
+      .required('name is required'),
+    sup_mobile: yup
+    .string()
+       .min(10, ({min}) => 'mobile must have 10 digits')
+      .required('mobile no is required'),
+      sup_username: yup
+      .string()
+       .min(4, ({min}) => 'udername must be atleast 4 characters')
+      .required('username is required'),
+
+  });
 
   function handleSupplier(values) {
     const payload = {
@@ -81,7 +106,7 @@ export default function AddSupplier({navigation}) {
       }}
       validateOnMount={true}
       onSubmit={values => handleSupplier(values)}
-      //   validationSchema={loginSchema}
+      validationSchema={loginSchema}
     >
       {({
         handleChange,
@@ -116,6 +141,9 @@ export default function AddSupplier({navigation}) {
                   onBlur={handleBlur('sup_id')}
                   value={values.sup_id}
                   style={styles.inputf}></TextInput>
+                  {errors.sup_id && touched.sup_id && (
+                    <Text style={styles.errors}>{errors.sup_id}</Text>
+                  )}
                 <TextInput
                   mode="outlined"
                   label={'Supplier Name'}
@@ -124,6 +152,9 @@ export default function AddSupplier({navigation}) {
                   onBlur={handleBlur('sup_name')}
                   value={values.sup_name}
                   style={styles.inputf}></TextInput>
+                  {errors.sup_name && touched.sup_name && (
+                    <Text style={styles.errors}>{errors.sup_name}</Text>
+                  )}
                 <TextInput
                   mode="outlined"
                   label={'Mobile no'}
@@ -132,6 +163,9 @@ export default function AddSupplier({navigation}) {
                   onBlur={handleBlur('sup_mobile')}
                   value={values.sup_mobile}
                   style={styles.inputf}></TextInput>
+                  {errors.sup_mobile && touched.sup_mobile && (
+                    <Text style={styles.errors}>{errors.sup_mobile}</Text>
+                  )}
                 <TextInput
                   mode="outlined"
                   label={'Username'}
@@ -140,6 +174,9 @@ export default function AddSupplier({navigation}) {
                   onBlur={handleBlur('sup_username')}
                   value={values.sup_username}
                   style={styles.inputf}></TextInput>
+                  {errors.sup_username && touched.sup_username && (
+                    <Text style={styles.errors}>{errors.sup_username}</Text>
+                  )}
                 <TextInput
                   mode="outlined"
                   label={'Email id'}
@@ -148,6 +185,9 @@ export default function AddSupplier({navigation}) {
                   onBlur={handleBlur('sup_email')}
                   value={values.sup_email}
                   style={styles.inputf}></TextInput>
+                  {errors.sup_email && touched.sup_email && (
+                    <Text style={styles.errors}>{errors.sup_email}</Text>
+                  )}
               </View>
               <View style={styles.button}>
                 <Button
@@ -190,5 +230,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
     // justifyContent:'center',
     alignSelf: 'center',
+  },
+  errors: {
+    fontSize: 14,
+    color: 'red',
+    marginTop: 5,
+    paddingLeft: 10,
   },
 });

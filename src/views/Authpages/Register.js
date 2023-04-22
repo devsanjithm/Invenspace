@@ -68,16 +68,7 @@ export default function Register({navigation}) {
     }
   }
 
-  // useEffect(() => {
-  //   if (!_.isEmpty(data)) {
-  //     // console.log("data in login",data);
-  //     // setLocalStorageItem(authTokenKey, data?.token);
-  //     // setLocalStorageItem(appRouteKey, 'true');
-  //     // setLocalStorageItem(userDataKey, JSON.stringify(data));
-  //     // setRoute(true);
-  //     navigation.push('Login');
-  //   }
-  // }, [data]);
+ 
 
   useEffect(() => {
     if (error !== null) {
