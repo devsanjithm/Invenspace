@@ -20,7 +20,7 @@ const LoginAPIs = {
       throw error;
     }
   },
-  getSpecificUser:async payload =>{
+  getSpecificUser: async payload => {
     try {
       const res = await apiInstance.get('/api/user');
       console.log(res);
@@ -29,6 +29,16 @@ const LoginAPIs = {
       console.log('=======', error);
       throw error;
     }
-  }
+  },
+  createCompany: async payload => {
+    try {
+      const res = await apiInstance.post('/api/createCompany', payload);
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log('=======', error);
+      throw error;
+    }
+  },
 };
 export default LoginAPIs;

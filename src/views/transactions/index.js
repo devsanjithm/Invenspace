@@ -38,7 +38,7 @@ import moment from 'moment';
 import transactionsService from './transactionsService';
 import {useNavigation} from '@react-navigation/native';
 import {Modal} from 'react-native-paper';
-import { getAllTransaction } from './transactionAction';
+import {getAllTransaction} from './transactionAction';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
@@ -46,7 +46,11 @@ function Card(props) {
   const navigation = useNavigation();
   let loopedData = [];
   if (_.isEmpty(props?.data)) {
-    return null;
+    return (
+      <Text style={{marginTop:30,textAlign: 'center', fontSize: 20, color: '#000'}}>
+        No Data Found
+      </Text>
+    );
   }
   let stockOutIcon = (
     <FontAwesome name="angle-double-down" size={25} color="#000" />
@@ -137,6 +141,9 @@ export default function Transactions({navigation}) {
       where: {
         status: true,
       },
+      orderBy: {
+        created_at: 'desc',
+      },
     };
     try {
       dispatch(getAllTransaction(payload));
@@ -164,7 +171,10 @@ export default function Transactions({navigation}) {
   return (
     <>
       <SafeAreaView style={globalStyles.screenLayout}>
-        <AppStatusBar backgroundColor={loading ? 'rgba(0,0,0,0.75)' : '#fff'} barStyle={'dark-content'} />
+        <AppStatusBar
+          backgroundColor={loading ? 'rgba(0,0,0,0.75)' : '#fff'}
+          barStyle={'dark-content'}
+        />
         {loading ? <Loader /> : null}
         <View style={{padding: 10}}>
           <View style={{alignItems: 'flex-end'}}>

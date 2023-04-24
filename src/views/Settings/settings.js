@@ -56,6 +56,8 @@ export default function Settings({navigation}) {
 
   let username = userDetails?.data?.user?.name;
 
+  console.log(userDatafromRedux, 'username');
+
   const handleModalClose = () => setModalVisible(false);
 
   async function fetchData() {

@@ -37,8 +37,8 @@ import moment from 'moment';
 import transactionsService from './transactionsService';
 import {Button} from 'react-native-paper';
 import {addTransaction, getAllTransaction} from './transactionAction';
-import { setpostMessagefalse } from './transactionSlice';
-import { CommonActions } from '@react-navigation/native';
+import {setpostMessagefalse} from './transactionSlice';
+import {CommonActions} from '@react-navigation/native';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
@@ -47,20 +47,20 @@ export default function StockOut({navigation, route}) {
     state => state.transaction,
   );
 
-  const backAction = useCallback(() => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index:0,
-        routes:[{name:'Home'}]
-      })
-    )
-    return true;
-  }, []);
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // const backAction = useCallback(() => {
+  //   navigation.dispatch(
+  //     CommonActions.reset({
+  //       index:0,
+  //       routes:[{name:'Home'}]
+  //     })
+  //   )
+  //   return true;
+  // }, []);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [cusData, setCusData] = useState(null);
@@ -175,7 +175,7 @@ export default function StockOut({navigation, route}) {
               Stock Out
             </Text>
             <View>
-              <Pressable
+              {/* <Pressable
                 onPress={() => {
                   handleSubmit();
                 }}>
@@ -190,7 +190,7 @@ export default function StockOut({navigation, route}) {
                   ]}>
                   Save Draft
                 </Text>
-              </Pressable>
+              </Pressable> */}
             </View>
           </View>
         </View>
@@ -209,11 +209,11 @@ export default function StockOut({navigation, route}) {
             <Text style={{fontSize: 25, fontWeight: '600', color: '#FF6600'}}>
               Stock Out
             </Text>
-            <Pressable>
+            {/* <Pressable>
               <View style={styles.container}>
                 <Text style={{fontSize: 16}}>Add past transaction</Text>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
           <View
             style={{
@@ -224,10 +224,10 @@ export default function StockOut({navigation, route}) {
               paddingRight: 10,
               marginBottom: 15,
             }}>
-            <Text style={{fontSize: 15}}>Customer</Text>
+            <Text style={{fontSize: 15, color: '#000'}}>Customer</Text>
             <Pressable onPress={() => navigation.navigate('listcustomer')}>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 15}}>{showcus}</Text>
+                <Text style={{fontSize: 15, color: '#000'}}>{showcus}</Text>
                 <View style={{marginLeft: 10}}>
                   <AntDesign name="right" size={20} color="#000" />
                 </View>
@@ -244,9 +244,9 @@ export default function StockOut({navigation, route}) {
                 paddingRight: 10,
                 marginBottom: 10,
               }}>
-              <Text style={{fontSize: 15}}>Items</Text>
+              <Text style={{fontSize: 15, color: '#000'}}>Items</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 15}}>{showitem}</Text>
+                <Text style={{fontSize: 15, color: '#000'}}>{showitem}</Text>
                 <View style={{marginLeft: 10}}>
                   <AntDesign name="right" size={20} color="#000" />
                 </View>
@@ -263,11 +263,16 @@ export default function StockOut({navigation, route}) {
               marginBottom: 15,
             }}>
             <View style={{marginTop: 5}}>
-              <Text style={{fontSize: 15}}>Enter Quantity</Text>
+              <Text style={{fontSize: 15, color: '#000'}}>Enter Quantity</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <View style={{marginLeft: 10}}>
                 <TextInput
+                  style={{
+                    borderColor: '#000',
+                    color: '#000',
+                  }}
+                  placeholderTextColor="grey"
                   onChangeText={setQuantity}
                   placeholder="Enter quantity"></TextInput>
               </View>

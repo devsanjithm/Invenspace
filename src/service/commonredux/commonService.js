@@ -37,6 +37,9 @@ const CommonAPIs = {
       console.log('=======', error);
       throw error;
     }
+  },
+  getGraphData :async ()=>{
+    return await apiInstance.get('/api/graph-count')
   }
 
 //   setSale: async payload => {

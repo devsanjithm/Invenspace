@@ -35,21 +35,21 @@ export default function AddProducts({navigation}) {
   const {data: userDatafromRedux} = useSelector(state => state.auth);
   const user_id = userDatafromRedux?.result?._id;
 
-  const backAction = useCallback(() => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index:0,
-        routes:[{name:'Home'}]
-      })
-    )
-    return true;
-  }, []);
+  // const backAction = useCallback(() => {
+  //   navigation.dispatch(
+  //     CommonActions.reset({
+  //       index:0,
+  //       routes:[{name:'Home'}]
+  //     })
+  //   )
+  //   return true;
+  // }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   const dispatch = useDispatch();
   const {postMessage, loading, error} = useSelector(state => state.product);
@@ -196,14 +196,14 @@ export default function AddProducts({navigation}) {
                     marginHorizontal: 20,
                     justifyContent: 'center',
                   }}>
-                  <View style={styles.Box}>
+                  {/* <View style={styles.Box}>
                     <Entypo
                       name="camera"
                       size={25}
                       color="black"
                       style={styles.icon}
                     />
-                  </View>
+                  </View> */}
                   <View style={{marginTop: 30}}>
                     <View style={{flexDirection: 'row', marginBottom: 35,justifyContent:'space-between'}}>
                       <Text style={styles.text}>Product id</Text>
@@ -211,6 +211,7 @@ export default function AddProducts({navigation}) {
                     <Text style={styles.errors}>{errors.pro_id}</Text>
                   )}
                       <TextInput
+                      keyboardType='phone-pad'
                         autoCapitalize="none"
                         onChangeText={handleChange('pro_id')}
                         onBlur={handleBlur('pro_id')}
@@ -241,6 +242,8 @@ export default function AddProducts({navigation}) {
                     <Text style={styles.errors}>{errors.Price}</Text>
                   )}
                       <TextInput
+                      keyboardType='phone-pad'
+
                         autoCapitalize="none"
                         onChangeText={handleChange('Price')}
                         onBlur={handleBlur('Price')}

@@ -33,7 +33,6 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
-
 export function CustomerDisplay({route, navigation}) {
   console.log(route.params.data);
   const {data} = route.params;
@@ -57,7 +56,7 @@ export function CustomerDisplay({route, navigation}) {
     }
   }
 
-  const [editable,setEditable] = useState(false);
+  const [editable, setEditable] = useState(false);
 
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', backAction);
@@ -66,14 +65,14 @@ export function CustomerDisplay({route, navigation}) {
   // }, [backAction]);
 
   const defCustomerData = {
-    cust_email:data?.cust_email,
+    cust_email: data?.cust_email,
     cust_mobile: data?.cust_mobile,
-    cust_name:data?.cust_name,
+    cust_name: data?.cust_name,
   };
   const defErrorData = {
-    cust_email:false,
-    cust_mobile:false,
-    cust_name:false,
+    cust_email: false,
+    cust_mobile: false,
+    cust_name: false,
   };
 
   const [customerData, setcustomerData] = useState(defCustomerData);
@@ -100,7 +99,7 @@ export function CustomerDisplay({route, navigation}) {
     if (isUpdate) {
       dispatch(updateCustomerDetails(payload));
       getData();
-    }else{
+    } else {
       Toast.show({
         text1: 'INFO !',
         text2: 'Updated',
@@ -141,110 +140,139 @@ export function CustomerDisplay({route, navigation}) {
     <>
       {loading ? <Loader /> : null}
       <AppHeaders title={data?.cust_name} color={'#fff'}>
-      <View style={{flexDirection:'row',}}>
-          <Pressable onPress={()=>{
-            setEditable(true)
-          }}>
-            {
-              !editable?
-              <FontAwesome name='edit' size={20} color='#000' />:null
-            }
+        <View style={{flexDirection: 'row'}}>
+          <Pressable
+            onPress={() => {
+              setEditable(true);
+            }}>
+            {!editable ? (
+              <FontAwesome name="edit" size={20} color="#000" />
+            ) : null}
           </Pressable>
-          <View style={{marginLeft:15,marginRight:10}}>
-          <Pressable onPress={()=>{
-            
-          }}>
-            {
+          <View style={{marginLeft: 15, marginRight: 10}}>
+            <Pressable onPress={() => {}}>
+              {/* {
                !editable?
               <AntDesign  name='delete' size={20} color='#000' />:null
-            }
-          </Pressable>
+            } */}
+            </Pressable>
           </View>
         </View>
       </AppHeaders>
-      <KeyboardAvoidingView style={globalStyles.screenLayout}> 
+      <KeyboardAvoidingView style={globalStyles.screenLayout}>
         <SafeAreaView>
           <ScrollView>
-
-          {
-              !editable?
-          <View>
-            
-            <View>
-            <Text style={{color:'black',fontWeight:'600',fontSize:20,marginLeft:12,marginBottom:20}}>Account info</Text>
-            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
-                <Text style={{fontSize:17,}}>Account</Text>
-                <Text style={{fontSize:17,color:'black'}}>{data.cust_name}</Text>
-            </View>
-            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
-                <Text style={{fontSize:17,}}>Telephone</Text>
-                <View style={{flexDirection:'row'}}>
-                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.cust_mobile}</Text>
-                <Foundation name='telephone' size={20} color='blue' />
+            {!editable ? (
+              <View>
+                <View>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontWeight: '600',
+                      fontSize: 20,
+                      marginLeft: 12,
+                      marginBottom: 20,
+                    }}>
+                    Account info
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                      marginBottom: 30,
+                    }}>
+                    <Text style={{fontSize: 17, color: 'black'}}>Account</Text>
+                    <Text style={{fontSize: 17, color: 'black'}}>
+                      {data.cust_name}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                      marginBottom: 30,
+                    }}>
+                    <Text style={{fontSize: 17, color: 'black'}}>
+                      Telephone
+                    </Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{fontSize: 17, color: 'black', marginRight: 10}}>
+                        {data.cust_mobile}
+                      </Text>
+                      <Foundation name="telephone" size={20} color="blue" />
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                      marginBottom: 30,
+                    }}>
+                    <Text style={{fontSize: 17, color: 'black'}}>Email</Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{fontSize: 17, color: 'black', marginRight: 10}}>
+                        {data.cust_email}
+                      </Text>
+                      <Fontisto name="email" size={20} color="blue" />
+                    </View>
+                  </View>
                 </View>
               </View>
-            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,marginBottom:30}}>
-                <Text style={{fontSize:17,}}>Email</Text>
-                <View style={{flexDirection:'row'}}>
-                <Text style={{fontSize:17,color:'black',marginRight:10}}>{data.cust_email}</Text>
-                <Fontisto name='email' size={20} color='blue' />
-                </View>
-              </View>
-            </View>
-            
-          </View>:null}
-          {
-              editable?
-            <View>
-              
-            <View>
-              <View style={styles.inputBox}>
-                <Input
-                  mode={'outlined'}
-                  label={'cus_name'}
-                  value={customerData.cust_name}
-                  onChangeText={value =>
-                    onInputChange(CustomerInputKey.cust_name, value)
-                  }
-                  error={error.cust_name}
-                  outlineStyle={error.cust_name && styles.inputError}
-                  placeholder={'CUSTOMER_NAME'}
-                  disabled={!editable}
-                 
-                />
-              </View>
-              <View style={styles.inputBox}>
-                <Input
-                  mode={'outlined'}
-                  label={'cus-num'}
-                  keyboardType={'phone-pad'}
-                  value={customerData.cust_mobile}
-                  onChangeText={value =>
-                    onInputChange(CustomerInputKey.cust_mobile, value)
-                  }
-                  error={error.cust_mobile}
-                  outlineStyle={error.cust_mobile && styles.inputError}
-                  placeholder={'MOBILE'}
-                  disabled={true}
-                />
-              </View>
-              <View style={styles.inputBox}>
-                <Input
-                  mode={'outlined'}
-                  label={'cus_email'}
-                  value={customerData.cust_email}
-                  onChangeText={value =>
-                    onInputChange(CustomerInputKey.cust_email, value)
-                  }
-                  error={error.cust_email}
-                  outlineStyle={error.cust_email && styles.inputError}
-                  placeholder={'CUS_EMAIL'}
-                  multiline={true}
-                  numberOfLines={4}
-                  disabled={true}
-                />
-              </View>
-              {/* <View style={styles.inputBox}>
+            ) : null}
+            {editable ? (
+              <View>
+                <View>
+                  <View style={styles.inputBox}>
+                    <Input
+                      mode={'outlined'}
+                      label={'cus_name'}
+                      value={customerData.cust_name}
+                      onChangeText={value =>
+                        onInputChange(CustomerInputKey.cust_name, value)
+                      }
+                      error={error.cust_name}
+                      outlineStyle={error.cust_name && styles.inputError}
+                      placeholder={'CUSTOMER_NAME'}
+                      disabled={!editable}
+                    />
+                  </View>
+                  <View style={styles.inputBox}>
+                    <Input
+                      mode={'outlined'}
+                      label={'cus-num'}
+                      keyboardType={'phone-pad'}
+                      value={customerData.cust_mobile}
+                      onChangeText={value =>
+                        onInputChange(CustomerInputKey.cust_mobile, value)
+                      }
+                      error={error.cust_mobile}
+                      outlineStyle={error.cust_mobile && styles.inputError}
+                      placeholder={'MOBILE'}
+                      disabled={true}
+                    />
+                  </View>
+                  <View style={styles.inputBox}>
+                    <Input
+                      mode={'outlined'}
+                      label={'cus_email'}
+                      value={customerData.cust_email}
+                      onChangeText={value =>
+                        onInputChange(CustomerInputKey.cust_email, value)
+                      }
+                      error={error.cust_email}
+                      outlineStyle={error.cust_email && styles.inputError}
+                      placeholder={'CUS_EMAIL'}
+                      multiline={true}
+                      numberOfLines={4}
+                      disabled={true}
+                    />
+                  </View>
+                  {/* <View style={styles.inputBox}>
                 <Input
                   mode={'outlined'}
                   label={'Pro-items'}
@@ -272,22 +300,26 @@ export function CustomerDisplay({route, navigation}) {
                   disabled={true}
                 />
               </View> */}
-            </View>
-            <View style={styles.bottomContainer}>
-              <View style={styles.cnclBtn}>
-                <Pressable onPress={() => {setEditable(false)}}>
-                  <Text style={styles.btnText}>Cancel</Text>
-                </Pressable>
+                </View>
+                <View style={styles.bottomContainer}>
+                  <View style={styles.cnclBtn}>
+                    <Pressable
+                      onPress={() => {
+                        setEditable(false);
+                      }}>
+                      <Text style={styles.btnText}>Cancel</Text>
+                    </Pressable>
+                  </View>
+                  <View style={styles.subBtn}>
+                    <Pressable onPress={onSubmit}>
+                      <Text style={[styles.btnText, {color: '#fff'}]}>
+                        Submit
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
               </View>
-              <View style={styles.subBtn}>
-                <Pressable onPress={onSubmit}>
-                  <Text style={[styles.btnText, {color: '#fff'}]}>Submit</Text>
-                </Pressable>
-              </View>
-              </View>
-            </View>:null
-            }
-            
+            ) : null}
           </ScrollView>
         </SafeAreaView>
       </KeyboardAvoidingView>

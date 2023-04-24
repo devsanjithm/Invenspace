@@ -37,8 +37,11 @@ import moment from 'moment';
 import transactionsService from './transactionsService';
 import {Button} from 'react-native-paper';
 import {addTransaction, getAllTransaction} from './transactionAction';
-import {useNavigation,CommonActions} from '@react-navigation/native';
-import { setAddTransactionSuccess, setpostMessagefalse } from './transactionSlice';
+import {useNavigation, CommonActions} from '@react-navigation/native';
+import {
+  setAddTransactionSuccess,
+  setpostMessagefalse,
+} from './transactionSlice';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
 
@@ -62,25 +65,22 @@ export default function Stockin({route}) {
       status: true,
     },
   };
-  const {postMessage, loading, error} = useSelector(
-    state => state.transaction,
-  );
+  const {postMessage, loading, error} = useSelector(state => state.transaction);
 
-  const backAction = useCallback(() => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index:0,
-        routes:[{name:'Home'}]
-      })
-    )
-    return true;
-  }, []);
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [backAction]);
-
+  // const backAction = useCallback(() => {
+  //   navigation.dispatch(
+  //     CommonActions.reset({
+  //       index:0,
+  //       routes:[{name:'Home'}]
+  //     })
+  //   )
+  //   return true;
+  // }, []);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, [backAction]);
 
   function handleRefresh() {
     setRefreshing(true);
@@ -108,14 +108,14 @@ export default function Stockin({route}) {
         text2: postMessage?.message,
         type: 'success',
       });
-      dispatch(setpostMessagefalse())
+      dispatch(setpostMessagefalse());
       navigation.goBack();
       dispatch(getAllTransaction(payload));
     }
   }, [postMessage]);
 
   useEffect(() => {
-    console.log(postMessage); 
+    console.log(postMessage);
     if (!_.isEmpty(error)) {
       Toast.show({
         text1: 'ERROR',
@@ -126,12 +126,10 @@ export default function Stockin({route}) {
   }, [error]);
 
   useEffect(() => {
-  
     return () => {
-      setAddTransactionSuccess({})
-    }
-  }, [])
-  
+      setAddTransactionSuccess({});
+    };
+  }, []);
 
   function handleSubmit() {
     console.log('hii');
@@ -187,7 +185,7 @@ export default function Stockin({route}) {
               Stock In
             </Text>
             <View>
-              <Pressable
+              {/* <Pressable
                 onPress={() => {
                   handleSubmit();
                 }}>
@@ -202,7 +200,7 @@ export default function Stockin({route}) {
                   ]}>
                   Save Draft
                 </Text>
-              </Pressable>
+              </Pressable> */}
             </View>
           </View>
         </View>
@@ -221,11 +219,11 @@ export default function Stockin({route}) {
             <Text style={{fontSize: 25, fontWeight: '600', color: '#448EE4'}}>
               Stock In
             </Text>
-            <Pressable>
+            {/* <Pressable>
               <View style={styles.container}>
                 <Text style={{fontSize: 16}}>Add past transaction</Text>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
           <View
             style={{
@@ -236,10 +234,10 @@ export default function Stockin({route}) {
               paddingRight: 10,
               marginBottom: 15,
             }}>
-            <Text style={{fontSize: 15}}>Supplier</Text>
+            <Text style={{fontSize: 15, color: '#000'}}>Supplier</Text>
             <Pressable onPress={() => navigation.navigate('listsupplier')}>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 15}}>{showsup}</Text>
+                <Text style={{fontSize: 15,color: '#000'}}>{showsup}</Text>
                 <View style={{marginLeft: 10}}>
                   <AntDesign name="right" size={20} color="#000" />
                 </View>
@@ -256,9 +254,9 @@ export default function Stockin({route}) {
                 paddingRight: 10,
                 marginBottom: 10,
               }}>
-              <Text style={{fontSize: 15}}>Items</Text>
+              <Text style={{fontSize: 15, color: '#000'}}>Items</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 15}}>{showitem}</Text>
+                <Text style={{fontSize: 15,color: '#000'}}>{showitem}</Text>
                 <View style={{marginLeft: 10}}>
                   <AntDesign name="right" size={20} color="#000" />
                 </View>
@@ -275,11 +273,16 @@ export default function Stockin({route}) {
               marginBottom: 15,
             }}>
             <View style={{marginTop: 5}}>
-              <Text style={{fontSize: 15}}>Enter Quantity</Text>
+              <Text style={{fontSize: 15, color: '#000'}}>Enter Quantity</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <View style={{marginLeft: 10}}>
                 <TextInput
+                  style={{
+                    borderColor: '#000',
+                    color:'#000'
+                  }}
+                  placeholderTextColor='grey'
                   onChangeText={setQuantity}
                   placeholder="Enter quantity"></TextInput>
               </View>

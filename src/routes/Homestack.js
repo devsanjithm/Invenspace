@@ -1,7 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AppHeaders} from '../components/AppHeaders';
-import Dashboard from '../views/Dashboard';
 import Product from '../views/Products/Product';
 import AddProducts from '../views/Products/AddProducts';
 import Customer from '../views/Customers/Customer';
@@ -17,14 +16,14 @@ import {CustomerDisplay} from '../views/Customers/customerDisplay';
 import {PurchaseDisplay} from '../views/Purchases/purchaseDisplay';
 import {SalesDisplay} from '../views/Sales/salesDisplay';
 import {SupplierDisplay} from '../views/Suppliers/supplierDisplay';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Dimensions } from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Dimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { useWindowDimensions } from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import Settings from '../views/Settings/settings';
 import Home from '../views/home';
 import Transactions from '../views/transactions';
@@ -38,6 +37,7 @@ import Listitems from '../views/transactions/listitem2';
 import Member from '../views/Settings/member';
 import Addmember from '../views/Settings/addmember';
 import Category from '../views/Settings/category';
+import Dashboard from '../views/home/inventoryStatus';
 function ProductStack() {
   const productStack = createNativeStackNavigator();
   return (
@@ -46,8 +46,7 @@ function ProductStack() {
       screenOptions={{
         animation: 'fade_from_bottom',
         headerShown: false,
-      }}
-      >
+      }}>
       <productStack.Screen name="Product1" component={Product} />
       <productStack.Screen name="AddProducts" component={AddProducts} />
       <productStack.Screen name="productDisplay" component={Display} />
@@ -62,8 +61,7 @@ function SettingStack() {
       screenOptions={{
         animation: 'fade_from_bottom',
         headerShown: false,
-      }}
-      >
+      }}>
       <settingStack.Screen name="setting" component={Settings} />
       <settingStack.Screen name="supplierDisplay" component={Supplier} />
       <settingStack.Screen name="supplierDis" component={SupplierDisplay} />
@@ -121,9 +119,7 @@ function CustomerStack() {
 function TransactionStack() {
   const saleStack = createNativeStackNavigator();
   return (
-    <saleStack.Navigator 
-    screenOptions={{animation:'fade_from_bottom'}}
-    >
+    <saleStack.Navigator screenOptions={{animation: 'fade_from_bottom'}}>
       <saleStack.Screen
         name="Transaction"
         component={Transactions}
@@ -183,11 +179,38 @@ function TransactionStack() {
     </saleStack.Navigator>
   );
 }
+
+function HomeStack() {
+  const homeStack = createNativeStackNavigator();
+  return (
+    <homeStack.Navigator
+      screenOptions={{animation: 'slide_from_right', headerShown: false}}
+      initialRouteName="HomeMain">
+      <homeStack.Screen name="HomeMain" component={Home} />
+      <homeStack.Screen name="AddProducts" component={AddProducts} />
+      <homeStack.Screen name="Dashboard" component={Dashboard} />
+      <homeStack.Screen
+        name="Stockin"
+        component={Stockin}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <homeStack.Screen
+        name="Stockout"
+        component={StockOut}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </homeStack.Navigator>
+  );
+}
+
 export default function Homestack() {
   const Tab = createBottomTabNavigator();
-  const { height } = useWindowDimensions();
+  const {height} = useWindowDimensions();
   return (
-    
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({route}) => ({
@@ -200,26 +223,25 @@ export default function Homestack() {
         },
         tabBarHideOnKeyboard: true,
         headerShown: false,
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
           if (route.name === 'Home') {
             iconName = focused
-              ? { name: 'md-home', type: 'ionicons' }
-              : { name: 'md-home-outline', type: 'ionicons' };
+              ? {name: 'md-home', type: 'ionicons'}
+              : {name: 'md-home-outline', type: 'ionicons'};
           } else if (route.name === 'Items') {
             iconName = focused
-              ? { name: 'CodeSandbox', type: 'AntDesign' }
-              : { name: 'box', type: 'Feather' };
+              ? {name: 'CodeSandbox', type: 'AntDesign'}
+              : {name: 'box', type: 'Feather'};
           } else if (route.name === 'In/Out') {
             iconName = focused
-              ? { name: 'arrow-swap', type: 'Fontisto' }
-              : { name: 'arrow-swap', type: 'Fontisto' };
-          }
-          else if (route.name === 'Settings') {
+              ? {name: 'arrow-swap', type: 'Fontisto'}
+              : {name: 'arrow-swap', type: 'Fontisto'};
+          } else if (route.name === 'Settings') {
             iconName = focused
-              ? { name: 'settings', type: 'ionicons' }
-              : { name: 'settings-outline', type: 'ionicons' };
+              ? {name: 'settings', type: 'ionicons'}
+              : {name: 'settings-outline', type: 'ionicons'};
           }
 
           // You can return any component that you like here!
@@ -238,7 +260,7 @@ export default function Homestack() {
         tabBarActiveTintColor: '#386BF6',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Items" component={ProductStack} />
       <Tab.Screen name="In/Out" component={TransactionStack} />
       <Tab.Screen name="Settings" component={SettingStack} />

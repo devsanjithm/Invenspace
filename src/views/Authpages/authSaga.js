@@ -4,6 +4,7 @@ import {
   setAuthDetailsFailure,
   setAuthDetailsLoading,
   setAuthDetailsSuccess,
+  setRegisterSuccess,
 } from './authSlice';
 
 function* getAuthDetails(payload) {
@@ -24,7 +25,7 @@ function* postAuthDetails(payload) {
     console.log('===== @DH payload register saga =====', payload);
     const data = yield call(LoginAPIs.register, payload.data);
     console.log('===== @DH register saga =====', data);
-    yield put(setAuthDetailsSuccess(data));
+    yield put(setRegisterSuccess(data));
   } catch (error) {
     console.log('saga register error', error);
     yield put(setAuthDetailsFailure(error));
@@ -39,8 +40,6 @@ function* watchOnPostAuthDetails() {
   yield takeLatest('postAuthDetails', postAuthDetails);
 }
 
-
 export default function* authSaga() {
-  yield all([fork(watchOnGetAuthDetails),fork(watchOnPostAuthDetails)]);
+  yield all([fork(watchOnGetAuthDetails), fork(watchOnPostAuthDetails)]);
 }
-

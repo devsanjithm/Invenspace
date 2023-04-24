@@ -34,7 +34,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {clearAll} from '../../service/localstorage';
 import {globalStyles} from '../../utils/styles';
 import moment from 'moment';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import HomeAPIs from './homeService';
 const screenWidth = Dimensions.get('window').width;
 const scrrenHeight = Dimensions.get('window').height;
@@ -67,30 +67,41 @@ function Card1(props) {
 }
 
 function Card2(props) {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   let loopedData = [];
   for (let i = 0; i < props?.data.length; i++) {
     const element = props?.data[i];
     loopedData.push(
-      <Pressable key={i}  onPress={()=>{
-        if(element?.text === "Stock In"){
-          navigation.navigate('In/Out',{screen:'Stockin'})
-        }else if(element?.text === "Register New Item"){
-          navigation.navigate('Items',{screen:'AddProducts'})
-        }else if(element?.text === "Stock Out"){
-          navigation.navigate('In/Out',{screen:'Stockout'})
-        }
-      }}>
-      <View style={{flexDirection: 'row',paddingHorizontal:10,justifyContent:'space-between'}}>
-        <View style={{flexDirection:'row'}}>
-        <View style={{padding:10}}>{element?.icon}</View>
-        <Text style={{color: '#000',padding:10,fontSize:20}}>{element?.text}</Text>
+      <Pressable
+        key={i}
+        onPress={() => {
+          if (element?.text === 'Stock In') {
+            navigation.navigate('Stockin');
+          } else if (element?.text === 'Register New Item') {
+            navigation.navigate('AddProducts');
+          } else if (element?.text === 'Stock Out') {
+            navigation.navigate('Stockout');
+          } else if (element?.text === 'Analyze inventory status') {
+            navigation.navigate('Dashboard');
+          }
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingHorizontal: 10,
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{padding: 10}}>{element?.icon}</View>
+            <Text style={{color: '#000', padding: 10, fontSize: 20}}>
+              {element?.text}
+            </Text>
+          </View>
+          <View style={{padding: 10}}>
+            <AntDesign name="right" size={20} color="#000" />
+          </View>
         </View>
-        <View style={{padding:10}}>
-            <AntDesign name='right' size={20} color='#000' />
-        </View>
-      </View>
-      </Pressable>
+      </Pressable>,
     );
   }
   return (
@@ -104,7 +115,7 @@ function Card2(props) {
 }
 
 export default function Home({navigation}) {
-  const [dashboardDatacount,setDashboardData]=useState()
+  const [dashboardDatacount, setDashboardData] = useState();
   const [refreshing, setRefreshing] = React.useState(false);
   const {setRoute, isInternet} = useContext(UserContext);
   function handleRefresh() {
@@ -139,41 +150,39 @@ export default function Home({navigation}) {
   ];
   const lowStockData = [
     {
-        icon:(<MaterialCommunityIcons name='gauge-low' size={25} color='#000' />),
-        text:'Check stock storage'
-    }
-  ]
+      icon: <MaterialCommunityIcons name="gauge-low" size={25} color="#000" />,
+      text: 'Check stock storage',
+    },
+  ];
   const dashboardData = [
     {
-        icon:(<FontAwesome name='bar-chart-o' size={25} color='#000' />),
-        text:'Analyze inventory status'
-    }
-  ]
+      icon: <FontAwesome name="bar-chart-o" size={25} color="#000" />,
+      text: 'Analyze inventory status',
+    },
+  ];
 
-  async function data(){
+  async function data() {
     const data = await HomeAPIs.getDashboardCount();
     console.log(data.data);
-    setDashboardData(data.data)
-    setRefreshing(false)
+    setDashboardData(data.data);
+    setRefreshing(false);
   }
   useEffect(() => {
-    data()
-  }, [])
-  
+    data();
+  }, []);
 
   return (
     <>
       <SafeAreaView style={globalStyles.screenLayout}>
-        <AppStatusBar backgroundColor='#fff' barStyle='dark-content'/>
+        <AppStatusBar backgroundColor="#fff" barStyle="dark-content" />
         <View>
           <Text style={styles.Header}>Home</Text>
         </View>
         <ScrollView
-         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-        >
-          <Card1 data={dashboardDatacount}/>
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }>
+          <Card1 data={dashboardDatacount} />
           <Card2 data={itemData} heading={'Add Item'} />
           <Card2 data={stockData} heading={'Stock In/Out'} />
           {/* <Card2 data={lowStockData} heading={'Low Stock Remainder'} /> */}
@@ -249,6 +258,6 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: '600',
     paddingVertical: 10,
-    paddingHorizontal:10
+    paddingHorizontal: 10,
   },
 });

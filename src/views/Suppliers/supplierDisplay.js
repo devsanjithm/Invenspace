@@ -157,10 +157,10 @@ useEffect(() => {
           <Pressable onPress={()=>{
             setEditable(true)
           }}>
-            {
+            {/* {
               !editable?
               <FontAwesome name='edit' size={20} color='#000' />:null
-            }
+            } */}
           </Pressable>
           <View style={{marginLeft:15,marginRight:10}}>
           <Pressable onPress={()=>{
